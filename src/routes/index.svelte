@@ -1,0 +1,80 @@
+<script>
+  import { onMount } from "svelte";
+  import InfiniteScroll from "$lib/InfiniteScroll.svelte";
+  import MemeCard from "$lib/MemeCard.svelte";
+
+  // if the api (like in this example) just have a simple numeric pagination
+  let page = 0;
+  // but most likely, you'll have to store a token to fetch the next page
+  let nextUrl = "";
+  // store all the data here.
+  let data = [];
+  // store the new batch of data here.
+  let newBatch = [];
+
+  async function fetchData() {
+    const response = await fetch(
+      `https://geyix.herokuapp.com/meme/getMemes?page=${page}&limit=5`
+    );
+    newBatch = await response.json();
+    console.log(newBatch);
+  }
+
+  onMount(() => {
+    // load first batch onMount
+    fetchData();
+  });
+
+  $: data = [...data, ...newBatch];
+</script>
+
+<main>
+  <ul>
+    {#each data as meme}
+      <MemeCard {meme} />
+    {/each}
+    <InfiniteScroll
+      hasMore={newBatch.length}
+      threshold={100}
+      on:loadMore={() => {
+        page++;
+        fetchData();
+      }}
+    />
+  </ul>
+</main>
+
+<style>
+  main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  ul::-webkit-scrollbar {
+    display: none;
+  }
+  ul {
+    /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); */
+    display: flex;
+    flex-direction: column;
+    border-radius: 2px;
+    width: 100%;
+    max-width: 650px;
+    max-height: 100vh;
+    overflow-x: scroll;
+    list-style: none;
+  }
+
+  li {
+    padding: 15px;
+    box-sizing: border-box;
+    transition: 0.2s all;
+    font-size: 14px;
+  }
+
+  li:hover {
+    background-color: #eeeeee;
+  }
+</style>
