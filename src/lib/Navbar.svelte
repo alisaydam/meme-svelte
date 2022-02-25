@@ -20,7 +20,6 @@
 <style>
   header {
     /* Sticky will still add item to stacking but will stick when scroll down. And this prevents giving margin-top to each element that comes after navbar. */
-    position: fixed;
     z-index: 1;
     background-color: white;
     height: 50px;
