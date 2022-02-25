@@ -44,37 +44,12 @@
   </ul>
 </main>
 
-<style>
-  main {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-
-  ul::-webkit-scrollbar {
-    display: none;
-  }
+<style> 
   ul {
-    /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+    padding-top: 50px;
+    overflow-x: hidden;  
+      /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
       0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); */
-    display: flex;
-    flex-direction: column;
-    border-radius: 2px;
-    width: 100%;
-    max-width: 650px;
-    max-height: 100vh;
-    overflow-x: scroll;
-    list-style: none;
-  }
-
-  li {
-    padding: 15px;
-    box-sizing: border-box;
-    transition: 0.2s all;
-    font-size: 14px;
-  }
-
-  li:hover {
-    background-color: #eeeeee;
+    max-height: 100vh; 
   }
 </style>

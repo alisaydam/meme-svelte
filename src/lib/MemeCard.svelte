@@ -5,7 +5,7 @@
 <article class="meme">
   <header>
     <div class="post-section">
-      <a href="" class="icon">
+      <a href="/" class="icon">
         <picture data-v-3031e2bc=""
           ><source
             srcset="https://miscmedia-9gag-fun.9cache.com/images/thumbnail-facebook/1557376304.186_U5U7u5_100x100wp.webp"
@@ -20,7 +20,7 @@
         >
       </a>
       <p>
-        <a href="">Funny</a> . 14h
+        <a href="/">Funny</a> . 14h
       </p>
     </div>
     <a href={meme.title}>
@@ -28,18 +28,32 @@
     </a>
   </header>
   <div class="post-container">
-    <a href="">
+    <a href="/">
       <img src={meme.meme} alt="" srcset="" />
     </a>
-  </div>
+  </div> 
+    <ul class="vote-left"> 
+      <li><a href="/"><img class="top-arrow" src="arrow-top.svg" alt="s" srcset=""></a></li>
+      <li><a href="/"><img class="top-arrow" src="arrow-top.svg" alt="s" srcset=""></a></li>
+      <li><a href="/"><img class="top-arrow" src="comment-icon.ico" alt="s" srcset=""></a></li>
+    </ul>
 </article>
 
 <style>
+  .top-arrow{
+    color: wheat;
+  }
+  .vote-left{
+    display: flex;
+  }
+  
   article {
     margin-bottom: 24px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     padding: 20px 0 0;
     box-sizing: border-box;
+    max-width: 650px;
+    margin: auto;
   }
   header {
     display: block;
@@ -67,9 +81,13 @@
     cursor: pointer;
     color: inherit;
   }
+  li{
+    width: 30px;
+    margin-right:15px ;
+    padding: 4px;
+
+  }
   img {
-    width: 100%;
-  }
-  h1 {
-  }
+    width: 100%; 
+  } 
 </style>

@@ -1,5 +1,8 @@
 <script>
   import { initializeApp } from "firebase/app";
+  import { compressAccurately } from "image-conversion";
+  import { Circle3 } from "svelte-loading-spinners";
+
   import {
     getStorage,
     ref,
@@ -21,12 +24,14 @@
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
 
-  let avatar, fileinput, image, title, meme;
+  let avatar, fileinput, image, title;
+  let spinner = false;
   const uploadToFireStorage = () => {
     const metadata = {
       contentType: "image/jpeg",
     };
-    const storageRef = ref(storage, "images/" + image.name);
+    spinner = true; 
+    const storageRef = ref(storage, "images/" + image.name+ Date.now());
     const uploadTask = uploadBytesResumable(storageRef, image, metadata);
     uploadTask.on(
       "state_changed",
@@ -41,16 +46,21 @@
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
           try {
-            const submit = await fetch("https://geyix.herokuapp.com/meme/newmeme", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                meme: dowloadURL,
-                id: $user.id,
-                title: title,
-              }),
-            });
-
+            const submit = await fetch(
+              "https://geyix.herokuapp.com/meme/newmeme",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  meme: dowloadURL,
+                  id: $user.id,
+                  title: title,
+                }),
+              }
+            );
+            spinner = false;
+            avatar = "";
+            title = "";
             const data = await submit.json();
             console.log(data);
           } catch (error) {
@@ -61,8 +71,15 @@
     );
   };
 
-  const onFileSelected = (e) => {
+  const onFileSelected = async (e) => {
     image = e.target.files[0];
+    const res = await compressAccurately(image, {
+      size: 250,
+      accuracy: 0.9,
+      width: 500,
+      orientation: 2,
+    });
+    image = new File([res], image.name, { lastModified: Date.now() });
     let reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = (e) => {
@@ -72,58 +89,94 @@
 </script>
 
 <div id="app">
-  <h2>Meme Yükle</h2>
-  <div class="drag-drop">
-    <input type="text" bind:value={title} placeholder="Başlık" />
+  <div class="preview">
+    <h2>Meme Yükle</h2>
+    <input class="title" type="text" bind:value={title} placeholder="Başlık" />
+    {#if spinner}
+      <div class="spinner">
+        <Circle3 size="75" color="#FF3E00" unit="px" duration="1.5s" />
+      </div>
+    {/if}
     {#if avatar}
       <img class="avatar" src={avatar} alt="d" />
     {:else}
-      <img
-        class="avatar"
-        src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
-        alt=""
-      />
+      <img class="avatar" src="/placeholder.png" alt="" />
     {/if}
   </div>
-  <img
-    class="upload"
-    src="https://static.thenounproject.com/png/625182-200.png"
-    alt=""
-    on:click={() => {
-      fileinput.click();
-    }}
-  />
-  <div
-    class="chan"
-    on:click={() => {
-      fileinput.click();
-    }}
-  >
-    Choose Image
+  <div class="upload-bar">
+    <div class="item">
+      <img
+        class="upload"
+        src="https://static.thenounproject.com/png/625182-200.png"
+        alt=""
+        on:click={() => {
+          fileinput.click();
+        }}
+      />
+      <div
+        class="chan"
+        on:click={() => {
+          fileinput.click();
+        }}
+      >
+        Dosya Seç
+      </div>
+      <input
+        style="display:none"
+        type="file"
+        accept=".jpg, .jpeg, .png, .gif"
+        on:change={(e) => onFileSelected(e)}
+        bind:this={fileinput}
+      />
+    </div>
+
+    <div class="item">
+      {#if avatar && title}
+        <a href="" on:click={uploadToFireStorage}>
+          <img
+            class="upload"
+            src="https://static.thenounproject.com/png/625182-200.png"
+            alt=""
+          />
+          <div />
+           Yükle
+        </a>
+      {/if}
+    </div>
   </div>
-  <input
-    style="display:none"
-    type="file"
-    accept=".jpg, .jpeg, .png"
-    on:change={(e) => onFileSelected(e)}
-    bind:this={fileinput}
-  />
-  {#if avatar}
-    <div class="chan" on:click={uploadToFireStorage}>UploadImage</div>
-  {/if}
 </div>
 
 <style>
+  .spinner {
+    position: absolute;
+    left: 140px;
+    top: 130px;
+  }
+  .preview {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+  }
+  .upload-bar {
+    display: flex;
+    justify-content: center;
+  }
+  .item {
+    text-align: center;
+    margin: 10px;
+  }
+  .title {
+    font-size: 15px;
+    font-weight: 600;
+  }
   #app {
+    margin-top: 50px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-flow: column;
+    flex-direction: column;
   }
 
   .upload {
-    display: flex;
-    height: 50px;
     width: 50px;
     cursor: pointer;
   }
@@ -131,8 +184,6 @@
     cursor: pointer;
   }
   .avatar {
-    display: flex;
-    height: 200px;
-    width: 200px;
+    width: 350px;
   }
 </style>

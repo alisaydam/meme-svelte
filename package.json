@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "next",
+    "@sveltejs/adapter-netlify": "^1.0.0-next.47",
     "@sveltejs/kit": "next",
     "svelte": "^3.44.0"
   },
@@ -16,6 +17,9 @@
   "dependencies": {
     "@macfja/svelte-persistent-store": "^1.2.0",
     "aovi-svelte": "^0.2.5",
-    "firebase": "^9.6.7"
+    "firebase": "^9.6.7",
+    "image-conversion": "^2.1.1",
+    "imagemin-webp": "^7.0.0",
+    "svelte-loading-spinners": "^0.1.7"
   }
 }
