@@ -38,7 +38,7 @@
     if ($form.valid) {
       const { username, email, password } = $form;
       try {
-        const submit = await fetch("https://geyix.herokuapp.com/user/newuser", {
+        const submit = await fetch("http://localhost:5000/user/newuser", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -70,7 +70,7 @@
   const doLogin = async () => {
     const { email, password } = $form;
     try {
-      const submit = await fetch("https://geyix.herokuapp.com/user/login", {
+      const submit = await fetch("http://localhost:5000/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -79,6 +79,7 @@
         }),
       });
       const data = await submit.json();
+      console.log(data)
       if (data.success) {
         message = data.message;
         $user = data.user;
@@ -92,88 +93,93 @@
   };
 </script>
 
-<div id="animatedBackground">
-  <div id="login-box">
-    <div class="left">
-      {#if $mode === "signin"}<h1>Giriş</h1>{:else}<h1>Kayıt Ol</h1>{/if}
-      <div class="SwitchContainer">
-        <label class="switch">
+<div class="big-wrapper">
+  <div id="animatedBackground">
+    <div id="login-box">
+      <div class="left">
+        {#if $mode === "signin"}<h1>Giriş</h1>{:else}<h1>Kayıt Ol</h1>{/if}
+        <div class="SwitchContainer">
+          <label class="switch">
+            <input
+              type="checkbox"
+              on:click={toggleMode}
+              value={$mode === "signin" ? "signup" : "signin"}
+            />
+            <span class="slider round" />
+          </label>
+          {#if $mode === "signin"}
+            Kayıt Ol
+          {:else}
+            Giriş
+          {/if}
+        </div>
+        {#if $mode === "signup"}
           <input
-            type="checkbox"
-            on:click={toggleMode}
-            value={$mode === "signin" ? "signup" : "signin"}
+            type="text"
+            placeholder="Kullanıcı Adı"
+            bind:value={$form.username}
+            class:error={$form.err.username}
+            on:focus={form.clear}
           />
-          <span class="slider round" />
-        </label>
-        {#if $mode === "signin"}
-          Kayıt Ol
-        {:else}
-          Giriş
         {/if}
-      </div>
-      {#if $mode === "signup"}
         <input
-          type="text"
-          placeholder="Kullanıcı Adı"
-          bind:value={$form.username}
-          class:error={$form.err.username}
+          type="email"
+          placeholder="E-mail"
+          bind:value={$form.email}
+          class:error={$form.err.email}
           on:focus={form.clear}
         />
-      {/if}
-      <input
-        type="email"
-        placeholder="E-mail"
-        bind:value={$form.email}
-        class:error={$form.err.email}
-        on:focus={form.clear}
-      />
-      <input
-        type="password"
-        placeholder="Şifre"
-        bind:value={$form.password}
-        class:error={$form.err.password}
-        class:success={$confirmMatch}
-        onfocus={form.clear}
-      />
-      {#if $mode === "signup"}
         <input
           type="password"
-          placeholder="Şifre Tekrarı"
-          bind:value={$form.confirm}
+          placeholder="Şifre"
+          bind:value={$form.password}
+          class:error={$form.err.password}
           class:success={$confirmMatch}
-          on:focus={form.clear}
+          onfocus={form.clear}
         />
-      {/if}
-      {#if $mode === "signup"}
-        {#each $form.err.toArray() as error}
+        {#if $mode === "signup"}
+          <input
+            type="password"
+            placeholder="Şifre Tekrarı"
+            bind:value={$form.confirm}
+            class:success={$confirmMatch}
+            on:focus={form.clear}
+          />
+        {/if}
+        {#if $mode === "signup"}
+          {#each $form.err.toArray() as error}
+            <p class="message">- {error}</p>
+          {/each}
+        {/if}
+        {#each errors as error}
           <p class="message">- {error}</p>
         {/each}
-      {/if}
-      {#each errors as error}
-        <p class="message">- {error}</p>
-      {/each}
-      {#if message}
-        <p class="succes-p">{message}</p>
-      {/if}
-      <p>
-        {#if $mode === "signup"}
-          <button on:click|preventDefault={doSignup}>Kayıt Ol</button>
-        {:else}
-          <button on:click|preventDefault={doLogin}>Giriş Yap</button>
+        {#if message}
+          <p class="succes-p">{message}</p>
         {/if}
-      </p>
+        <p>
+          {#if $mode === "signup"}
+            <button on:click|preventDefault={doSignup}>Kayıt Ol</button>
+          {:else}
+            <button on:click|preventDefault={doLogin}>Giriş Yap</button>
+          {/if}
+        </p>
+      </div>
+      <div class="right" id="right">
+        <!-- <a class="have-acc" href="/auth/signup"
+          ><p>Don't have an account? Sign up!</p></a
+        >
+        <a class="have-acc" href="/"><p>Or continue without login!</p></a> -->
+      </div>
+      <div class="or" id="or">OR</div>
     </div>
-    <div class="right" id="right">
-      <!-- <a class="have-acc" href="/auth/signup"
-        ><p>Don't have an account? Sign up!</p></a
-      >
-      <a class="have-acc" href="/"><p>Or continue without login!</p></a> -->
-    </div>
-    <div class="or" id="or">OR</div>
   </div>
 </div>
 
 <style>
+  .big-wrapper {
+    height: 100vh;
+  }
   .switch {
     position: relative;
     display: inline-block;
@@ -265,15 +271,14 @@
     color: white;
     font-size: 13px;
     margin: 8px;
-  }
+  } 
   #animatedBackground {
     display: flex;
     align-items: center;
     width: 100%;
     height: 100%;
-    position: absolute;
     top: 0;
-    left: 0;
+    left: 0;  
     background: url("/bg.png");
     background-repeat: repeat;
     background-position: 0 0;

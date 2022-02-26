@@ -47,7 +47,7 @@
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
           try {
             const submit = await fetch(
-              "https://geyix.herokuapp.com/meme/newmeme",
+              "http://localhost:5000/meme/newmeme",
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -77,7 +77,7 @@
       size: 250,
       accuracy: 0.9,
       width: 500,
-      orientation: 2,
+      orientation: 1,
     });
     image = new File([res], image.name, { lastModified: Date.now() });
     let reader = new FileReader();
@@ -170,7 +170,7 @@
     font-weight: 600;
   }
   #app {
-    margin-top: 50px;
+    padding-top: 50px;
     display: flex;
     align-items: center;
     flex-direction: column;

@@ -28,7 +28,7 @@
     </a>
   </header>
   <div class="post-container">
-    <a href="/">
+    <a sveltekit:prefetch sveltekit:noscroll href={"/meme/"+ meme._id}>
       <img src={meme.meme} alt="" srcset="" />
     </a>
   </div> 
