@@ -76,7 +76,8 @@
     const res = await compressAccurately(image, {
       size: 250,
       accuracy: 0.9,
-      width: 500, 
+      width: 500,
+      orientation: 1,
     });
     image = new File([res], image.name, { lastModified: Date.now() });
     let reader = new FileReader();
