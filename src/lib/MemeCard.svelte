@@ -31,27 +31,15 @@
     <a sveltekit:prefetch sveltekit:noscroll href={"/meme/"+ meme._id}>
       <img src={meme.meme} alt="" srcset="" />
     </a>
-  </div> 
-    <ul class="vote-left"> 
-      <li><a href="/"><img class="top-arrow" src="arrow-top.svg" alt="s" srcset=""></a></li>
-      <li><a href="/"><img class="top-arrow" src="arrow-top.svg" alt="s" srcset=""></a></li>
-      <li><a href="/"><img class="top-arrow" src="comment-icon.ico" alt="s" srcset=""></a></li>
-    </ul>
+  </div>  
 </article>
 
 <style>
-  .top-arrow{
-    color: wheat;
-  }
-  .vote-left{
-    display: flex;
-  }
-  
+ 
   article {
     margin-bottom: 24px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     padding: 20px 0 0;
-    box-sizing: border-box;
     max-width: 650px;
     margin: auto;
   }
@@ -80,12 +68,6 @@
     text-decoration: none;
     cursor: pointer;
     color: inherit;
-  }
-  li{
-    width: 30px;
-    margin-right:15px ;
-    padding: 4px;
-
   }
   img {
     width: 100%; 
