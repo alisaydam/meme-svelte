@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
   import InfiniteScroll from "$lib/InfiniteScroll.svelte";
   import MemeCard from "$lib/MemeCard.svelte";
-  import VoteBar from "$lib/VoteBar.svelte"
 
   // if the api (like in this example) just have a simple numeric pagination
   let page = 0;
@@ -15,7 +14,7 @@
 
   async function fetchData() {
     const response = await fetch(
-      `http://localhost:5000/meme/getMemes?page=${page}&limit=5`
+      `https://geyix.herokuapp.com/meme/getMemes?page=${page}&limit=5`
     );
     newBatch = await response.json();
     console.log(newBatch);
@@ -32,8 +31,7 @@
 <main>
   <ul>
     {#each data as meme}
-      <MemeCard {meme} />
-      <VoteBar {meme}/>
+      <MemeCard {meme}/> 
     {/each}
     <InfiniteScroll
       hasMore={newBatch.length}

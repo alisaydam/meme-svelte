@@ -1,5 +1,7 @@
 <script>
-  export let meme;
+  import VoteBar from './VoteBar.svelte';
+  import {user} from "../stores"
+  export let meme; 
 </script>
 
 <article class="meme">
@@ -32,7 +34,9 @@
       <img src={meme.meme} alt="" srcset="" />
     </a>
   </div>  
-</article>
+</article> 
+<VoteBar {meme} user={$user} />
+
 
 <style>
  

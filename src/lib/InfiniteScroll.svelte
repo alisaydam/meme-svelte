@@ -1,5 +1,5 @@
 <script>
-  import { onMount, onDestroy, createEventDispatcher } from "svelte";
+  import {   onDestroy, createEventDispatcher } from "svelte";
 
   export let threshold = 0;
   export let horizontal = false;
