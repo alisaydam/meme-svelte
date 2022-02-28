@@ -18,7 +18,9 @@
 </script>
 
 <div class="vote-wrapper">
-  <button class="vote-button-up" on:click={like}
+  <button
+    class="vote-button-up {meme.likes.includes(user.username) ? 'voted' : ''}"
+    on:click={like}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="14"
@@ -34,7 +36,9 @@
       ></svg
     ><span>{meme.likes.length}</span></button
   >
-  <button class="vote-button" on:click={dislike}
+  <button
+    class="vote-button {meme.dislikes.includes(user.username) ? 'voted' : ''}"
+    on:click={dislike}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="14"
@@ -50,12 +54,15 @@
       ></svg
     ><span>{meme.dislikes.length}</span></button
   >
-  <button class="vote-button">
-    <img src="/comment-icon.ico" alt="s" srcset="" />
-    <span class="vote-button__votes-count" data-v-33327dc2=""
-      >{meme.comments.length}</span
-    ></button
-  >
+
+  <a sveltekit:prefetch sveltekit:noscroll href={"/meme/" + meme._id}>
+    <button class="vote-button">
+      <img src="/comment-icon.ico" alt="s" srcset="" />
+      <span class="vote-button__votes-count" data-v-33327dc2=""
+        >{meme.comments.length}</span
+      ></button
+    >
+  </a>
 </div>
 
 <style>
@@ -65,6 +72,16 @@
     display: flex;
     align-items: center;
     padding: 0.1% 1.5% 0.1% 1.5%;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 4px;
+  }
+  button:hover {
+    background-color: rgba(0, 119, 255, 0.06);
+  }
+  .voted {
+    background-color: rgb(185, 204, 231);
+    color: rgb(94, 108, 228);
   }
   .vote-wrapper {
     display: flex;
@@ -74,14 +91,7 @@
   span {
     margin-left: 4px;
   }
-  a {
-    display: flex;
-    outline: 1px red solid;
-    border-radius: 2px;
-    width: 100%;
-    padding-left: 4px;
-    font-size: 12px;
-  }
+ 
   img {
     margin: 2px;
     width: 14px;

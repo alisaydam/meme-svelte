@@ -2,6 +2,7 @@
 </script>
 
 <div class="comment-wrapper">
+  
   <a href="">
     <img src="https://avatars.dicebear.com/v2/male/:seed.svg" alt="" /></a
   >
