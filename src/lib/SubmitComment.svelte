@@ -13,7 +13,7 @@
            headers: {"Content-type" : "application/json"},
            body: JSON.stringify({ 
               comment,
-               userid : user.id,
+               userid : user._id,
                memeid : meme._id
            })
        })

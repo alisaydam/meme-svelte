@@ -30,8 +30,8 @@
     const metadata = {
       contentType: "image/jpeg",
     };
-    spinner = true; 
-    const storageRef = ref(storage, "images/" + image.name+ Date.now());
+    spinner = true;
+    const storageRef = ref(storage, "images/" + image.name + Date.now());
     const uploadTask = uploadBytesResumable(storageRef, image, metadata);
     uploadTask.on(
       "state_changed",
@@ -46,22 +46,19 @@
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
           try {
-            const submit = await fetch(
-              " https://geyix.herokuapp.com/meme/newmeme",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  meme: dowloadURL,
-                  id: $user.id,
-                  title: title,
-                }),
-              }
-            );
+            const submit = await fetch(" https://geyix.herokuapp.com/meme/newmeme", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                meme: dowloadURL,
+                id: $user._id,
+                title: title,
+              }),
+            });
             spinner = false;
             avatar = "";
             title = "";
-            const data = await submit.json(); 
+            const data = await submit.json();
           } catch (error) {
             console.log(error);
           }
@@ -75,7 +72,7 @@
     const res = await compressAccurately(image, {
       size: 250,
       accuracy: 0.9,
-      height: 400,
+      width: 600,
       orientation: 1,
     });
     image = new File([res], image.name, { lastModified: Date.now() });
@@ -138,7 +135,7 @@
             alt=""
           />
           <div />
-           Yükle
+          Yükle
         </a>
       {/if}
     </div>
@@ -146,6 +143,11 @@
 </div>
 
 <style>
+   h2{
+   font-size: x-large;
+   font-weight: 500;
+   line-height: 1.5;
+ }
   .spinner {
     position: absolute;
     left: 140px;

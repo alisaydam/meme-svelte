@@ -39,7 +39,11 @@
 
 
 <style>
- 
+ h1{
+   font-size: x-large;
+   font-weight: 500;
+   line-height: 1.5;
+ }
   article {
     margin-bottom: 24px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);

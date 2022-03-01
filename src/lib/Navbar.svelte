@@ -1,5 +1,12 @@
 <script>
   import {user} from "../stores"
+  import Modal  from './Modal.svelte' 
+  import { Button } from 'svelte-materialify';
+  import {goto} from "$app/navigation"
+  import LoginModal from "./LoginModal.svelte"
+	let modal
+	// Callback function provided to the `open` function, it receives the value given to the `close` function call, or `undefined` if the Modal was closed with escape or clicking the X, etc.
+  
 </script>
 
 <header>
@@ -7,17 +14,30 @@
     <a class="logo" href="/">Geyix</a>
     <nav class="nav-menu">
       <ul>
-        <li><a href="/auth/signup">Giriş/Üye Ol</a></li>
-        {#if $user}
-           <li><a href="/uploadMeme/meme">Yükle</a></li>
+        
+        {#if $user} 
+        <li><Button on:click={()=>goto("/uploadMeme/meme")} rounded class="primary-color" >Yükle</Button> </li>
         {/if}
-        <li><a href="#">Hehe</a></li>
-      </ul>
+        {#if $user}
+        <li><Button rounded class="blue lighten-3"  on:click={()=>$user = ""}>ÇIKIŞ</Button> </li>
+        {:else}
+        <li><Button rounded class="blue lighten-3"  on:click={()=> modal.show()}>GİRİŞ</Button> </li>
+        {/if}
+      </ul> 
+      {#if !$user}
+      <Modal bind:this={modal}>
+        <LoginModal />
+      </Modal>
+      {/if}
+ 
     </nav>
   </div>
 </header>
 
 <style>
+  .primary-color{
+    background-color: red;
+  }
   header {
     /* Sticky will still add item to stacking but will stick when scroll down. And this prevents giving margin-top to each element that comes after navbar. */
     position: fixed;
