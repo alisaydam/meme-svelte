@@ -30,7 +30,7 @@
     </a>
   </header>
   <div class="post-container">
-    <a sveltekit:prefetch sveltekit:noscroll href={"/meme/"+ meme._id}>
+    <a target="_blank" rel="external" href={"/meme/"+ meme._id} sveltekit:prefetch sveltekit:noscroll>
       <img src={meme.meme} alt="" srcset="" />
     </a>
   </div>  
@@ -74,6 +74,7 @@
     color: inherit;
   }
   img {
-    width: 100%; 
+ object-fit: cover;
+    width:  100%;
   } 
 </style>

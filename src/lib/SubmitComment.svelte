@@ -7,8 +7,7 @@
 
   let dispatch = createEventDispatcher();
 
-  const handleSubmit = async () => {
-      console.log("dispatch")
+  const handleSubmit = async () => { 
        const submit = await fetch(url, {
            method: "POST",
            headers: {"Content-type" : "application/json"},

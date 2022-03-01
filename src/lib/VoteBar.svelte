@@ -3,14 +3,14 @@
   export let user;
   const like = async () => {
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/like/${meme._id}/${user.username}`
+      ` https://geyix.herokuapp.com/like/like/${meme._id}/${user.username}`
     );
     const data = await submit.json();
     meme = data;
   };
   const dislike = async () => {
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislike/${meme._id}/${user.username}`
+      ` https://geyix.herokuapp.com/like/dislike/${meme._id}/${user.username}`
     );
     const data = await submit.json();
     meme = data;
@@ -55,7 +55,7 @@
     ><span>{meme.dislikes.length}</span></button
   >
 
-  <a sveltekit:prefetch sveltekit:noscroll href={"/meme/" + meme._id}>
+  <a sveltekit:prefetch sveltekit:noscroll href={"/meme/" + meme._id}  rel="external">
     <button class="vote-button">
       <img src="/comment-icon.ico" alt="s" srcset="" />
       <span class="vote-button__votes-count" data-v-33327dc2=""

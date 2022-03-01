@@ -47,7 +47,7 @@
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
           try {
             const submit = await fetch(
-              "https://geyix.herokuapp.com/meme/newmeme",
+              " https://geyix.herokuapp.com/meme/newmeme",
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -61,8 +61,7 @@
             spinner = false;
             avatar = "";
             title = "";
-            const data = await submit.json();
-            console.log(data);
+            const data = await submit.json(); 
           } catch (error) {
             console.log(error);
           }
@@ -76,7 +75,7 @@
     const res = await compressAccurately(image, {
       size: 250,
       accuracy: 0.9,
-      width: 500,
+      height: 400,
       orientation: 1,
     });
     image = new File([res], image.name, { lastModified: Date.now() });
