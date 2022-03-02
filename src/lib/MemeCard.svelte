@@ -30,7 +30,8 @@
     </a>
   </header>
   <div class="post-container">
-    <a target="_blank" rel="external" href={"/meme/"+ meme._id} sveltekit:prefetch sveltekit:noscroll>
+    <a rel="external" href={"/meme/"+ meme._id} sveltekit:prefetch sveltekit:noscroll>
+      <!-- Add this to a tag to opne it in a new tab target="_blank"   -->
       <img src={meme.meme} alt="" srcset="" />
     </a>
   </div>  

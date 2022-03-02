@@ -40,7 +40,7 @@
       if ($form.valid) {
         const { username, email, password } = $form;
         try {
-          const submit = await fetch(" https://geyix.herokuapp.com/user/newuser", {
+          const submit = await fetch("https://geyix.herokuapp.com/user/newuser", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -72,7 +72,7 @@
     const doLogin = async () => {
       const { email, password } = $form;
       try {
-        const submit = await fetch(" https://geyix.herokuapp.com/user/login", {
+        const submit = await fetch("https://geyix.herokuapp.com/user/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

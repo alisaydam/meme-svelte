@@ -3,14 +3,14 @@
   export let user;
   const like = async () => {
     const submit = await fetch(
-      ` https://geyix.herokuapp.com/like/like/${meme._id}/${user.username}`
+      `https://geyix.herokuapp.com/like/like/${meme._id}/${user.username}`
     );
     const data = await submit.json();
     meme = data;
   };
   const dislike = async () => {
     const submit = await fetch(
-      ` https://geyix.herokuapp.com/like/dislike/${meme._id}/${user.username}`
+      `https://geyix.herokuapp.com/like/dislike/${meme._id}/${user.username}`
     );
     const data = await submit.json();
     meme = data;

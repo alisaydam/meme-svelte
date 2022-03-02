@@ -14,7 +14,7 @@
 
   async function fetchData() {
     const response = await fetch(
-      ` https://geyix.herokuapp.com/meme/getMemes?page=${page}&limit=5`
+      `https://geyix.herokuapp.com/meme/getMemes?page=${page}&limit=5`
     );
     newBatch = await response.json(); 
   }

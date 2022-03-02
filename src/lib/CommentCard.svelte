@@ -1,14 +1,15 @@
 <script>
+  export let comments
 </script>
 
 <div class="comment-wrapper">
   
   <a href="">
-    <img src="https://avatars.dicebear.com/v2/male/:seed.svg" alt="" /></a
+    <img src={comments.commentor.avatar} alt="" /></a
   >
  <div class="comment">
-     <h5>444444444</h5>
-     <p>ddddddddddddd</p>
+     <h5>{comments.commentor.username}</h5>
+     <p>{comments.comment}</p>
  </div>
 </div>
 
@@ -16,20 +17,24 @@
   .comment-wrapper {
     display: flex;
     max-width: 650px;
-    margin: auto;
-    background-color: lavender;
-     height: 75px;
+    margin: auto; 
     position: relative;
     padding: 8px 0;
+    
   }
   .comment{
       margin-left: 50px;
+      width: 90%;
+      word-wrap: break-word ;
   }
-  h4{
+  h5{
       font-size: 14px;
+      line-height: 1;
+      font-weight: 500;
   }
   p{
       font-size: 12px;
+      padding: 0;
   }
   img {
      width: 35px;

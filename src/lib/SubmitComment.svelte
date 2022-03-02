@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import { Button } from 'svelte-materialify';
   export let user;
   export let url;
   export let meme;
@@ -34,16 +35,16 @@
     />
   </div>
   <div class="after-bar">
-    <button on:click|preventDefault={handleSubmit}>Gönder</button>
+    <Button on:click ={handleSubmit}>Gönder</Button>
   </div>
 </div>
 
 <style>
   .submit-wrapper {
     max-width: 650px;
-    margin: auto;
-    background-color: aquamarine;
+    margin: auto; 
     padding: 10px;
+
   }
   .upper-con {
     display: flex;
@@ -52,11 +53,12 @@
     resize: none;
     width: 100%;
     max-height: 80px;
+    border: 1px solid black;
+
   }
   .after-bar {
     display: flex;
-    justify-content: end;
-    background-color: bisque;
+    justify-content: end; 
   }
   img {
     width: 30px;
