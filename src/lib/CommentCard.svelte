@@ -1,43 +1,44 @@
 <script>
-  export let comments
+  export let comment;
+  export let meme;
+  export let user;
+  import CommentVoteBar from "./CommentVoteBar.svelte"; 
 </script>
 
 <div class="comment-wrapper">
-  
-  <a href="">
-    <img src={comments.commentor.avatar} alt="" /></a
-  >
- <div class="comment">
-     <h5>{comments.commentor.username}</h5>
-     <p>{comments.comment}</p>
- </div>
+  <a href=""> <img src={comment.commentor.avatar} alt="" /></a>
+  <div class="comment">
+    <h5>{comment.commentor.username}</h5>
+    <p>{comment.comment}</p>
+    <CommentVoteBar {meme} {user} commentid={comment._id} {comment} />
+  </div>
 </div>
 
+<!-- <MemeVoteBar {meme} user={$user} /> -->
 <style>
   .comment-wrapper {
-    display: flex;
     max-width: 650px;
-    margin: auto; 
+    margin: auto;
     position: relative;
     padding: 8px 0;
-    
   }
-  .comment{
-      margin-left: 50px;
-      width: 90%;
-      word-wrap: break-word ;
+  .comment {
+    margin-left: 50px;
+    width: 90%;
+    word-wrap: break-word;
   }
-  h5{
-      font-size: 14px;
-      line-height: 1;
-      font-weight: 500;
+  h5 {
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 500;
   }
-  p{
-      font-size: 12px;
-      padding: 0;
+  p {
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
   }
   img {
-     width: 35px;
+    width: 35px;
     border-radius: 25px;
     position: absolute;
     top: 8px;

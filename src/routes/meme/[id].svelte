@@ -19,7 +19,6 @@
   export let comments;
   import SubmitComment from "$lib/SubmitComment.svelte";
   import { user } from "../../stores";
-
   let url = "https://geyix.herokuapp.com/comment/newcomment" 
   const submitComment = (e) => {
     comments = [e.detail, ...comments]
@@ -31,5 +30,5 @@
 <SubmitComment on:submitComment={submitComment} user={$user} {url} {meme} />
 {/if}
 {#each comments as comment}
-<CommentCard comments={comment} />
+<CommentCard {comment} user={$user} {meme}/>
 {/each}

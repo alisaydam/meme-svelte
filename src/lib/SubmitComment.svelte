@@ -52,7 +52,7 @@
   textarea {
     resize: none;
     width: 100%;
-    max-height: 80px;
+    max-height: 60px;
     border: 1px solid black;
 
   }

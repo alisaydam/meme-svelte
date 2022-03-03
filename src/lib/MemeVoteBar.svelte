@@ -1,16 +1,16 @@
-<script>
+<script> 
   export let meme;
   export let user;
-  const like = async () => {
+  const likeMeme = async () => {
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/like/${meme._id}/${user.username}`
+      `https://geyix.herokuapp.com/like/likeMeme/${user.username}/${meme._id}`
     );
     const data = await submit.json();
     meme = data;
   };
-  const dislike = async () => {
+  const dislikeMeme = async () => {
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislike/${meme._id}/${user.username}`
+      `https://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`
     );
     const data = await submit.json();
     meme = data;
@@ -20,7 +20,7 @@
 <div class="vote-wrapper">
   <button
     class="vote-button-up {meme.likes.includes(user.username) ? 'voted' : ''}"
-    on:click={like}
+    on:click={likeMeme}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="14"
@@ -38,7 +38,7 @@
   >
   <button
     class="vote-button {meme.dislikes.includes(user.username) ? 'voted' : ''}"
-    on:click={dislike}
+    on:click={dislikeMeme}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       width="14"

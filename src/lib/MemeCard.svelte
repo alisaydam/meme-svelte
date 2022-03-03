@@ -1,7 +1,9 @@
 <script>
-  import VoteBar from './VoteBar.svelte';
+  import MemeVoteBar from './MemeVoteBar.svelte';
+  import SubmitComment from './SubmitComment.svelte';
   import {user} from "../stores"
   export let meme; 
+  let url = "sssssssss"
 </script>
 
 <article class="meme">
@@ -36,7 +38,7 @@
     </a>
   </div>  
 </article> 
-<VoteBar {meme} user={$user} />
+<MemeVoteBar {meme} user={$user} />
 
 
 <style>
