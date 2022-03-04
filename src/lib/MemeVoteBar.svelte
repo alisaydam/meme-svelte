@@ -58,7 +58,7 @@
   <a sveltekit:prefetch sveltekit:noscroll href={"/meme/" + meme._id}  rel="external">
     <button class="vote-button">
       <img src="/comment-icon.ico" alt="s" srcset="" />
-      <span class="vote-button__votes-count" data-v-33327dc2=""
+      <span class="vote-button__votes-count" data-v-33327dc2="" 
         >{meme.comments.length}</span
       ></button
     >

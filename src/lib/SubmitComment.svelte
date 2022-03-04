@@ -35,7 +35,7 @@
     />
   </div>
   <div class="after-bar">
-    <Button on:click ={handleSubmit}>Gönder</Button>
+    <Button on:click ={handleSubmit} >Gönder</Button>
   </div>
 </div>
 

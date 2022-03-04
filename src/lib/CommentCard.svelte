@@ -1,8 +1,16 @@
 <script>
+  import CommentVoteBar from "./CommentVoteBar.svelte";
+  import SubCommentCard from "./SubCommentCard.svelte";
   export let comment;
-  export let meme;
   export let user;
-  import CommentVoteBar from "./CommentVoteBar.svelte"; 
+  let subComments = [];
+  let startIndex = 0;
+  const showSubcomments = () => {
+    const shownComments = comment.subComments.subComments.slice(startIndex, startIndex+2);
+    console.log(shownComments)
+    subComments = [...subComments, ...shownComments]
+    startIndex += 2;
+  };
 </script>
 
 <div class="comment-wrapper">
@@ -10,12 +18,32 @@
   <div class="comment">
     <h5>{comment.commentor.username}</h5>
     <p>{comment.comment}</p>
-    <CommentVoteBar {meme} {user} commentid={comment._id} {comment} />
+    <CommentVoteBar {user} commentid={comment._id} {comment} />
+    {#each subComments as subComment}
+      <SubCommentCard {subComment} />
+    {/each}
+    <a href="" on:click={showSubcomments}>
+      <svg width="9" viewBox="-2.5 -5 75 60" preserveAspectRatio="none">
+        <path
+          d="M0,0 l35,50 l35,-50"
+          fill="currentColor"
+          stroke="black"
+          stroke-linecap="round"
+          stroke-width="10"
+        />
+      </svg>
+      {comment.subComments.subComments.length} Yorumu Görüntüle
+    </a>
   </div>
 </div>
 
-<!-- <MemeVoteBar {meme} user={$user} /> -->
 <style>
+  a {
+    font-size: 12px;
+  }
+  A:hover {
+    background-color: aliceblue;
+  }
   .comment-wrapper {
     max-width: 650px;
     margin: auto;

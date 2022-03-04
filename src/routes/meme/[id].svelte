@@ -23,6 +23,7 @@
   const submitComment = (e) => {
     comments = [e.detail, ...comments]
   }
+  let show = true
 </script>
 
 <MemeCard {meme} />
@@ -30,5 +31,5 @@
 <SubmitComment on:submitComment={submitComment} user={$user} {url} {meme} />
 {/if}
 {#each comments as comment}
-<CommentCard {comment} user={$user} {meme}/>
+<CommentCard {comment} user={$user}/>
 {/each}
