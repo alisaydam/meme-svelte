@@ -3,14 +3,25 @@
   import SubCommentCard from "./SubCommentCard.svelte";
   export let comment;
   export let user;
-  let subComments = [];
-  let startIndex = 0;
-  const showSubcomments = () => {
-    const shownComments = comment.subComments.subComments.slice(startIndex, startIndex+2);
-    console.log(shownComments)
-    subComments = [...subComments, ...shownComments]
-    startIndex += 2;
+  export let subComments
+  subComments = comment.subComments.subComments.reverse()
+  let startIndex= comment.subComments.subComments.length -1 
+  const showSubcomments = () => { 
+    console.log(startIndex+": clicked")
+    const shownComments = comment.subComments.subComments
+    .slice(startIndex-2 , startIndex);
+    subComments = [...subComments, ...shownComments];
+    startIndex -= 2;
+    if(startIndex <= 2 ) return
   };
+  const submitSubComment = (e) => {
+    comment = e.detail
+    subComments = e.detail.subComments.subComments.reverse();
+  };
+  const submitSubReply = (e) => {
+    subComments = e.detail.subComments.subComments.reverse()
+  }
+
 </script>
 
 <div class="comment-wrapper">
@@ -18,10 +29,16 @@
   <div class="comment">
     <h5>{comment.commentor.username}</h5>
     <p>{comment.comment}</p>
-    <CommentVoteBar {user} commentid={comment._id} {comment} />
+    <CommentVoteBar
+      {user}
+      commentid={comment._id}
+      {comment}
+      on:submitSubComment={submitSubComment}
+    />
     {#each subComments as subComment}
-      <SubCommentCard {subComment} />
+      <SubCommentCard {subComment} {comment} on:submitSubReply={submitSubReply}  />
     {/each}
+    <div id={comment._id + "before"} />
     <a href="" on:click={showSubcomments}>
       <svg width="9" viewBox="-2.5 -5 75 60" preserveAspectRatio="none">
         <path
@@ -32,7 +49,7 @@
           stroke-width="10"
         />
       </svg>
-      {comment.subComments.subComments.length} Yorumu Görüntüle
+      {comment.subComments.subComments.length} Yorumları Görüntüle
     </a>
   </div>
 </div>

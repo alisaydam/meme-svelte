@@ -1,42 +1,56 @@
 <script>
-    export let subComment; 
-  </script>
+  import SubCommentVoteBar from "./SubCommentVoteBar.svelte";
+  export let subComment;
+  export let comment;
+
   
-  <div class="comment-wrapper">
-    <a href=""> <img src={subComment.avatar} alt="" /></a>
+</script>
+
+<div class="sub-comment-wrapper" id={subComment._id}>
+  <a> <img src={subComment.avatar} alt="" /></a>
+  <div>
     <div class="comment">
       <h5>{subComment.commentor}</h5>
-      <p>{subComment.subComment}</p> 
+      <p>
+        <a href= {subComment.replyTo}>
+          {subComment.replyTo ? "@" + subComment.replyTo+" " : ""}</a
+        >{subComment.subComment}
+      </p>
+      <SubCommentVoteBar {subComment} {comment} on:submitSubReply />
     </div>
   </div>
-  <style>
-    .comment-wrapper {
-      max-width: 650px;
-      margin: auto;
-      position: relative;
-      padding: 8px 0;
-    }
-    .comment {
-      margin-left: 50px;
-      width: 90%;
-      word-wrap: break-word;
-    }
-    h5 {
-      font-size: 14px;
-      line-height: 1;
-      font-weight: 500;
-    }
-    p {
-      font-size: 12px;
-      padding: 0;
-      margin: 0;
-    }
-    img {
-      width: 35px;
-      border-radius: 25px;
-      position: absolute;
-      top: 8px;
-      left: 5px;
-    }
-  </style>
-  
+</div>
+
+<style>
+  a{
+    color: blue;
+  }
+  .sub-comment-wrapper {
+    max-width: 650px;
+    margin: auto;
+    position: relative;
+    padding: 8px 0;
+  }
+  .comment {
+    margin-left: 50px;
+    width: 90%;
+    word-wrap: break-word;
+  }
+  h5 {
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 500;
+  }
+  p {
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+  }
+  img {
+    width: 35px;
+    border-radius: 25px;
+    position: absolute;
+    top: 8px;
+    left: 5px;
+  }
+</style>

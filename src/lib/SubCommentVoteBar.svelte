@@ -1,0 +1,160 @@
+<script>
+  import {createEventDispatcher} from "svelte"
+  import { user }from "../stores";
+  export let comment;
+  export let subComment;
+
+  const dispatch = createEventDispatcher()
+  const likeSubComment = async () => {
+    const submit = await fetch(
+      `https://geyix.herokuapp.com/like/likeSubComment/${$user.username}/${comment._id}/${subComment._id}`
+    );
+    const data = await submit.json(); 
+    subComment.dislikes = data.dislikes
+    subComment.likes = data.likes
+
+  };
+  const dislikeSubComment = async () => {
+    const submit = await fetch(
+      `https://geyix.herokuapp.com/like/dislikeSubComment/${$user.username}/${comment._id}/${subComment._id}`
+    );
+    const data = await submit.json(); 
+    subComment.dislikes = data.dislikes
+    subComment.likes = data.likes
+    
+    
+  };
+
+  const openSubCommentReply = (e) => {
+    console.log(subComment.commentor)
+    const item = document.getElementById(e.currentTarget.name); 
+    const subDivSel = document.getElementById("comment-div");
+    if (document.body.contains(subDivSel)) {
+      subDivSel.remove();
+    }
+    const subDiv = document.createElement("div");
+    subDiv.id = "comment-div";
+    subDiv.style.cssText = "display: flex; position: relative;";
+    const submitArea = document.createElement("textarea");
+    submitArea.id = "textArea";
+    const submitButton = document.createElement("button");
+    const replyToShow = document.createElement("p");
+    replyToShow.innerText = "@"+subComment.commentor
+    replyToShow.style.cssText = "position: absolute; top: -23px; left: -30px"
+
+    subDiv.appendChild(replyToShow)
+    subDiv.appendChild(submitArea);
+    subDiv.appendChild(submitButton);
+
+    submitButton.style.backgroundColor = "red";
+    submitButton.innerText = "Gönder";
+    submitArea.style.cssText = ` 
+    resize: none;
+    width: 90%;
+    max-height: 60px;
+    border: 1px solid black;`;
+
+    item.appendChild(subDiv);
+    submitButton.onclick = submitReply;
+  };
+
+  const submitReply = async () => {
+    const subReply = document.getElementById("textArea").value;
+
+    const submit = await fetch("https://geyix.herokuapp.com/comment/newSubReply", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        commentor: $user.username,
+        avatar: $user.avatar,
+        subComment: subReply,
+        commentId: comment._id,
+        subReplytId: subComment._id,
+        replyTo: subComment.commentor
+      }),
+    });
+    const data = await submit.json(); 
+    dispatch("submitSubReply", data); 
+    const subDivSel = document.getElementById("comment-div");
+    subDivSel.remove()
+  };
+</script>
+
+<div class="sub-vote-wrapper">
+  <button class="vote-button-up" on:click={likeSubComment}
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="10"
+      viewBox="0 0 14 12"
+      role="presentation"
+      data-v-33327dc2=""
+      ><g fill="currentColor"
+        ><path
+          d="M7.19312 0L0.193115 7H5.19312V12H9.19312V7H14.1931L7.19312 0Z"
+          data-v-1424a0e1=""
+        /></g
+      ></svg
+    ><span>{subComment.likes.length}</span></button
+  >
+  <button class="vote-button dislike" on:click={dislikeSubComment}
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="10"
+      viewBox="0 0 14 12"
+      role="presentation"
+      data-v-33327dc2=""
+      ><g fill="currentColor"
+        ><path
+          d="M7.38635 12L0.386353 5H5.38635V0H9.38635V5H14.3864L7.38635 12Z"
+          data-v-1424a0e1=""
+        /></g
+      ></svg
+    ><span>{subComment.dislikes.length}</span></button
+  > 
+  <button
+    on:click={openSubCommentReply}
+    id={subComment.commentor}
+    value={comment._id}
+    name={subComment._id}
+    class="vote-button"
+  >
+    <img src="/comment-icon.ico" alt="s" srcset="" />
+    <span class="vote-button">Cevapla</span><button />
+  </button>
+</div>
+
+<style>
+  button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0.1% 1.5% 0.1% 1.5%;
+    border-radius: 2px;
+  }
+  button:hover {
+    background-color: rgba(0, 119, 255, 0.06);
+  }
+  .voted {
+    background-color: rgb(185, 204, 231);
+    color: rgb(94, 108, 228);
+  }
+  .sub-vote-wrapper {
+    display: flex;
+    max-width: 650px;
+    margin: auto;
+  }
+  span {
+    margin-left: 4px;
+    font-size: 12px;
+  }
+
+  img {
+    margin: 2px;
+    width: 10px;
+  }
+
+  @media (max-width: 450px) {
+  }
+</style>

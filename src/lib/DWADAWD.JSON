@@ -1,0 +1,64 @@
+{
+    "commentor": {
+        "username": "Esasasas",
+        "avatar": "https://avatars.dicebear.com/v2/male/:seed.svg"
+    },
+    "subComments": {
+        "likes": [],
+        "dislikes": [],
+        "subComments": [
+            {
+                "commentor": "Esasasas",
+                "subComment": "1",
+                "avatar": "https://avatars.dicebear.com/v2/male/:seed.svg",
+                "_id": "622244accc347ac38e5dc6cc"
+            },
+            {
+                "commentor": "Esasasas",
+                "subComment": "2",
+                "avatar": "https://avatars.dicebear.com/v2/male/:seed.svg",
+                "_id": "622244afcc347ac38e5dc6d0"
+            },
+            {
+                "commentor": "Esasasas",
+                "subComment": "3",
+                "avatar": "https://avatars.dicebear.com/v2/male/:seed.svg",
+                "_id": "622244b0cc347ac38e5dc6d5"
+            },
+            {
+                "commentor": "Esasasas",
+                "subComment": "4",
+                "avatar": "https://avatars.dicebear.com/v2/male/:seed.svg",
+                "_id": "622244b2cc347ac38e5dc6db"
+            },
+            {
+                "commentor": "Esasasas",
+                "subComment": "5",
+                "avatar": "https://avatars.dicebear.com/v2/male/:seed.svg",
+                "_id": "622244b4cc347ac38e5dc6e2"
+            },
+            {
+                "commentor": "Esasasas",
+                "subComment": "6",
+                "avatar": "https://avatars.dicebear.com/v2/male/:seed.svg",
+                "_id": "622244b6cc347ac38e5dc6ea"
+            },
+            {
+                "commentor": "ensarxguler",
+                "subComment": "hehe çok iyi",
+                "avatar": "https://avatars.dicebear.com/v2/male/:seed.svg",
+                "_id": "6222554324850f464f516a2b"
+            }
+        ]
+    },
+    "_id": "622244a6cc347ac38e5dc6c9",
+    "likes": [],
+    "dislikes": [
+        "ensarxguler"
+    ],
+    "comment": "1111111111111111",
+    "meme": "621b60d04aaf23ea00d45c33",
+    "createdAt": "2022-03-04T16:56:06.073Z",
+    "updatedAt": "2022-03-04T22:03:11.748Z",
+    "__v": 19
+}

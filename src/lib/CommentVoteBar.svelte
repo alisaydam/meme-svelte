@@ -1,10 +1,14 @@
 <script>
+import {createEventDispatcher} from "svelte"
+
   export let user;
   export let commentid;
   export let comment;
+  
+  const dispatch = createEventDispatcher();
+
 
   const likeComment = async () => {
-    console.log("yeye");
     const submit = await fetch(
       `https://geyix.herokuapp.com/like/likeComment/${user.username}/${commentid}`
     );
@@ -16,7 +20,7 @@
       `https://geyix.herokuapp.com/like/dislikeComment/${user.username}/${commentid}`
     );
     const data = await submit.json();
-    comment = data;
+    comment = data; 
   };
 
   const submitSubComment = async () => {
@@ -28,9 +32,13 @@
         username: user.username,
         avatar: user.avatar,
         subComment: subComment,
-        commentid: comment._id
+        commentId: comment._id
       }),
     });
+    const data = await submit.json()
+    dispatch("submitSubComment", data)
+    const subDivSel = document.getElementById("comment-div");
+    subDivSel.remove()
   };
 
   const openSubmit = (e) => {
@@ -60,6 +68,7 @@
 
     item.after(subDiv);
     submitButton.onclick = submitSubComment;
+    submitArea.focus();
   };
 </script>
 
