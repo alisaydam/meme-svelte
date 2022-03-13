@@ -1,33 +1,29 @@
 <script>
-  import {createEventDispatcher} from "svelte"
-  import { user }from "../stores";
+  import { createEventDispatcher } from "svelte";
+  import { user } from "../stores";
   export let comment;
   export let subComment;
 
-  const dispatch = createEventDispatcher()
+  const dispatch = createEventDispatcher();
   const likeSubComment = async () => {
     const submit = await fetch(
       `https://geyix.herokuapp.com/like/likeSubComment/${$user.username}/${comment._id}/${subComment._id}`
     );
-    const data = await submit.json(); 
-    subComment.dislikes = data.dislikes
-    subComment.likes = data.likes
-
+    const data = await submit.json();
+    subComment.dislikes = data.dislikes;
+    subComment.likes = data.likes;
   };
   const dislikeSubComment = async () => {
     const submit = await fetch(
       `https://geyix.herokuapp.com/like/dislikeSubComment/${$user.username}/${comment._id}/${subComment._id}`
     );
-    const data = await submit.json(); 
-    subComment.dislikes = data.dislikes
-    subComment.likes = data.likes
-    
-    
+    const data = await submit.json();
+    subComment.dislikes = data.dislikes;
+    subComment.likes = data.likes;
   };
 
   const openSubCommentReply = (e) => {
-    console.log(subComment.commentor)
-    const item = document.getElementById(e.currentTarget.name); 
+    const item = document.getElementById(e.currentTarget.name);
     const subDivSel = document.getElementById("comment-div");
     if (document.body.contains(subDivSel)) {
       subDivSel.remove();
@@ -39,20 +35,23 @@
     submitArea.id = "textArea";
     const submitButton = document.createElement("button");
     const replyToShow = document.createElement("p");
-    replyToShow.innerText = "@"+subComment.commentor
-    replyToShow.style.cssText = "position: absolute; top: -23px; left: -30px"
+    replyToShow.innerText = "@" + subComment.commentor;
+    replyToShow.style.cssText = "position: absolute; top: -23px; left: -30px";
 
-    subDiv.appendChild(replyToShow)
+    subDiv.appendChild(replyToShow);
     subDiv.appendChild(submitArea);
     subDiv.appendChild(submitButton);
 
     submitButton.style.backgroundColor = "red";
     submitButton.innerText = "Gönder";
     submitArea.style.cssText = ` 
+    border-radius: 5px;
     resize: none;
     width: 90%;
-    max-height: 60px;
-    border: 1px solid black;`;
+    color: inherit;
+    background-color: inherit;
+    height: 50px;
+    border: 1px solid;`;
 
     item.appendChild(subDiv);
     submitButton.onclick = submitReply;
@@ -70,16 +69,17 @@
         subComment: subReply,
         commentId: comment._id,
         subReplytId: subComment._id,
-        replyTo: subComment.commentor
+        replyTo: subComment.commentor,
       }),
     });
-    const data = await submit.json(); 
-    dispatch("submitSubReply", data); 
+    const data = await submit.json();
+    console.log(data)
+    dispatch("submitSubReply", data);
     const subDivSel = document.getElementById("comment-div");
-    subDivSel.remove()
+    subDivSel.remove();
   };
 </script>
-
+    <!-- svelte-ignore a11y-invalid-attribute --> 
 <div class="sub-vote-wrapper">
   <button class="vote-button-up" on:click={likeSubComment}
     ><svg
@@ -112,7 +112,7 @@
         /></g
       ></svg
     ><span>{subComment.dislikes.length}</span></button
-  > 
+  >
   <button
     on:click={openSubCommentReply}
     id={subComment.commentor}
@@ -130,16 +130,15 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    padding: 0.1% 1.5% 0.1% 1.5%;
+    padding: 2px 1.5% 2px 1.5%;
     border-radius: 2px;
+    color: inherit;
+    background-color: inherit;
+    border: none;
   }
   button:hover {
-    background-color: rgba(0, 119, 255, 0.06);
-  }
-  .voted {
-    background-color: rgb(185, 204, 231);
-    color: rgb(94, 108, 228);
-  }
+    background-color: rgba(255, 255, 255, 0.06);
+  } 
   .sub-vote-wrapper {
     display: flex;
     max-width: 650px;

@@ -143,6 +143,9 @@
 </div>
 
 <style>
+  input{
+    color: inherit;
+  }
    h2{
    font-size: x-large;
    font-weight: 500;
@@ -176,7 +179,6 @@
     align-items: center;
     flex-direction: column;
   }
-
   .upload {
     width: 50px;
     cursor: pointer;

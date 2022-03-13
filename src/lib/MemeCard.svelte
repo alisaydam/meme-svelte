@@ -1,9 +1,8 @@
 <script>
-  import MemeVoteBar from './MemeVoteBar.svelte';
-  import SubmitComment from './SubmitComment.svelte';
-  import {user} from "../stores"
-  export let meme; 
-  let url = "sssssssss"
+  import MemeVoteBar from "./MemeVoteBar.svelte";
+  import { user } from "../stores";
+  export let meme;
+  export let route;
 </script>
 
 <article class="meme">
@@ -28,31 +27,34 @@
       </p>
     </div>
     <a href={meme.title}>
-      <h1>{meme.title}</h1>
+      <h1>
+        <a href={route + meme._id} sveltekit:prefetch sveltekit:noscroll
+          >{meme.title}</a
+        >
+      </h1>
     </a>
   </header>
   <div class="post-container">
-    <a rel="external" href={"/meme/"+ meme._id} sveltekit:prefetch sveltekit:noscroll>
+    <a href={route + meme._id} sveltekit:prefetch sveltekit:noscroll>
       <!-- Add this to a tag to opne it in a new tab target="_blank"   -->
       <img src={meme.meme} alt="" srcset="" />
     </a>
-  </div>  
-</article> 
+  </div>
+</article>
 <MemeVoteBar {meme} user={$user} />
 
-
 <style>
- h1{
-   font-size: x-large;
-   font-weight: 500;
-   line-height: 1.5;
- }
+  h1 {
+    font-size: x-large;
+    font-weight: 500;
+    line-height: 1.5;
+    display: inline-block;
+  }
   article {
     margin-bottom: 24px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
     padding: 20px 0 0;
     max-width: 650px;
-    margin: auto;
+    margin: 10px auto;
   }
   header {
     display: block;
@@ -60,7 +62,6 @@
   .post-section {
     height: 20px;
     font-size: 12px;
-    margin-bottom: 8px;
     display: flex;
     align-items: center;
   }
@@ -81,7 +82,7 @@
     color: inherit;
   }
   img {
- object-fit: cover;
-    width:  100%;
-  } 
+    object-fit: cover;
+    width: 100%;
+  }
 </style>

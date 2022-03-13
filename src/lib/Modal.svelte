@@ -18,7 +18,7 @@ on:keydown={e => {
 />
 {#if shown}
   <div class="modal-wrapper">
-      <div class="modal">
+      <div class="modal" on:click|stopPropagation>
           <button class="close-modal" on:click={()=>hide()}>X</button>
           <slot />
       </div>
@@ -26,6 +26,16 @@ on:keydown={e => {
 {/if}
 
 <style>
+   .close-modal{
+    z-index: 1;
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      width: 25px;
+      height: 25px;
+      border-radius: 20px;
+      cursor: pointer;
+  }
   .modal-wrapper {
     background-color: rgba(0, 0, 0, 0.6);
     position: fixed;
@@ -40,11 +50,5 @@ on:keydown={e => {
   .modal{
       position: relative; 
   }
-  .close-modal{
-    z-index: 1;
-      position: absolute;
-      right: 0;
-      top: 10px;
-      cursor: pointer;
-  }
+
 </style>

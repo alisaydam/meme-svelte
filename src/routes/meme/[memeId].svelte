@@ -1,14 +1,15 @@
 <script context="module">
   export async function load({ params }) {
-    const res = await fetch(`https://geyix.herokuapp.com/meme/${params.id}`);
+    const res = await fetch(`https://geyix.herokuapp.com/meme/${params.memeId}`);
     const data = await res.json();
+    console.log("data")
     return {
       props: {
         meme: data.meme,
         comments: data.comments,
       },
     };
-  }
+   }
 </script>
 
 <script>
@@ -20,14 +21,14 @@
   import { user } from "../../stores";
   let url = "https://geyix.herokuapp.com/comment/newcomment";
   const submitComment = (e) => {
-    comments = [e.detail, ...comments];
+    comments = e.detail
   };
 </script>
 
-<MemeCard {meme} />
+<MemeCard {meme} route={"/meme/"} />
 {#if $user}
   <SubmitComment on:submitComment={submitComment} user={$user} {url} {meme} />
 {/if}
 {#each comments as comment}
-  <CommentCard {comment} user={$user}  subComments={comment.subComments.subComments}/>
+  <CommentCard comment={comment} user={$user}  subComments={comment.subComments.subComments}/>
 {/each}

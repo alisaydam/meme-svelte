@@ -5,14 +5,14 @@
 
   
 </script>
-
+<!-- svelte-ignore a11y-missing-attribute -->
 <div class="sub-comment-wrapper" id={subComment._id}>
-  <a> <img src={subComment.avatar} alt="" /></a>
+  <a href = {"/user/"+subComment.commentor}><img src={subComment.avatar} alt="" /></a>
   <div>
     <div class="comment">
       <h5>{subComment.commentor}</h5>
       <p>
-        <a href= {subComment.replyTo}>
+        <a href = {"/user/"+subComment.replyTo}>
           {subComment.replyTo ? "@" + subComment.replyTo+" " : ""}</a
         >{subComment.subComment}
       </p>
@@ -23,7 +23,7 @@
 
 <style>
   a{
-    color: blue;
+    color: rgb(166, 166, 233);
   }
   .sub-comment-wrapper {
     max-width: 650px;

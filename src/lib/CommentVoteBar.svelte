@@ -63,8 +63,12 @@ import {createEventDispatcher} from "svelte"
     submitArea.style.cssText = ` 
     resize: none;
     width: 90%;
+    border-radius: 5px;
+    height: 50px;
+    background-color: inherit;
     max-height: 60px;
-    border: 1px solid black;`;
+    color: inherit;
+    border: 1px solid;`;
 
     item.after(subDiv);
     submitButton.onclick = submitSubComment;
@@ -120,16 +124,15 @@ import {createEventDispatcher} from "svelte"
     cursor: pointer;
     display: flex;
     align-items: center;
-    padding: 0.1% 1.5% 0.1% 1.5%;
+    padding: 2px 1.5% 2px 1.5%;
     border-radius: 2px;
+    color: inherit;
+    background-color: inherit;
+    border: none;
   }
   button:hover {
-    background-color: rgba(0, 119, 255, 0.06);
-  }
-  .voted {
-    background-color: rgb(185, 204, 231);
-    color: rgb(94, 108, 228);
-  }
+    background-color: rgba(255, 255, 255, 0.06);
+  }  
   .vote-wrapper {
     display: flex;
     max-width: 650px;

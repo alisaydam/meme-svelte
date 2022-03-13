@@ -54,11 +54,10 @@
       ></svg
     ><span>{meme.dislikes.length}</span></button
   >
-
   <a sveltekit:prefetch sveltekit:noscroll href={"/meme/" + meme._id}  rel="external">
     <button class="vote-button">
       <img src="/comment-icon.ico" alt="s" srcset="" />
-      <span class="vote-button__votes-count" data-v-33327dc2="" 
+      <span
         >{meme.comments.length}</span
       ></button
     >
@@ -71,8 +70,9 @@
     margin-right: 4px;
     display: flex;
     align-items: center;
+    color: inherit;
     padding: 0.1% 1.5% 0.1% 1.5%;
-    background-color: white;
+    background-color: inherit;
     border: 1px solid gray;
     border-radius: 4px;
   }
@@ -87,9 +87,12 @@
     display: flex;
     max-width: 650px;
     margin: auto;
+    padding-bottom: 20px;
+    border-bottom: 1px solid;
   }
   span {
     margin-left: 4px;
+    color: inherit;
   }
  
   img {

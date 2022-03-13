@@ -1,6 +1,5 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { Button } from 'svelte-materialify';
   export let user;
   export let url;
   export let meme;
@@ -8,7 +7,7 @@
 
   let dispatch = createEventDispatcher();
 
-  const handleSubmit = async () => { 
+  const handleSubmit = async (e) => { 
        const submit = await fetch(url, {
            method: "POST",
            headers: {"Content-type" : "application/json"},
@@ -20,11 +19,13 @@
        })
        const data = await submit.json()
        dispatch("submitComment", data);
+       document.querySelector("textarea").value = ""
   }
 </script>
 
 <div class="submit-wrapper">
   <div class="upper-con">
+    <!-- svelte-ignore a11y-invalid-attribute -->
     <a href=""><img src={user.avatar} alt="sssssssss" /></a>
     <textarea
       maxlength="500"
@@ -35,7 +36,7 @@
     />
   </div>
   <div class="after-bar">
-    <Button on:click ={handleSubmit} >Gönder</Button>
+    <button on:click ={handleSubmit} >Gönder</button>
   </div>
 </div>
 
@@ -50,10 +51,13 @@
     display: flex;
   }
   textarea {
+    border-radius: 5px;
     resize: none;
     width: 100%;
     max-height: 60px;
-    border: 1px solid black;
+    color: inherit;
+    background-color: inherit;
+    border: 1px solid;
 
   }
   .after-bar {

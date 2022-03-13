@@ -4,28 +4,25 @@
   export let comment;
   export let user;
   export let subComments
-  subComments = comment.subComments.subComments.reverse()
-  let startIndex= comment.subComments.subComments.length -1 
+  
+  let startIndex = comment.subComments.subComments.length
+  let endIndex = comment.subComments.subComments.length 
+  $: shownArr = comment.subComments.subComments.slice(startIndex, endIndex)
   const showSubcomments = () => { 
-    console.log(startIndex+": clicked")
-    const shownComments = comment.subComments.subComments
-    .slice(startIndex-2 , startIndex);
-    subComments = [...subComments, ...shownComments];
-    startIndex -= 2;
-    if(startIndex <= 2 ) return
+      startIndex-=2
   };
-  const submitSubComment = (e) => {
+  const submitSubComment = (e) => { 
     comment = e.detail
-    subComments = e.detail.subComments.subComments.reverse();
   };
   const submitSubReply = (e) => {
-    subComments = e.detail.subComments.subComments.reverse()
+    comment = e.detail
   }
 
 </script>
 
 <div class="comment-wrapper">
-  <a href=""> <img src={comment.commentor.avatar} alt="" /></a>
+  <!-- svelte-ignore a11y-invalid-attribute -->
+  <a href = {"/user/"+comment.commentor.username}> <img src={comment.commentor.avatar} alt="" /></a>
   <div class="comment">
     <h5>{comment.commentor.username}</h5>
     <p>{comment.comment}</p>
@@ -35,10 +32,11 @@
       {comment}
       on:submitSubComment={submitSubComment}
     />
-    {#each subComments as subComment}
-      <SubCommentCard {subComment} {comment} on:submitSubReply={submitSubReply}  />
+    {#each comment.subComments.subComments.reverse() as subComment}
+      <SubCommentCard {subComment} {comment} on:submitSubReply={submitSubReply} />
     {/each}
     <div id={comment._id + "before"} />
+    {#if comment.subComments.subComments.length >0}
     <a href="" on:click={showSubcomments}>
       <svg width="9" viewBox="-2.5 -5 75 60" preserveAspectRatio="none">
         <path
@@ -51,6 +49,7 @@
       </svg>
       {comment.subComments.subComments.length} Yorumları Görüntüle
     </a>
+    {/if}
   </div>
 </div>
 
