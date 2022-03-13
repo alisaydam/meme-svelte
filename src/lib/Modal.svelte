@@ -1,11 +1,14 @@
 <script>
-  let shown = false;
+  import {shown} from "../stores"
 
+  $shown = false;
+
+   
   export const show = () => {
-    shown = true;
+    $shown = true;
   };
   export const hide = () => {
-    shown = false;
+    $shown = false;
   };
 </script>
 
@@ -16,7 +19,7 @@ on:keydown={e => {
     }
 }}
 />
-{#if shown}
+{#if $shown}
   <div class="modal-wrapper">
       <div class="modal" on:click|stopPropagation>
           <button class="close-modal" on:click={()=>hide()}>X</button>

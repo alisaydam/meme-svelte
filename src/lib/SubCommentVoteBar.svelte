@@ -1,11 +1,14 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { user } from "../stores";
+  import { user, shown } from "../stores";
   export let comment;
   export let subComment;
 
   const dispatch = createEventDispatcher();
   const likeSubComment = async () => {
+    if (!$shown) {
+      return ($shown = true);
+    }
     const submit = await fetch(
       `https://geyix.herokuapp.com/like/likeSubComment/${$user.username}/${comment._id}/${subComment._id}`
     );
@@ -14,6 +17,9 @@
     subComment.likes = data.likes;
   };
   const dislikeSubComment = async () => {
+    if (!$shown) {
+      return ($shown = true);
+    }
     const submit = await fetch(
       `https://geyix.herokuapp.com/like/dislikeSubComment/${$user.username}/${comment._id}/${subComment._id}`
     );
@@ -23,6 +29,9 @@
   };
 
   const openSubCommentReply = (e) => {
+    if (!$shown) {
+      return ($shown = true);
+    }
     const item = document.getElementById(e.currentTarget.name);
     const subDivSel = document.getElementById("comment-div");
     if (document.body.contains(subDivSel)) {
@@ -73,16 +82,17 @@
       }),
     });
     const data = await submit.json();
-    console.log(data)
     dispatch("submitSubReply", data);
     const subDivSel = document.getElementById("comment-div");
     subDivSel.remove();
   };
 </script>
-    <!-- svelte-ignore a11y-invalid-attribute --> 
-<div class="sub-vote-wrapper">
+
+<!-- svelte-ignore a11y-invalid-attribute -->
+<div class="sub-vote-wrapper"> 
   <button class="vote-button-up" on:click={likeSubComment}
     ><svg
+    class={subComment.likes.includes($user.username)? "voted": ""}
       xmlns="http://www.w3.org/2000/svg"
       width="12"
       height="10"
@@ -99,6 +109,7 @@
   >
   <button class="vote-button dislike" on:click={dislikeSubComment}
     ><svg
+    class={subComment.dislikes.includes($user.username)? "voted": ""}
       xmlns="http://www.w3.org/2000/svg"
       width="12"
       height="10"
@@ -126,6 +137,9 @@
 </div>
 
 <style>
+   .voted{ 
+    color: rgb(94, 108, 228);
+  }
   button {
     cursor: pointer;
     display: flex;
@@ -138,7 +152,7 @@
   }
   button:hover {
     background-color: rgba(255, 255, 255, 0.06);
-  } 
+  }
   .sub-vote-wrapper {
     display: flex;
     max-width: 650px;

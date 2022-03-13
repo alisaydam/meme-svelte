@@ -1,16 +1,28 @@
 <script> 
+import {shown} from "../stores"
   export let meme;
   export let user;
   const likeMeme = async () => {
+    if(!$shown){
+      return $shown = true
+    }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/likeMeme/${user.username}/${meme._id}`
+      `https://geyix.herokuapp.com/like/likeMeme/${user.username}/${meme._id}`,
+      {
+        headers: {
+          "authorization": "Bearer dwaofjwaojfowa",
+        },
+      }
     );
     const data = await submit.json();
     meme = data;
   };
   const dislikeMeme = async () => {
+    if(!$shown){
+      return $shown = true
+    }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`
+      `https://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`,
     );
     const data = await submit.json();
     meme = data;

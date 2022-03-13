@@ -1,4 +1,4 @@
-<script>
+<script> 
   import CommentVoteBar from "./CommentVoteBar.svelte";
   import SubCommentCard from "./SubCommentCard.svelte";
   export let comment;

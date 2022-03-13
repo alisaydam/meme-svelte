@@ -6,7 +6,6 @@
   import ThemeSwapper from "./ThemeSwapper.svelte";
   let modal;
 </script>
-
 <svelte:head>
   <script>
     if (document) {

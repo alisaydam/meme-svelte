@@ -1,14 +1,16 @@
 <script>
-import {createEventDispatcher} from "svelte"
-
+  import { createEventDispatcher } from "svelte";
+  import { shown } from "../stores";
   export let user;
   export let commentid;
   export let comment;
-  
+
   const dispatch = createEventDispatcher();
 
-
   const likeComment = async () => {
+    if (!$shown) {
+      return ($shown = true);
+    }
     const submit = await fetch(
       `https://geyix.herokuapp.com/like/likeComment/${user.username}/${commentid}`
     );
@@ -16,11 +18,14 @@ import {createEventDispatcher} from "svelte"
     comment = data;
   };
   const dislikeComment = async () => {
+    if (!$shown) {
+      return ($shown = true);
+    }
     const submit = await fetch(
       `https://geyix.herokuapp.com/like/dislikeComment/${user.username}/${commentid}`
     );
     const data = await submit.json();
-    comment = data; 
+    comment = data;
   };
 
   const submitSubComment = async () => {
@@ -32,16 +37,19 @@ import {createEventDispatcher} from "svelte"
         username: user.username,
         avatar: user.avatar,
         subComment: subComment,
-        commentId: comment._id
+        commentId: comment._id,
       }),
     });
-    const data = await submit.json()
-    dispatch("submitSubComment", data)
+    const data = await submit.json();
+    dispatch("submitSubComment", data);
     const subDivSel = document.getElementById("comment-div");
-    subDivSel.remove()
+    subDivSel.remove();
   };
 
   const openSubmit = (e) => {
+    if (!$shown) {
+      return ($shown = true);
+    }
     const subDivSel = document.getElementById("comment-div");
     if (document.body.contains(subDivSel)) {
       subDivSel.remove();
@@ -78,7 +86,8 @@ import {createEventDispatcher} from "svelte"
 
 <div class="vote-wrapper" id={comment._id + "bar"}>
   <button on:click={likeComment} class="vote-button-up"
-    ><svg
+    ><svg 
+    class= {comment.likes.includes(user.username) ? 'voted': ''}
       xmlns="http://www.w3.org/2000/svg"
       width="14"
       height="12"
@@ -95,6 +104,7 @@ import {createEventDispatcher} from "svelte"
   >
   <button class="vote-button" on:click|preventDefault={dislikeComment}
     ><svg
+    class={comment.dislikes.includes(user.username)? "voted": ""}
       xmlns="http://www.w3.org/2000/svg"
       width="14"
       height="12"
@@ -115,11 +125,15 @@ import {createEventDispatcher} from "svelte"
     id={comment._id}
   >
     <img src="/comment-icon.ico" alt="s" srcset="" />
-    <span class="vote-button">{comment.subComments.subComments.length}</span><button />
+    <span class="vote-button">{comment.subComments.subComments.length}</span
+    ><button />
   </button>
 </div>
 
 <style>
+  .voted{ 
+    color: rgb(94, 108, 228);
+  }
   button {
     cursor: pointer;
     display: flex;
@@ -132,7 +146,7 @@ import {createEventDispatcher} from "svelte"
   }
   button:hover {
     background-color: rgba(255, 255, 255, 0.06);
-  }  
+  }
   .vote-wrapper {
     display: flex;
     max-width: 650px;
