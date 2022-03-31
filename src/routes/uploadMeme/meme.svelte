@@ -46,7 +46,7 @@
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
           try {
-            const submit = await fetch("https://geyix.herokuapp.com/meme/newmeme", {
+            const submit = await fetch("hhttps://geyix.herokuapp.com/meme/newmeme", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({

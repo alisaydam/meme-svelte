@@ -34,4 +34,7 @@
     transition: all 0.5s;
     opacity: 1;
   } 
+  a{
+    margin: 0 10px 0 10px;
+  }
 </style>

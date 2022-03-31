@@ -34,7 +34,7 @@
         </li>
         {#if $user}
           <li>
-            <button> <img class="avatar" src={$user.avatar} alt="fesfes" width="35" /> </button>
+            <button> <img class="avatar" src={$user.avatar} alt="fesfes" width="30" /> </button>
             <ul class="dropdown">
               <li><a class="drop-list" >Profil</a></li>
               <li><a class="drop-list" >Sub-3</a></li>
@@ -61,11 +61,12 @@
   </div>
 </header>
 
-<style>
+<style> 
   .avatar{
     margin-bottom: 7px;
     overflow: hidden;
     border-radius: 50%;
+    padding: 0 10px 0 10px;
   }
   header {
     /* Sticky will still add item to stacking but will stick when scroll down. And this prevents giving margin-top to each element that comes after navbar. */
@@ -80,6 +81,7 @@
   .user-icon {
     filter: invert(94%) sepia(0%) saturate(1574%) hue-rotate(185deg)
       brightness(114%) contrast(60%);
+    margin: 0 10px 0 10px;
   }
   .nav-wrap {
     display: flex;
@@ -91,21 +93,19 @@
   .logo {
     font-size: 25px;
     font-weight: 700;
+    color: var(--text-color)
   } 
   .nav-menu {
-    display: flex; 
+    display: flex;  
     position: relative;
+    min-width: 150px;
   }
 
   /* DropDown Menu    */
   li {
     transition: 0.5s; 
-    padding: 0 11px; 
-    padding-top: 2px;
-    border-radius: 10px;
     display: flex;
     align-items: center;
-    margin-right: 3px;
   }
   li:hover{
     background-color: rgba(172, 168, 168, 0.5);
@@ -125,7 +125,6 @@
     margin-top: 1rem;
     top: 30px;
     background-color: hsla(348, 0%, 48%, 0.5);
-    border-radius: 10px;
   }
   ul li:hover > ul,
   ul li:focus-within > ul,

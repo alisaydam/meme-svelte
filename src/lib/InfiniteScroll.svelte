@@ -3,7 +3,7 @@
 
   export let threshold = 0;
   export let horizontal = false;
-  export let elementScroll;
+  let elementScroll;
   export let hasMore = true;
 
   const dispatch = createEventDispatcher();

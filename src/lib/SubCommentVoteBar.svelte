@@ -10,7 +10,7 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/likeSubComment/${$user.username}/${comment._id}/${subComment._id}`
+      `hhttps://geyix.herokuapp.com/like/likeSubComment/${$user.username}/${comment._id}/${subComment._id}`
     );
     const data = await submit.json();
     subComment.dislikes = data.dislikes;
@@ -21,7 +21,7 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislikeSubComment/${$user.username}/${comment._id}/${subComment._id}`
+      `hhttps://geyix.herokuapp.com/like/dislikeSubComment/${$user.username}/${comment._id}/${subComment._id}`
     );
     const data = await submit.json();
     subComment.dislikes = data.dislikes;
@@ -69,7 +69,7 @@
   const submitReply = async () => {
     const subReply = document.getElementById("textArea").value;
 
-    const submit = await fetch("https://geyix.herokuapp.com/comment/newSubReply", {
+    const submit = await fetch("hhttps://geyix.herokuapp.com/comment/newSubReply", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -131,7 +131,21 @@
     name={subComment._id}
     class="vote-button"
   >
-    <img src="/comment-icon.ico" alt="s" srcset="" />
+  <svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="12"
+  height="12"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="feather feather-message-square"
+  ><path
+    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+  /></svg
+>
     <span class="vote-button">Cevapla</span><button />
   </button>
 </div>
@@ -161,11 +175,14 @@
   span {
     margin-left: 4px;
     font-size: 12px;
+    margin-bottom: 3px;
   }
 
   img {
     margin: 2px;
     width: 10px;
+    filter: invert(94%) sepia(0%) saturate(1574%) hue-rotate(185deg)
+      brightness(114%) contrast(60%);;
   }
 
   @media (max-width: 450px) {

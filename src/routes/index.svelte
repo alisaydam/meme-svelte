@@ -9,7 +9,7 @@
 
   async function fetchData() {
     const response = await fetch(
-      `https://geyix.herokuapp.com/meme/getMemes?page=${page}&limit=5`
+      `hhttps://geyix.herokuapp.com/meme/getMemes?page=${page}&limit=5`
     );
     newBatch = await response.json();
   }
@@ -21,7 +21,6 @@
 
   $: data = [...data, ...newBatch];
 </script>
-
 <ul>
   {#each data as meme}
     <MemeCard {meme} route="/meme/" />

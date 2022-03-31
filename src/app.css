@@ -1,15 +1,82 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue,
-    Arial, Helvetica, Geneva, sans-serif;
+:root {
+	--gray0: #ffffff;
+	--gray1: #c5d8a4;
+	--gray2: #b2becd;
+	--gray3: #e6bfa4;
+	--gray4: #454e56;
+	--gray5: #2e2a35;
+	--gray6: #1d2529;
+	--blue: #0084a5;
+	--purple: #a82dd1;
+	--yellow: #181710;
+
+	/* Project Card Palette */
+	--proj1: #f7e2e2;
+	--proj2: #61a4bc;
+
+	--proj3: #557b83;
+	--proj4: #39aea9;
+	
+}
+html{
+	scroll-behavior: smooth;
+}
+.light {
+	--bg: var(--gray0);
+	--bg-nav: linear-gradient(to right, var(--gray1), var(--gray3));
+	--bg-dropdown: var(--gray3);
+	--proj-btn: var(--proj1);
+	--proj-bg: var(--proj2);
+
+	--text: var(--gray6);
+	--border-color: var(--blue);
+	--bg-solar: var(--yellow);
+}
+
+.dark {
+	--bg: var(--gray5);
+	--bg-nav: linear-gradient(to right, var(--gray5), var(--gray6));
+	--bg-dropdown: var(--gray6);
+	--proj-btn: var(--proj3);
+	--proj-bg: var(--proj4);
+
+	--text: var(--gray0);
+	--border-color: var(--purple);
+	--bg-solar: var(--blue);
+}
+ 
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;700&display=swap');
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Lato', sans-serif;
+	color: var(--text);
+	background: var(--bg);
+	transition: background 500ms ease-in-out, color 1000ms ease-in-out;
+  height: 100vh
+}
+body::-webkit-scrollbar {
+	width: 0.25rem;
+  }
+  
+  body::-webkit-scrollbar-track {
+	background: #1e1e24;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+	background: #6649b8;
+  }
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
 }
 a {
-  text-decoration: none;
-  cursor: pointer;
-  color: inherit;
+	color: var(--text);
+	text-decoration: none;
+ 	 cursor: pointer;
 }
-li {
-  list-style: none;
-}  
+
+/* Optional */
+
+/* Logo Animation */
