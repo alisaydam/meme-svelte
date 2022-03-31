@@ -7,7 +7,7 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `hhttps://geyix.herokuapp.com/like/likeMeme/${user.username}/${meme._id}`,
+      `https://geyix.herokuapp.com/like/likeMeme/${user.username}/${meme._id}`,
       {
         headers: {
           authorization: "Bearer dwaofjwaojfowa",
@@ -22,7 +22,7 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `hhttps://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`
+      `https://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`
     );
     const data = await submit.json();
     meme = data;

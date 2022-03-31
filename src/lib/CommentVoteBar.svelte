@@ -12,7 +12,7 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `hhttps://geyix.herokuapp.com/like/likeComment/${user.username}/${commentid}`
+      `https://geyix.herokuapp.com/like/likeComment/${user.username}/${commentid}`
     );
     const data = await submit.json();
     comment = data;
@@ -22,7 +22,7 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `hhttps://geyix.herokuapp.com/like/dislikeComment/${user.username}/${commentid}`
+      `https://geyix.herokuapp.com/like/dislikeComment/${user.username}/${commentid}`
     );
     const data = await submit.json();
     comment = data;
@@ -30,7 +30,7 @@
 
   const submitSubComment = async () => {
     const subComment = document.getElementById("textArea").value;
-    const submit = await fetch("hhttps://geyix.herokuapp.com/comment/newSubComment", {
+    const submit = await fetch("https://geyix.herokuapp.com/comment/newSubComment", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({

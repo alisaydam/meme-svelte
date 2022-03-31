@@ -8,7 +8,7 @@
 
   let message = "Lütfen bekleyiniz. İşleminiz gerçekleştiriliyor...";
   onMount(async () => {
-    const res = await fetch(`hhttps://geyix.herokuapp.com/user/createUser/${jwt}`);
+    const res = await fetch(`https://geyix.herokuapp.com/user/createUser/${jwt}`);
     const data = await res.json();
     if (data.success) {
       message = data.message;

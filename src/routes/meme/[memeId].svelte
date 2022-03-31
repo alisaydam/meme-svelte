@@ -1,7 +1,7 @@
 <script context="module">
   export async function load({ params }) {
     if(params.memeId === "favicon.png") return
-    const res = await fetch(`hhttps://geyix.herokuapp.com/meme/getOneById/${params.memeId}`);
+    const res = await fetch(`https://geyix.herokuapp.com/meme/getOneById/${params.memeId}`);
     const data = await res.json();
     return {
       props: {
@@ -19,7 +19,7 @@
   export let comments;
   import SubmitComment from "$lib/SubmitComment.svelte";
   import { user } from "../../stores";
-  let url = "hhttps://geyix.herokuapp.com/comment/newcomment";
+  let url = "https://geyix.herokuapp.com/comment/newcomment";
   const submitComment = (e) => {
     comments = e.detail;
   };
