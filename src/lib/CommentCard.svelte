@@ -57,7 +57,7 @@
   a {
     font-size: 12px;
   }
-  a:hover {
+  A:hover {
     background-color: aliceblue;
   }
   .comment-wrapper {

@@ -77,7 +77,6 @@
     margin-bottom: 7px;
     overflow: hidden;
     border-radius: 50%;
-    padding: 0 10px 0 10px;
   }
   header {
     /* Sticky will still add item to stacking but will stick when scroll down. And this prevents giving margin-top to each element that comes after navbar. */
@@ -91,7 +90,6 @@
   .user-icon {
     filter: invert(94%) sepia(0%) saturate(1574%) hue-rotate(185deg)
       brightness(114%) contrast(60%);
-    margin: 0 10px 0 10px;
   }
   .nav-wrap {
     display: flex;
@@ -108,7 +106,6 @@
   .nav-menu {
     display: flex;
     position: relative;
-    min-width: 150px;
   }
 
   /* DropDown Menu    */

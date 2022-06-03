@@ -1,5 +1,5 @@
-<script>
-  import { onMount } from "svelte";
+<script> 
+ import { onMount } from "svelte";
   import InfiniteScroll from "$lib/InfiniteScroll.svelte";
   import MemeCard from "$lib/MemeCard.svelte";
 
@@ -23,6 +23,7 @@
 
   $: data = [...data, ...newBatch];
 </script>
+
 <ul>
   {#each data as meme}
     <MemeCard {meme} route="/meme/" />

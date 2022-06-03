@@ -3,7 +3,7 @@
   import { mode, user } from "../stores";
 
   let errors = [];
-  export let message = "";
+  let message = "";
   const form = aoviSvelte({
     name: "",
     username: "",
@@ -166,26 +166,26 @@
       <p class="message">- {error}</p>
     {/each}
     {#if message}
-      <p class="success-p">{message}</p>
+      <p class="succes-p">{message}</p>
     {/if}
-    {#if $mode === "signup"}
-      <button outlined on:click={doSignup}> Kayıt ol </button>
-    {:else}
-      <button outlined on:click={doLogin}> Giriş Yap </button>
-    {/if}
-    <a href="">Şifremi unutum :(</a>
+      {#if $mode === "signup"}
+        <button outlined on:click={doSignup}> Kayıt ol </button>
+      {:else}
+        <button outlined on:click={doLogin}> Giriş Yap </button>
+      {/if}
+      <a href="">Şifremi unutum :(</a>
   </div>
 </div>
 
 <style>
-  button {
+  button{
     padding: 3px 10px;
     margin-bottom: 20px;
   }
-  a {
+  a{
     font-size: 12px;
   }
-  span {
+  span{
     color: white;
   }
   #login-box {
@@ -281,10 +281,6 @@
 
   .success {
     background-color: #adffaa;
-  }
-  .success-p {
-    width: 200px;
-    font-size: 12px;
   }
 
   .error {

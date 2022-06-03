@@ -176,7 +176,6 @@
   span {
     margin-left: 4px;
     font-size: 12px;
-    margin-bottom: 3px;
   }
 
   img {

@@ -47,10 +47,8 @@
   h1 {
     font-size: x-large;
     font-weight: 500;
-    line-height: 1;
-    margin: 10px 0;
+    line-height: 1.5;
     display: inline-block;
-    color: var(--text-color)
   }
   article {
     margin-bottom: 24px;
@@ -80,7 +78,8 @@
   }
   a {
     text-decoration: none;
-    cursor: pointer; 
+    cursor: pointer;
+    color: inherit;
   }
   img {
     object-fit: cover;

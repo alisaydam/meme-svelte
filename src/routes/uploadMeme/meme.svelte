@@ -118,72 +118,58 @@
     </div>
 
     <div class="upload-card">
-      <img src="" alt="" />
-      <p>ddddddddddd</p>
-      <input type="file" />
-      <p>od</p>
-      <!-- <div class="optional">
-
-      </div> -->
-    </div>
-  </div>
-  <div class="preview">
-    <input class="title" type="text" bind:value={title} placeholder="Başlık" />
-    {#if spinner}
-      <div class="spinner">
-        <Circle3 size="75" color="#FF3E00" unit="px" duration="1.5s" />
-      </div>
-    {/if}
-    {#if avatar}{:else}
-      <img class="avatar" src="/placeholder.png" alt="" />
-    {/if}
-  </div>
-  <div class="upload-bar">
-    <div class="item">
-      <img
-        class="upload"
-        src="https://static.thenounproject.com/png/625182-200.png"
-        alt=""
-        on:click={() => {
-          fileinput.click();
-        }}
-      />
-      <div
-        class="chan"
-        on:click={() => {
-          fileinput.click();
-        }}
-      >
-        <p>Dosya Seç</p>
-      </div>
-      <input
-        style="display:none"
-        type="file"
-        accept=".jpg, .jpeg, .png, .gif"
-        on:change={(e) => onFileSelected(e)}
-        bind:this={fileinput}
-      />
-    </div>
-
-    <div class="item">
+      {#if avatar}
+        <img src={avatar} alt="" class="preview" />
+      {:else}
+        <img class="placeholder" src="/placeholder.png" alt="" />
+      {/if}
+      <span class="card-text">Dosya seç ve yükle</span>
       {#if avatar && title}
-        <a href="" on:click={uploadToFireStorage}>
-          <img
-            class="upload"
-            src="https://static.thenounproject.com/png/625182-200.png"
-            alt=""
-          />
+        <!-- svelte-ignore a11y-missing-attribute -->
+        <a class="file-input" on:click={uploadToFireStorage}>
           <div />
           Yükle
         </a>
+      {:else}
+        <input
+          class="file-input"
+          type="file"
+          directory="false"
+          accept=".jpg, .jpeg, .png, .gif"
+          on:change={(e) => onFileSelected(e)}
+        />
       {/if}
+
+      <!-- <span class="card-text">yada</span> -->
+      <!-- <span class="card-text">comin soon</span> -->
+      <!-- <div class="optional">
+      </div> -->
     </div>
+    <div class="tags-con">
+      <input
+        class="tags-input"
+        type="text"
+        placeholder="+ Tag eklemek ister misin? Her tagdan sonra virgül bırak"
+      />
+    </div>
+
   </div>
 </div>
+{#if spinner}
+  <div class="spinner">
+    <Circle3 size="75" color="#FF3E00" unit="px" duration="1.5s" />
+  </div>
+{/if}
 
 <style>
   .container {
     padding: 32px;
+  }
+  .spinner{
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   }
   .section-con {
     padding: 12px;
@@ -212,6 +198,30 @@
     font-size: 12px;
     text-indent: 25px;
   }
+  .title-con {
+    width: 100%;
+    padding: 8px 30px 0px 8px;
+    border: 1px solid;
+    border-radius: 10px;
+    position: relative;
+  }
+  .title {
+    background: none;
+    width: 100%;
+    border: none;
+    resize: none;
+    overflow: hidden;
+    outline: none;
+    color: inherit;
+    font-size: 12px;
+  }
+  .counter {
+    position: absolute;
+    color: rgba(172, 168, 168, 0.5);
+    top: 50%;
+    transform: translateY(-50%);
+    right: 2px;
+  }
   .upload-con {
     border: 1px solid;
     border-radius: 10px;
@@ -224,29 +234,58 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .title-con {
+    margin: 16px 16px;
+    padding: 32px;
     width: 100%;
-    padding: 8px 30px 0px 8px;
+    border: 1px solid;
+    border-radius: 10px;
+  }
+  .preview {
+    width: 100%;
+  }
+  @media (max-width: 500px) {
+    .preview {
+      width: 120%;
+    }
+  }
+  .placeholder {
+    width: 70px;
+  }
+  .card-text {
+    margin: 16px 0 16px;
+  }
+  .file-input::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  .file-input {
+    content: "Select some files";
+    width: 225px;
+    background: #0077ff;
+    color: white;
+    padding: 8px 25px;
+    font-size: 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid transparent;
+    text-indent: -50px;
+  }
+  .tags-con {
+    padding: 12px;
     border: 1px solid;
     border-radius: 10px;
     position: relative;
-  }
-  .title {
-    background: none;
+    margin: 16px 0;
     width: 100%;
-    border: none; 
-    resize: none;
-    overflow: hidden;
-    outline: none;
-    color: inherit;
-    font-size: 12px; 
   }
-  .counter {
-    position: absolute;
-    color: rgba(172, 168, 168, 0.5);
-    top: 50%;
-    transform: translateY(-50%);
-    right: 2px;
+  .tags-input {
+    background: none;
+    color: inherit;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 12px;
   }
 </style>

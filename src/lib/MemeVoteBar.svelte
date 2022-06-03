@@ -1,16 +1,16 @@
-<script>
-  import { shown } from "../stores";
+<script> 
+import {shown} from "../stores"
   export let meme;
   export let user;
   const likeMeme = async () => {
-    if (!$shown) {
-      return ($shown = true);
+    if(!$shown){
+      return $shown = true
     }
     const submit = await fetch(
       `https://geyix.herokuapp.com/like/likeMeme/${user.username}/${meme._id}`,
       {
         headers: {
-          authorization: "Bearer dwaofjwaojfowa",
+          "authorization": "Bearer dwaofjwaojfowa",
         },
       }
     );
@@ -18,11 +18,11 @@
     meme = data;
   };
   const dislikeMeme = async () => {
-    if (!$shown) {
-      return ($shown = true);
+    if(!$shown){
+      return $shown = true
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`
+      `https://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`,
     );
     const data = await submit.json();
     meme = data;
@@ -61,11 +61,12 @@
       ><g fill="currentColor"
         ><path
           d="M7.38635 12L0.386353 5H5.38635V0H9.38635V5H14.3864L7.38635 12Z"
+          data-v-1424a0e1=""
         /></g
       ></svg
     ><span>{meme.dislikes.length}</span></button
   >
-  <a href={"/meme/" + meme._id}>
+  <a sveltekit:prefetch sveltekit:noscroll href={"/meme/" + meme._id}  rel="external">
     <button class="vote-button">
       <img src="/ftcomment.svg" alt="s" srcset="" />
       <span
@@ -76,16 +77,13 @@
 </div>
 
 <style>
-  svg {
-    color: inherit;
-  }
   button {
     cursor: pointer;
     margin-right: 4px;
     display: flex;
     align-items: center;
     color: inherit;
-    /* padding: 0.1% 1.5% 0.1% 1.5%; */
+    padding: 0.1% 1.5% 0.1% 1.5%;
     background-color: inherit;
     border: 1px solid gray;
     border-radius: 4px;
@@ -108,7 +106,7 @@
     margin-left: 4px;
     color: inherit;
   }
-
+ 
   img {
     margin: 2px;
     width: 20px;
