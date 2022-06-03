@@ -1,8 +1,7 @@
 <script context="module">
   export async function load({ params }) {
-    const res = await fetch(`https://geyix.herokuapp.com/meme/${params.memeId}`);
+    const res = await fetch(`http://localhost:5000/meme/getOneById/${params.memeId}`);
     const data = await res.json();
-    console.log("data");
     return {
       props: {
         meme: data.meme,
@@ -19,7 +18,7 @@
   export let comments;
   import SubmitComment from "$lib/SubmitComment.svelte";
   import { user } from "../../stores";
-  let url = "https://geyix.herokuapp.com/comment/newcomment";
+  let url = "http://localhost:5000/comment/newcomment";
   const submitComment = (e) => {
     comments = e.detail;
   };

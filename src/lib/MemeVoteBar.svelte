@@ -68,7 +68,7 @@ import {shown} from "../stores"
   >
   <a sveltekit:prefetch sveltekit:noscroll href={"/meme/" + meme._id}  rel="external">
     <button class="vote-button">
-      <img src="/comment-icon.ico" alt="s" srcset="" />
+      <img src="/ftcomment.svg" alt="s" srcset="" />
       <span
         >{meme.comments.length}</span
       ></button
@@ -109,7 +109,7 @@ import {shown} from "../stores"
  
   img {
     margin: 2px;
-    width: 14px;
+    width: 20px;
   }
 
   @media (max-width: 450px) {

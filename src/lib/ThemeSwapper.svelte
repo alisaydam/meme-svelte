@@ -32,6 +32,7 @@
 <style>
   .themeToggle {
     transition: all 0.5s;
-    opacity: 1;
+    opacity: 1;  
+    padding: 0 1px;
   } 
 </style>

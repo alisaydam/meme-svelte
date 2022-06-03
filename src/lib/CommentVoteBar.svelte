@@ -57,6 +57,7 @@
     const subDiv = document.createElement("div");
     subDiv.id = "comment-div";
     subDiv.style.cssText = "display: flex;";
+    subDiv.classList.add("fade-in")
     const submitArea = document.createElement("textarea");
     submitArea.id = "textArea";
     const submitButton = document.createElement("button");
@@ -124,7 +125,7 @@
     on:click|preventDefault={openSubmit}
     id={comment._id}
   >
-    <img src="/comment-icon.ico" alt="s" srcset="" />
+    <img src="/ftcomment.svg" alt="s" srcset="" />
     <span class="vote-button">{comment.subComments.subComments.length}</span
     ><button />
   </button>
@@ -159,7 +160,7 @@
 
   img {
     margin: 2px;
-    width: 14px;
+    width: 20px; 
   }
 
   @media (max-width: 450px) {

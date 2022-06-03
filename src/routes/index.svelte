@@ -9,9 +9,11 @@
 
   async function fetchData() {
     const response = await fetch(
-      `https://geyix.herokuapp.com/meme/getMemes?page=${page}&limit=5`
+      `http://localhost:5000/meme/getMemes?page=${page}&limit=5`, {
+        method: "GET",  
+      }
     );
-    newBatch = await response.json();
+    newBatch = await response.json(); 
   }
 
   onMount(() => {
