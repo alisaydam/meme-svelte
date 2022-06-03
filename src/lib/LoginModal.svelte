@@ -40,11 +40,7 @@
       .required("Şifre tekrarı gereklidir")
       .is($confirmMatch, "Şifre tekrarı uyuşmuyor.").end;
     if ($form.valid) {
-<<<<<<< HEAD
       const {name, username, email, password } = $form;
-=======
-      const { username, email, password, name } = $form;
->>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
       try {
         const submit = await fetch("https://geyix.herokuapp.com/user/newuser", {
           method: "POST",

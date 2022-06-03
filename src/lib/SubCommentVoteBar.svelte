@@ -146,25 +146,7 @@
     name={subComment._id}
     class="vote-button"
   >
-<<<<<<< HEAD
   <img src="/ftcomment.svg" alt="s" srcset="" />
-=======
-  <svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="12"
-  height="12"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2.5"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  class="feather feather-message-square"
-  ><path
-    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-  /></svg
->
->>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
     <span class="vote-button">Cevapla</span><button />
   </button>
 </div>
@@ -199,13 +181,7 @@
 
   img {
     margin: 2px;
-<<<<<<< HEAD
     width: 20px;
-=======
-    width: 10px;
-    filter: invert(94%) sepia(0%) saturate(1574%) hue-rotate(185deg)
-      brightness(114%) contrast(60%);;
->>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
   }
 
   @media (max-width: 450px) {

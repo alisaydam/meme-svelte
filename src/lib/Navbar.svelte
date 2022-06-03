@@ -43,13 +43,9 @@
         </li>
         {#if $user}
           <li>
-<<<<<<< HEAD
             <button>
               <img class="avatar" src={$user.avatar} alt="fesfes" width="35" />
             </button>
-=======
-            <button> <img class="avatar" src={$user.avatar} alt="fesfes" width="30" /> </button>
->>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
             <ul class="dropdown">
               <li><a class="drop-list" href={"/user/"+$user.username} >Profil</a></li>
               <li><a class="drop-list">Sub-3</a></li>
@@ -76,13 +72,8 @@
   </div>
 </header>
 
-<<<<<<< HEAD
 <style>
   .avatar {
-=======
-<style> 
-  .avatar{
->>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
     margin-bottom: 7px;
     overflow: hidden;
     border-radius: 50%;
@@ -113,33 +104,20 @@
   .logo {
     font-size: 25px;
     font-weight: 700;
-<<<<<<< HEAD
   }
   .nav-menu {
     display: flex;
-=======
-    color: var(--text-color)
-  } 
-  .nav-menu {
-    display: flex;  
->>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
     position: relative;
     min-width: 150px;
   }
 
   /* DropDown Menu    */
   li {
-<<<<<<< HEAD
     transition: 0.5s;
     padding-top: 2px; 
     display: flex;
     align-items: center;
     cursor: pointer;
-=======
-    transition: 0.5s; 
-    display: flex;
-    align-items: center;
->>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
   }
   li:hover {
     background-color: rgba(172, 168, 168, 0.5);
@@ -156,16 +134,12 @@
     transition: all 0.5s ease;
     margin-top: 1rem;
     top: 30px;
-<<<<<<< HEAD
     left: -10px;
     border-radius: 10px; 
     line-height: 3;
     border: 1px solid;
     font-weight: 400;
     background-color: var(--bg);
-=======
-    background-color: hsla(348, 0%, 48%, 0.5);
->>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
   }
   ul li:active > ul,
   ul li:focus-within > ul {
