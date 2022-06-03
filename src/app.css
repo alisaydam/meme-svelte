@@ -10,9 +10,9 @@
     Arial, Helvetica, Geneva, sans-serif;
 }
 a {
-  text-decoration: none;
-  cursor: pointer;
-  color: inherit;
+	color: var(--text);
+	text-decoration: none;
+ 	 cursor: pointer;
 }
 li {
   list-style: none;

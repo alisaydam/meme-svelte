@@ -1,16 +1,16 @@
-<script> 
-import {shown} from "../stores"
+<script>
+  import { shown } from "../stores";
   export let meme;
   export let user;
   const likeMeme = async () => {
-    if(!$shown){
-      return $shown = true
+    if (!$shown) {
+      return ($shown = true);
     }
     const submit = await fetch(
       `https://geyix.herokuapp.com/like/likeMeme/${user.username}/${meme._id}`,
       {
         headers: {
-          "authorization": "Bearer dwaofjwaojfowa",
+          authorization: "Bearer dwaofjwaojfowa",
         },
       }
     );
@@ -18,11 +18,11 @@ import {shown} from "../stores"
     meme = data;
   };
   const dislikeMeme = async () => {
-    if(!$shown){
-      return $shown = true
+    if (!$shown) {
+      return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`,
+      `https://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`
     );
     const data = await submit.json();
     meme = data;
@@ -61,29 +61,50 @@ import {shown} from "../stores"
       ><g fill="currentColor"
         ><path
           d="M7.38635 12L0.386353 5H5.38635V0H9.38635V5H14.3864L7.38635 12Z"
-          data-v-1424a0e1=""
         /></g
       ></svg
     ><span>{meme.dislikes.length}</span></button
   >
-  <a sveltekit:prefetch sveltekit:noscroll href={"/meme/" + meme._id}  rel="external">
+  <a href={"/meme/" + meme._id}>
     <button class="vote-button">
+<<<<<<< HEAD
       <img src="/ftcomment.svg" alt="s" srcset="" />
       <span
         >{meme.comments.length}</span
       ></button
+=======
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-message-square"
+        ><path
+          d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+        /></svg
+      >
+      <span>{meme.comments.length}</span></button
+>>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
     >
   </a>
 </div>
 
 <style>
+  svg {
+    color: inherit;
+  }
   button {
     cursor: pointer;
     margin-right: 4px;
     display: flex;
     align-items: center;
     color: inherit;
-    padding: 0.1% 1.5% 0.1% 1.5%;
+    /* padding: 0.1% 1.5% 0.1% 1.5%; */
     background-color: inherit;
     border: 1px solid gray;
     border-radius: 4px;
@@ -106,10 +127,16 @@ import {shown} from "../stores"
     margin-left: 4px;
     color: inherit;
   }
- 
+
   img {
     margin: 2px;
+<<<<<<< HEAD
     width: 20px;
+=======
+    width: 14px;
+    filter: invert(94%) sepia(0%) saturate(1574%) hue-rotate(185deg)
+      brightness(114%) contrast(60%);
+>>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
   }
 
   @media (max-width: 450px) {

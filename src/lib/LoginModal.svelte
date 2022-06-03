@@ -3,7 +3,7 @@
   import { mode, user } from "../stores";
 
   let errors = [];
-  let message = "";
+  export let message = "";
   const form = aoviSvelte({
     name: "",
     username: "",
@@ -40,7 +40,11 @@
       .required("Şifre tekrarı gereklidir")
       .is($confirmMatch, "Şifre tekrarı uyuşmuyor.").end;
     if ($form.valid) {
+<<<<<<< HEAD
       const {name, username, email, password } = $form;
+=======
+      const { username, email, password, name } = $form;
+>>>>>>> 5b8286e9d3375ca659bdee90c4fac98549113e68
       try {
         const submit = await fetch("https://geyix.herokuapp.com/user/newuser", {
           method: "POST",
@@ -166,26 +170,26 @@
       <p class="message">- {error}</p>
     {/each}
     {#if message}
-      <p class="succes-p">{message}</p>
+      <p class="success-p">{message}</p>
     {/if}
-      {#if $mode === "signup"}
-        <button outlined on:click={doSignup}> Kayıt ol </button>
-      {:else}
-        <button outlined on:click={doLogin}> Giriş Yap </button>
-      {/if}
-      <a href="">Şifremi unutum :(</a>
+    {#if $mode === "signup"}
+      <button outlined on:click={doSignup}> Kayıt ol </button>
+    {:else}
+      <button outlined on:click={doLogin}> Giriş Yap </button>
+    {/if}
+    <a href="">Şifremi unutum :(</a>
   </div>
 </div>
 
 <style>
-  button{
+  button {
     padding: 3px 10px;
     margin-bottom: 20px;
   }
-  a{
+  a {
     font-size: 12px;
   }
-  span{
+  span {
     color: white;
   }
   #login-box {
@@ -281,6 +285,10 @@
 
   .success {
     background-color: #adffaa;
+  }
+  .success-p {
+    width: 200px;
+    font-size: 12px;
   }
 
   .error {

@@ -1,6 +1,5 @@
 <script context="module">
   export async function load({ params }) {
-    console.log(params.username);
     const getUser = await fetch(
       `https://geyix.herokuapp.com/user/${params.username}`
     );

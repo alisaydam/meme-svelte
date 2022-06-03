@@ -23,7 +23,6 @@
 
   $: data = [...data, ...newBatch];
 </script>
-
 <ul>
   {#each data as meme}
     <MemeCard {meme} route="/meme/" />

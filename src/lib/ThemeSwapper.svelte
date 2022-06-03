@@ -35,4 +35,7 @@
     opacity: 1;  
     padding: 0 1px;
   } 
+  a{
+    margin: 0 10px 0 10px;
+  }
 </style>
