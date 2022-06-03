@@ -48,16 +48,18 @@
             </button>
             <ul class="dropdown">
               <li><a class="drop-list" href={"/user/"+$user.username} >Profil</a></li>
-              <li><a class="drop-list">Sub-3</a></li>
+              <li><a class="drop-list">Menu</a></li>
+              <li><a class="drop-list">Menu</a></li>
+              <li><a class="drop-list">Menu</a></li>
               <li>
-                <a class="drop-list" on:click={() => ($user = "")}>ÇIKIŞ</a>
+                <a class="drop-list" on:click={() => $user = ""}>Çıkış</a>
               </li>
             </ul>
           </li>
         {:else}
-          <li>
+          <li class="avatar-li">
             <button on:click={() => modal.show()}
-              ><img class="user-icon" src="/user.png" alt="enter" width="25" />
+              ><img class="user-icon" width="25" src="/user.png" alt="enter"  />
             </button>
           </li>
         {/if}
@@ -86,6 +88,9 @@
     height: 50px;
     width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .avatar-li {
+    padding: 10px;
   }
   .user-icon {
     filter: invert(94%) sepia(0%) saturate(1574%) hue-rotate(185deg)
