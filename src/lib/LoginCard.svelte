@@ -40,11 +40,12 @@
       .required("Şifre tekrarı gereklidir")
       .is($confirmMatch, "Şifre tekrarı uyuşmuyor.").end;
     if ($form.valid) {
-      const {name, username, email, password } = $form;
+      const { name, username, email, password } = $form;
+      console.log($form)
       try {
         const submit = await fetch("https://geyix.herokuapp.com/user/newuser", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json" }, 
           body: JSON.stringify({
             name,
             username,
@@ -57,7 +58,7 @@
           message = data.message;
           $mode = "signin";
         } else {
-          errors = data.errors;
+          message = data.message;
         }
       } catch (err) {
         console.log(err);
@@ -65,6 +66,7 @@
     }
   };
   function toggleMode() {
+    message = "";
     errors = [];
     if ($mode === "signup") {
       $mode = "signin";
@@ -94,45 +96,71 @@
       console.log(err);
     }
   };
+
+  const forgotPass = async () => {
+    form.aovi
+      .check("email")
+      .required("Email gereklidir.")
+      .match(/[^@]+@[^\.]+\..+/, "Yanlış email formatı!").end;
+    if ($form.valid) {
+      const { email } = $form;
+      try {
+        const submit = await fetch(
+          "https://geyix.herokuapp.com/user/forgotPass/" + email
+        );
+        const data = await submit.json();
+        if (data.success) {
+          message = data.message;
+          $mode = "signin";
+        } else {
+          message = data.message;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      message = $form.err.email;
+    }
+  };
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<div class="modal-wrapper">
-  <div id="login-box">
-    {#if $mode === "signin"}<h1>Giriş</h1>{:else}<h1>Kayıt Ol</h1>{/if}
-    <div class="SwitchContainer">
-      <label class="switch">
-        <input
-          type="checkbox"
-          on:click={toggleMode}
-          value={$mode === "signin" ? "signup" : "signin"}
-        />
-        <span class="slider round" />
-      </label>
-      <span>
-        {#if $mode === "signin"}
-          Kayıt Ol
-        {:else}
-          Giriş
-        {/if}</span
-      >
-    </div>
-    {#if $mode === "signup"}
+<div id="login-box">
+  {#if $mode === "signin"}<h1>Giriş</h1>{:else}<h1>Kayıt Ol</h1>{/if}
+  <div class="SwitchContainer">
+    <label class="switch">
       <input
-        type="text"
-        placeholder="İsim"
-        bind:value={$form.name}
-        class:error={$form.err.name}
-        on:focus={form.clear}
+        type="checkbox"
+        on:click={toggleMode}
+        value={$mode === "signin" ? true : false}
       />
-      <input
-        type="text"
-        placeholder="Kullanıcı Adı"
-        bind:value={$form.username}
-        class:error={$form.err.username}
-        on:focus={form.clear}
-      />
-    {/if}
+      <span class="slider round" />
+    </label>
+    <span>
+      {#if $mode === "signin"}
+        Kayıt Ol
+      {:else}
+        Giriş
+      {/if}</span
+    >
+  </div>
+  {#if $mode === "signup"}
+    <input
+      type="text"
+      placeholder="İsim"
+      bind:value={$form.name}
+      class:error={$form.err.name}
+      on:focus={form.clear}
+    />
+    <input
+      type="text"
+      placeholder="Kullanıcı Adı"
+      bind:value={$form.username}
+      class:error={$form.err.username}
+      on:focus={form.clear}
+    />
+  {/if}
+  {#if $mode === "signin" || $mode === "signup"}
     <input
       type="email"
       placeholder="E-mail"
@@ -148,45 +176,63 @@
       class:success={$confirmMatch}
       onfocus={form.clear}
     />
-    {#if $mode === "signup"}
-      <input
-        type="password"
-        placeholder="Şifre Tekrarı"
-        bind:value={$form.confirm}
-        class:success={$confirmMatch}
-        on:focus={form.clear}
-      />
-    {/if}
-    {#if $mode === "signup"}
-      {#each $form.err.toArray() as error}
-        <p class="message">- {error}</p>
-      {/each}
-    {/if}
-    {#each errors as error}
+  {/if}
+  {#if $mode === "signup"}
+    <input
+      type="password"
+      placeholder="Şifre Tekrarı"
+      bind:value={$form.confirm}
+      class:success={$confirmMatch}
+      on:focus={form.clear}
+    />
+  {/if}
+  {#if $mode === "signup"}
+    {#each $form.err.toArray() as error}
       <p class="message">- {error}</p>
     {/each}
-    {#if message}
-      <p class="succes-p">{message}</p>
-    {/if}
-      {#if $mode === "signup"}
-        <button outlined on:click={doSignup}> Kayıt ol </button>
-      {:else}
-        <button outlined on:click={doLogin}> Giriş Yap </button>
-      {/if}
-      <a href="">Şifremi unutum :(</a>
-  </div>
+  {/if}
+  {#if $mode === "forgotPass"}
+    <input
+      type="email"
+      placeholder="E-mail"
+      bind:value={$form.email}
+      class:error={$form.err.email}
+      on:focus={form.clear}
+    />
+    <p>{message || "Şifenizi yenilemek için emailinizi giriniz"}</p>
+  {/if}
+  {#each errors as error}
+    <p class="message">- {error}</p>
+  {/each}
+  {#if message && ($mode === "signin" || $mode === "signup")}
+    <p class="succes-p">{message}</p>
+  {/if}
+  {#if $mode === "signup"}
+    <button outlined on:click={doSignup}> Kayıt ol </button>
+  {:else if $mode === "signin"}
+    <button outlined on:click={doLogin}> Giriş Yap </button>
+  {:else}
+    <button outlined on:click={forgotPass}> Gönder </button>
+  {/if}
+
+  <a on:click={() => ($mode = "forgotPass")}>Şifremi unutum :(</a>
 </div>
 
 <style>
-  button{
+  button {
     padding: 3px 10px;
     margin-bottom: 20px;
   }
-  a{
+  a {
     font-size: 12px;
   }
-  span{
+  span {
     color: white;
+  }
+  p {
+    width: 220px;
+    font-size: 12px;
+    margin-bottom: 20px;
   }
   #login-box {
     background: rgba(27, 29, 27, 0.8); /* Green background with 30% opacity */
@@ -251,13 +297,13 @@
     transition: 0.1s;
   }
 
-  input:checked + .slider {
+  /* input:checked + .slider {
     background-color: #2196f3;
   }
 
   input:focus + .slider {
     box-shadow: 0 0 1px #2196f3;
-  }
+  } */
 
   input:checked + .slider:before {
     -webkit-transform: translateX(26px);

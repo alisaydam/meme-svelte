@@ -2,7 +2,7 @@
   import { user } from "../stores"; 
   import Modal from "./Modal.svelte";
   import { goto } from "$app/navigation";
-  import LoginModal from "./LoginModal.svelte";
+  import LoginCard from "./LoginCard.svelte";
   import ThemeSwapper from "./ThemeSwapper.svelte"; 
   let modal; 
 </script>
@@ -67,7 +67,7 @@
       </ul>
       {#if !$user}
         <Modal bind:this={modal}>
-          <LoginModal />
+          <LoginCard />
         </Modal>
       {/if}
     </nav>
