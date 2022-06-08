@@ -11,21 +11,20 @@
   } from "firebase/storage";
   import { user } from "../../stores";
   const firebaseConfig = {
-    apiKey: "AIzaSyBP8sZ78cKyQkMFYvxaSkP7jraJqw6S5Oo",
-    authDomain: "geyix-4a345.firebaseapp.com",
-    projectId: "geyix-4a345",
-    storageBucket: "geyix-4a345.appspot.com",
-    messagingSenderId: "864445954669",
-    appId: "1:864445954669:web:a91f90589e005c7c035d64",
-    measurementId: "G-FQ30MM7C9H",
+    apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
   };
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
 
-  let avatar,
-    fileinput,
+  let avatar, 
     image,
     title = "";
   let spinner = false;
@@ -48,9 +47,10 @@
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
+          console.log(dowloadURL)
           try {
             const submit = await fetch(
-              "https://geyix.herokuapp.com/meme/newmeme",
+              "http://localhost:5000/meme/newmeme",
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

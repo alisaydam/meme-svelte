@@ -10,7 +10,7 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/likeSubComment/${$user.username}/${comment._id}/${subComment._id}`
+      `http://localhost:5000/like/likeSubComment/${$user.username}/${comment._id}/${subComment._id}`
     );
     const data = await submit.json();
     subComment.dislikes = data.dislikes;
@@ -21,7 +21,7 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislikeSubComment/${$user.username}/${comment._id}/${subComment._id}`
+      `http://localhost:5000/like/dislikeSubComment/${$user.username}/${comment._id}/${subComment._id}`
     );
     const data = await submit.json();
     subComment.dislikes = data.dislikes;
@@ -82,7 +82,7 @@
     const subReply = document.getElementById("textArea").value;
 
     const submit = await fetch(
-      "https://geyix.herokuapp.com/comment/newSubReply",
+      "http://localhost:5000/comment/newSubReply",
       {
         method: "POST",
         headers: { "content-type": "application/json" },

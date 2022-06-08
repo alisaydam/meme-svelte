@@ -7,7 +7,7 @@ import {shown} from "../stores"
       return $shown = true
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/likeMeme/${user.username}/${meme._id}`,
+      `http://localhost:5000/like/likeMeme/${user.username}/${meme._id}`,
       {
         headers: {
           "authorization": "Bearer dwaofjwaojfowa",
@@ -22,7 +22,7 @@ import {shown} from "../stores"
       return $shown = true
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`,
+      `http://localhost:5000/like/dislikeMeme/${user.username}/${meme._id}`,
     );
     const data = await submit.json();
     meme = data;
