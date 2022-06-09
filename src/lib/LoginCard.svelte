@@ -41,11 +41,11 @@
       .is($confirmMatch, "Şifre tekrarı uyuşmuyor.").end;
     if ($form.valid) {
       const { name, username, email, password } = $form;
-      console.log($form)
+      console.log($form);
       try {
         const submit = await fetch("https://geyix.herokuapp.com/user/newuser", {
           method: "POST",
-          headers: { "Content-Type": "application/json" }, 
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name,
             username,

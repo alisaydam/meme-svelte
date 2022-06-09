@@ -1,9 +1,7 @@
-<script> 
- import { onMount } from "svelte";
+<script>
+  import { onMount } from "svelte";
   import InfiniteScroll from "$lib/InfiniteScroll.svelte";
   import MemeCard from "$lib/MemeCard.svelte";
-  
- 
 
   let page = 0;
   let data = [];
@@ -11,8 +9,9 @@
 
   async function fetchData() {
     const response = await fetch(
-      `https://geyix.herokuapp.com/meme/getMemes?page=${page}&limit=5`);
-    newBatch = await response.json(); 
+      `https://geyix.herokuapp.com/meme/getMemes?page=${page}&limit=5`
+    );
+    newBatch = await response.json();
   }
 
   onMount(() => {
