@@ -1,5 +1,6 @@
 <script>
   import {shown} from "../stores"
+	import { fade, fly } from 'svelte/transition';
 
   $shown = false;
 
@@ -20,24 +21,24 @@ on:keydown={e => {
 }}
 />
 {#if $shown}
-  <div class="modal-wrapper" on:click={()=>hide()}>
+  <div class="modal-wrapper" on:click={()=>hide()} transition:fade={{duration: 200}}>
       <div class="modal" on:click|stopPropagation>
-          <button class="close-modal" on:click={()=>hide()}>X</button>
+          <button class="close-modal" on:click={()=>hide()}>×</button>
           <slot />
       </div>
   </div>
 {/if}
 
 <style>
-   .close-modal{
-    z-index: 1;
+   .close-modal{ 
       position: absolute;
-      right: 2px;
-      top: 2px;
+      right: 0;
+      top: 0;
       width: 25px;
-      height: 25px;
-      border-radius: 20px;
+      height: 25px; 
       cursor: pointer;
+      background: none;
+      border: none;
   }
   .modal-wrapper {
     background-color: rgba(0, 0, 0, 0.6);

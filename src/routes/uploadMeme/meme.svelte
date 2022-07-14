@@ -10,6 +10,7 @@
     getDownloadURL,
   } from "firebase/storage";
   import { user } from "../../stores";
+import SectionInput from '$lib/SectionInput.svelte';
   const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -24,7 +25,7 @@
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
 
-  let avatar, 
+  let avatar,
     image,
     title = "";
   let spinner = false;
@@ -47,7 +48,7 @@
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
-          console.log(dowloadURL)
+          console.log(dowloadURL);
           try {
             const submit = await fetch(
               "https://geyix.herokuapp.com/meme/newmeme",
@@ -92,13 +93,7 @@
 
 <div class="container">
   <h2 class="page-title">Post yükle</h2>
-  <div class="section-con">
-    <img class="search-icon" src="/search.svg" alt="" />
-    <a href="">
-      <img class="arrow-icon" src="/arrow.svg" alt="" />
-    </a>
-    <input class="section-input" type="text" />
-  </div>
+   <SectionInput /> 
   <div class="upload-con">
     <div class="title-con">
       <textarea
@@ -138,12 +133,7 @@
           accept=".jpg, .jpeg, .png, .gif"
           on:change={(e) => onFileSelected(e)}
         />
-      {/if}
-
-      <!-- <span class="card-text">yada</span> -->
-      <!-- <span class="card-text">comin soon</span> -->
-      <!-- <div class="optional">
-      </div> -->
+      {/if} 
     </div>
     <div class="tags-con">
       <input
@@ -152,7 +142,6 @@
         placeholder="+ Tag eklemek ister misin? Her tagdan sonra virgül bırak"
       />
     </div>
-
   </div>
 </div>
 {#if spinner}
@@ -165,24 +154,13 @@
   .container {
     padding: 32px;
   }
-  .spinner{
+  .spinner {
     position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
-  .section-con {
-    padding: 12px;
-    border: 1px solid;
-    width: 50%;
-    border-radius: 10px;
-    position: relative;
-    margin: 16px 0;
-  }
-  .search-icon {
-    position: absolute;
-    width: 20px;
-  }
+  
   .arrow-icon {
     position: absolute;
     right: 10px;
@@ -195,8 +173,12 @@
     border: none;
     outline: none;
     width: 100%;
-    font-size: 12px;
-    text-indent: 25px;
+    font-size: 12px; 
+    padding-left: 25px;
+  }
+  input::-webkit-calendar-picker-indicator {
+    opacity: 100;
+    cursor: pointer;
   }
   .title-con {
     width: 100%;

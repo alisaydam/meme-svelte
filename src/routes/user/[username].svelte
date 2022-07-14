@@ -16,6 +16,7 @@
 
 <script>
   import { onMount } from "svelte";
+  import { fade } from 'svelte/transition';
   import InfiniteScroll from "$lib/InfiniteScroll.svelte";
   import MemeCard from "$lib/MemeCard.svelte";
   export let username;
@@ -52,10 +53,10 @@
     <h5>@{user.username}</h5>
   </div>
 </div>
-<div class="tab-bar">
+<div class="tab-bar" >
   <ul class="menu">
     <!-- svelte-ignore a11y-missing-attribute -->
-    <li><a class:active={current === "postlar"} on:click={() => {
+    <li  transition:fade><a  class:active={current === "postlar"} on:click={() => {
       current="postlar"
       newBatch = [];
       data = [];

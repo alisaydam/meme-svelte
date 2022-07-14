@@ -1,6 +1,7 @@
 <script>
   import { aoviSvelte } from "aovi-svelte";
-  import { mode, user } from "../stores";
+  import { mode, shown, user } from "../stores";
+  import { fade, fly } from "svelte/transition";
 
   let errors = [];
   let message = "";
@@ -9,12 +10,9 @@
     username: "",
     email: "",
     password: "",
-    confirm: "",
   });
-  const confirmMatch = form.checker("confirm", (aovi) =>
-    aovi.is($form.password === $form.confirm)
-  );
-  const doSignup = async () => {
+
+  const doSignup = async () => { 
     message = "";
     errors = [];
     form.aovi
@@ -35,13 +33,9 @@
       .minLength(6)
       .check("password")
       .required("Şifre gereklidir")
-      .minLength(8, "Şifre en az 8 karakter uzunluğunda olmalı")
-      .check("confirm")
-      .required("Şifre tekrarı gereklidir")
-      .is($confirmMatch, "Şifre tekrarı uyuşmuyor.").end;
+      .minLength(8, "Şifre en az 8 karakter uzunluğunda olmalı").end;
     if ($form.valid) {
       const { name, username, email, password } = $form;
-      console.log($form);
       try {
         const submit = await fetch("https://geyix.herokuapp.com/user/newuser", {
           method: "POST",
@@ -58,22 +52,14 @@
           message = data.message;
           $mode = "signin";
         } else {
-          message = data.message;
+          errors = data.errors;
         }
       } catch (err) {
         console.log(err);
       }
     }
   };
-  function toggleMode() {
-    message = "";
-    errors = [];
-    if ($mode === "signup") {
-      $mode = "signin";
-    } else {
-      $mode = "signup";
-    }
-  }
+
   const doLogin = async () => {
     const { email, password } = $form;
     try {
@@ -86,12 +72,14 @@
         }),
       });
       const data = await submit.json();
+      console.log(data);
       if (data.success) {
         message = data.message;
         $user = data.user;
       } else {
         errors.includes(data.error) ? null : (errors = [...errors, data.error]);
       }
+      console.log(errors);
     } catch (err) {
       console.log(err);
     }
@@ -119,245 +107,346 @@
         console.log(err);
       }
     } else {
-      message = $form.err.email;
+      console.log("form invalid");
     }
   };
+  let tab = "signin";
+  let hidePass = false;
+  let showFogotPassCon = false;
+
+  const toggleHidePass = () => (hidePass = !hidePass);
 </script>
 
-<!-- svelte-ignore a11y-missing-attribute -->
-<div id="login-box">
-  {#if $mode === "signin"}<h1>Giriş</h1>{:else}<h1>Kayıt Ol</h1>{/if}
-  <div class="SwitchContainer">
-    <label class="switch">
-      <input
-        type="checkbox"
-        on:click={toggleMode}
-        value={$mode === "signin" ? true : false}
-      />
-      <span class="slider round" />
-    </label>
-    <span>
-      {#if $mode === "signin"}
-        Kayıt Ol
-      {:else}
-        Giriş
-      {/if}</span
-    >
-  </div>
-  {#if $mode === "signup"}
-    <input
-      type="text"
-      placeholder="İsim"
-      bind:value={$form.name}
-      class:error={$form.err.name}
-      on:focus={form.clear}
-    />
-    <input
-      type="text"
-      placeholder="Kullanıcı Adı"
-      bind:value={$form.username}
-      class:error={$form.err.username}
-      on:focus={form.clear}
-    />
-  {/if}
-  {#if $mode === "signin" || $mode === "signup"}
-    <input
-      type="email"
-      placeholder="E-mail"
-      bind:value={$form.email}
-      class:error={$form.err.email}
-      on:focus={form.clear}
-    />
-    <input
-      type="password"
-      placeholder="Şifre"
-      bind:value={$form.password}
-      class:error={$form.err.password}
-      class:success={$confirmMatch}
-      onfocus={form.clear}
-    />
-  {/if}
-  {#if $mode === "signup"}
-    <input
-      type="password"
-      placeholder="Şifre Tekrarı"
-      bind:value={$form.confirm}
-      class:success={$confirmMatch}
-      on:focus={form.clear}
-    />
-  {/if}
-  {#if $mode === "signup"}
-    {#each $form.err.toArray() as error}
-      <p class="message">- {error}</p>
-    {/each}
-  {/if}
-  {#if $mode === "forgotPass"}
-    <input
-      type="email"
-      placeholder="E-mail"
-      bind:value={$form.email}
-      class:error={$form.err.email}
-      on:focus={form.clear}
-    />
-    <p>{message || "Şifenizi yenilemek için emailinizi giriniz"}</p>
-  {/if}
-  {#each errors as error}
-    <p class="message">- {error}</p>
-  {/each}
-  {#if message && ($mode === "signin" || $mode === "signup")}
-    <p class="succes-p">{message}</p>
-  {/if}
-  {#if $mode === "signup"}
-    <button outlined on:click={doSignup}> Kayıt ol </button>
-  {:else if $mode === "signin"}
-    <button outlined on:click={doLogin}> Giriş Yap </button>
-  {:else}
-    <button outlined on:click={forgotPass}> Gönder </button>
-  {/if}
+<div class="auth-box">
+  <ul class="tab-menu">
+    <li>
+      <button
+        class="tab-button"
+        class:active={tab === "signin"}
+        on:click={() => (tab = "signin")}>Giriş Yap</button
+      >
+    </li>
+    <li>
+      <button
+        class="tab-button"
+        class:active={tab === "signup"}
+        on:click={() => (tab = "signup")}
+      >
+        Üye Ol</button
+      >
+    </li>
+  </ul>
 
-  <a on:click={() => ($mode = "forgotPass")}>Şifremi unutum :(</a>
+  <div class="forms">
+    {#if tab === "signin"}
+      <div>
+        {#if showFogotPassCon}
+          <div
+            class="forgot-pass"
+            in:fly={{ y: 200, duration: 200 }}
+            out:fly={{ y: 200, duration: 200 }}
+          >
+            <div class="forgot-header">
+              <p>Şifreniz mailinize gönderilecektir.</p>
+              <p
+                class="close-forgot"
+                on:click={() => (showFogotPassCon = false)}
+              >
+                ×
+              </p>
+            </div>
+            <div class="forgot-body">
+              <div class="group">
+                <input
+                  required=""
+                  class="input"
+                  type="email"
+                  placeholder=" "
+                /><span class="highlight" /><span class="bar" />
+                <label class="label" for="date">Email</label>
+                <small class="error"
+                  >{$form.err.email ? $form.err.email : ""}</small
+                >
+
+                <button outlined on:click={forgotPass} class="submit-button"
+                  >Gönder</button
+                >
+              </div>
+            </div>
+          </div>
+        {/if}
+        <div class="group">
+          <input
+            required=""
+            class="input"
+            type="email"
+            placeholder=" "
+            bind:value={$form.email}
+            on:focus={form.clear}
+          /><span class="highlight" /><span class="bar" />
+          <label class="label" for="date">Email</label>
+        </div>
+        <div class="group">
+          {#if hidePass}
+            <input
+              required=""
+              class="input"
+              placeholder=" "
+              type="text"
+              bind:value={$form.password}
+              onfocus={form.clear}
+            />
+          {:else}
+            <input
+              required=""
+              class="input"
+              placeholder=" "
+              type="password"
+              bind:value={$form.password}
+              onfocus={form.clear}
+            />
+          {/if}<span class="highlight" /><span class="bar" />
+          <label class="label" for="date">Password</label>
+          <span class="eye" on:click={toggleHidePass}>👁</span>
+        </div>
+        {#each errors as error}
+          <p class="error">{error}</p>
+        {/each}
+        <div>
+          <button outlined on:click={doLogin} class="submit-button"
+            >Giriş Yap</button
+          >
+        </div>
+        <div class="forgot-link">
+          <!-- svelte-ignore a11y-missing-attribute -->
+          <a on:click={() => (showFogotPassCon = true)}  >
+            I forgot my password</a
+          >
+        </div>
+      </div>
+    {:else}
+      <div>
+        <div class="group">
+          <input
+            type="text"
+            required=""
+            class="input"
+            placeholder=" "
+            bind:value={$form.name}
+            on:focus={form.clear}
+          /><span class="highlight" /><span class="bar" />
+          <label class="label" for="date">Name</label>
+          <small class="error">{$form.err.name ? $form.err.name : ""}</small>
+        </div>
+        <div class="group">
+          <input
+            required=""
+            class="input"
+            placeholder=" "
+            type="text"
+            bind:value={$form.username}
+            on:focus={form.clear}
+          /><span class="highlight" /><span class="bar" />
+          <label class="label" for="date">Username </label>
+          <small class="error"
+            >{$form.err.username ? $form.err.username : ""}</small
+          >
+        </div>
+        <div class="group">
+          <input
+            required=""
+            class="input"
+            placeholder=" "
+            type="email"
+            bind:value={$form.email}
+            on:focus={form.clear}
+          /><span class="highlight" /><span class="bar" />
+          <label class="label" for="date">Email</label>
+          <small class="error">{$form.err.email ? $form.err.email : ""}</small>
+        </div>
+        <div class="group">
+          {#if hidePass}
+            <input
+              required=""
+              class="input"
+              placeholder=" "
+              type="text"
+              bind:value={$form.password}
+              onfocus={form.clear}
+            />
+          {:else}
+            <input
+              required=""
+              class="input"
+              placeholder=" "
+              type="password"
+              bind:value={$form.password}
+              onfocus={form.clear}
+            />
+          {/if}<span class="highlight" /><span class="bar" />
+          <label class="label" for="date">Password</label>
+          <small class="error"
+            >{$form.err.password ? $form.err.password : ""}</small
+          >
+
+          <span class="eye" on:click={toggleHidePass}>👁</span>
+          {#each errors as error}
+            <p class="error">{error}</p>
+          {/each}
+          <p class="success">{message && message}</p>
+        </div>
+        <div>
+          <button outlined on:click={doSignup} class="submit-button">Üye</button
+          >
+        </div>
+      </div>
+    {/if}
+  </div>
+
+  <!-- <a on:click={() => ($mode = "forgotPass")}>Şifremi unutum :(</a> -->
 </div>
 
 <style>
-  button {
-    padding: 3px 10px;
-    margin-bottom: 20px;
-  }
-  a {
-    font-size: 12px;
-  }
-  span {
-    color: white;
-  }
-  p {
-    width: 220px;
-    font-size: 12px;
-    margin-bottom: 20px;
-  }
-  #login-box {
-    background: rgba(27, 29, 27, 0.8); /* Green background with 30% opacity */
-    min-height: 70vh;
-    display: flex;
-    flex-direction: column;
-    padding: 40px 50px 0;
-    border-radius: 20px;
-  }
-  h1 {
-    margin-bottom: 30px;
-    color: white;
-  }
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 30px;
-  }
-  .error {
-    color: red;
-  }
-
-  .SwitchContainer {
-    position: absolute;
-    display: flex;
-    top: 35px;
-    right: 50px;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
+  .forgot-pass {
+    background: white;
+    height: 300px; 
     top: 0;
+    color: black;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: 0.1s;
-    transition: 0.1s;
-  }
-
-  .slider:before {
     position: absolute;
-    content: "";
-    height: 23px;
-    width: 23px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: 0.1s;
-    transition: 0.1s;
-  }
-
-  /* input:checked + .slider {
-    background-color: #2196f3;
-  }
-
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196f3;
-  } */
-
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(22px);
-  }
-
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-
-  .slider.round:before {
-    border-radius: 50%;
-  }
-  .message {
-    font-size: 12px;
-    margin: 0;
-    color: red;
-  }
-
-  .success {
-    background-color: #adffaa;
-  }
-
-  .error {
-    background-color: #ffc6c6 !important;
-  }
-  input {
-    border-radius: 5px;
+    z-index: 220;
     padding: 10px;
-    background-color: white;
-    margin-bottom: 25px;
-  }
+    width: clamp(350px, 60vw, 550px);
 
-  /* input[type="text"],
-    input[type="password"] { */
-  input {
-    display: block;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    width: 220px;
-    height: 32px;
+  }
+  .forgot-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .forgot-body {
+    padding: 25px;
+  }
+  .close-forgot {
+    cursor: pointer;
+  }
+  .auth-box {
+    display: flex;
+    flex-direction: column; 
+    background: white; 
+    width: clamp(350px, 60vw, 550px);
+  }
+  .forms {
+    padding: 25px;
+  }
+  .tab-menu {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  li {
+    width: 100%;
+  }
+  .tab-button {
     border: none;
-    border-bottom: 1px solid #aaa;
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    font-size: 15px;
+    width: 100%;
+    height: 40px;
+  }
+  .active {
+    background: white;
+  }
+  .group {
+    position: relative;
+    margin-top: 30px;
+  }
+  .label {
+    color: #757575;
+    font-size: 18px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    top: 10px;
+    transition: all 0.2s ease;
+  }
+  .input {
+    font-size: 18px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    background: none;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #757575;
+  }
+  .input:focus {
+    outline: none;
   }
 
-  input[type="text"]:focus,
-  input[type="password"]:focus {
-    border-bottom: 2px solid #16a085;
-    color: #16a085;
-    transition: 0.2s ease;
+  /* .input:focus ~ .label {
+    top: -20px;  
+    color: #4a89dc;
+  } */
+  input:focus ~ label,
+  input:not(:placeholder-shown) ~ label {
+    top: -20px;
+    transform: scale(0.75);
+    font-size: 14px;
+    color: #4a89dc;
+  }
+  .bar {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+  .bar:before,
+  .bar:after {
+    content: "";
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: #4a89dc;
+    transition: all 0.2s ease;
+  }
+  .bar:before {
+    left: 50%;
+  }
+
+  .bar:after {
+    right: 50%;
+  }
+  .input:focus ~ .bar:before,
+  .input:focus ~ .bar:after {
+    width: 50%;
+  }
+  .eye {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: black;
+    font-size: 30px;
+    cursor: pointer;
+  }
+  .submit-button {
+    width: 100%;
+    height: 35px;
+    margin-top: 25px;
+  }
+  .error {
+    color: orange;
+  }
+  small {
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+    top: -20px;
+  }
+  .forgot-link {
+    color: blue;
+    font-size: 12px;
+    font-weight: 300;
+  }
+  .forgot-link:hover {
+    text-decoration: underline;
+  }
+  .success {
+    color: greenyellow;
   }
 </style>
