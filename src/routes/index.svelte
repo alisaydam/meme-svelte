@@ -2,35 +2,49 @@
   import { onMount } from "svelte";
   import InfiniteScroll from "$lib/InfiniteScroll.svelte";
   import MemeCard from "$lib/MemeCard.svelte";
+   import {memes, currentMeme, page} from "../stores"
 
-  let page = 0;
-  let data = [];
-  let newBatch = [];
+     
 
   async function fetchData() {
     const response = await fetch(
-      `https://geyix.herokuapp.com/meme/getMemes?page=${page}&limit=5`
+      `https://geyix.herokuapp.com/meme/getMemes?page=${$page}&limit=5`
     );
-    newBatch = await response.json();
+   const newBatch = await response.json(); 
+    $memes = [...$memes ,...newBatch]
+    
   }
+  
+  
+  $: if($memes.length === 0) {
+    $page = 0;
+    fetchData()
+  }
+  let data;
 
-  onMount(() => {
-    // load first batch onMount
-    fetchData();
+  
+  
+  onMount(() => {  
+    
+     fetchData();
+    const clickedMeme = document.getElementById($currentMeme)
+    clickedMeme && clickedMeme.scrollIntoView() 
   });
 
-  $: data = [...data, ...newBatch];
+ 
+
+ 
 </script>
 
-<ul>
-  {#each data as meme}
-    <MemeCard {meme} route="/meme/" />
+<ul  >
+  {#each $memes as meme}
+    <MemeCard {meme} route="/meme/"/>
   {/each}
   <InfiniteScroll
-    hasMore={newBatch.length}
+    hasMore={$memes.length}
     threshold={100}
     on:loadMore={() => {
-      page++;
+      $page++;
       fetchData();
     }}
   />

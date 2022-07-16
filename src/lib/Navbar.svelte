@@ -1,10 +1,16 @@
 <script>
-  import { user } from "../stores"; 
+  import { user, currentMeme, memes } from "../stores"; 
   import Modal from "./Modal.svelte";
   import { goto } from "$app/navigation";
   import LoginCard from "./LoginCard.svelte";
   import ThemeSwapper from "./ThemeSwapper.svelte"; 
   let modal; 
+
+  const reload =()=> { 
+    $currentMeme = ""
+    $memes = []
+    goto("/")
+  }
 </script>
 
 <svelte:head>
@@ -27,7 +33,9 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <header>
   <div class="nav-wrap">
-    <a class="logo" href="/">Geyix</a>
+    <div>
+      <a  on:click={reload} class="logo"  >Geyix</a>
+    </div>
     <nav>
       <ul class="nav-menu">
         <li>
@@ -100,7 +108,7 @@
     display: flex;
     width: 100%;
     max-width: 900px;
-    margin: auto;
+    margin: auto; 
     justify-content: space-between;
     align-items: center;
   }

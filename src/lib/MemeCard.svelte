@@ -1,11 +1,11 @@
 <script>
   import MemeVoteBar from "./MemeVoteBar.svelte";
-  import { user } from "../stores";
+  import { user, currentMeme } from "../stores";
   export let meme;
   export let route;
 </script>
 
-<article class="meme">
+<article class="meme" id={meme._id} on:click={()=> $currentMeme = meme._id}>
   <header>
     <div class="post-section">
       <a href="/" class="icon">

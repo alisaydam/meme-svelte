@@ -72,7 +72,6 @@
         }),
       });
       const data = await submit.json();
-      console.log(data);
       if (data.success) {
         message = data.message;
         $user = data.user;

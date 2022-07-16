@@ -1,5 +1,5 @@
 <script>
-  import {   onDestroy, createEventDispatcher } from "svelte";
+  import {   onDestroy, createEventDispatcher, onMount } from "svelte";
 
   export let threshold = 0;
   export let horizontal = false;
@@ -9,7 +9,7 @@
   const dispatch = createEventDispatcher();
   let isLoadMore = false;
   let component;
-
+ 
   $: {
     if (component || elementScroll) {
       const element = elementScroll ? elementScroll : component.parentNode;
