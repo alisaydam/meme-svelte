@@ -2,7 +2,8 @@
   import { initializeApp } from "firebase/app";
   import { compressAccurately } from "image-conversion";
   import { Circle3 } from "svelte-loading-spinners";
-
+  import { preventTabClose } from "../../utils/prevent";
+  import { fade  } from "svelte/transition"; 
   import {
     getStorage,
     ref,
@@ -10,7 +11,7 @@
     getDownloadURL,
   } from "firebase/storage";
   import { user } from "../../stores";
-import SectionInput from '$lib/SectionInput.svelte';
+  import SectionInput from "$lib/SectionInput.svelte";
   const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -25,11 +26,22 @@ import SectionInput from '$lib/SectionInput.svelte';
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
 
+  let wrongInput = false;
+  const sections = ["Komik", "Bilim", "Oha", "Bu Nedir", "Adam Çalışıyor"];
+
   let avatar,
+    categoryName,
     image,
     title = "";
   let spinner = false;
   const uploadToFireStorage = () => {
+    if(!sections.includes(categoryName)){
+      wrongInput = true
+      setTimeout(() => {
+        wrongInput= false
+      }, 1500);
+      return
+    }
     const metadata = {
       contentType: "image/jpeg",
     };
@@ -48,22 +60,21 @@ import SectionInput from '$lib/SectionInput.svelte';
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
-          console.log(dowloadURL);
+          
           try {
-            const submit = await fetch(
-              "https://geyix.herokuapp.com/meme/newmeme",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  meme: dowloadURL,
-                  id: $user._id,
-                  title: title,
-                }),
-              }
-            );
+            const submit = await fetch("https://geyix.herokuapp.com/meme/newmeme", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                meme: dowloadURL,
+                id: $user._id,
+                title: title,
+                categoryName: categoryName,
+              }),
+            });
             spinner = false;
             avatar = "";
+            categoryName= "";
             title = "";
             const data = await submit.json();
           } catch (error) {
@@ -76,37 +87,43 @@ import SectionInput from '$lib/SectionInput.svelte';
 
   const onFileSelected = async (e) => {
     image = e.target.files[0];
-    const res = await compressAccurately(image, {
+    const data = await compressAccurately(image, {
       size: 250,
       accuracy: 0.9,
       width: 600,
       orientation: 1,
     });
-    image = new File([res], image.name, { lastModified: Date.now() });
+    image = new File([data], image.name, { lastModified: Date.now() });
     let reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = (e) => {
       avatar = e.target.result;
     };
   };
+
+  let shouldWork = true;
 </script>
 
+<div use:preventTabClose={shouldWork} />
 <div class="container">
   <h2 class="page-title">Post yükle</h2>
-   <SectionInput /> 
+  <SectionInput bind:categoryName />
   <div class="upload-con">
     <div class="title-con">
       <textarea
+        oninput="auto_grow(this)"
         class="title"
         maxlength="150"
         name=""
         id=""
         cols="30"
         bind:value={title}
-        rows="3"
         placeholder="Başlk"
         contenteditable="true"
       />
+      {#if wrongInput}
+      <h3 transition:fade>Tüm Alanları doğru doldurunuz..</h3>
+      {/if}
       <span class="counter">
         {!title.length === 0 ? "s" : 150 - title.length}</span
       >
@@ -119,7 +136,7 @@ import SectionInput from '$lib/SectionInput.svelte';
         <img class="placeholder" src="/placeholder.png" alt="" />
       {/if}
       <span class="card-text">Dosya seç ve yükle</span>
-      {#if avatar && title}
+      {#if avatar && title && categoryName}
         <!-- svelte-ignore a11y-missing-attribute -->
         <a class="file-input" on:click={uploadToFireStorage}>
           <div />
@@ -133,13 +150,13 @@ import SectionInput from '$lib/SectionInput.svelte';
           accept=".jpg, .jpeg, .png, .gif"
           on:change={(e) => onFileSelected(e)}
         />
-      {/if} 
+      {/if}
     </div>
     <div class="tags-con">
       <input
         class="tags-input"
         type="text"
-        placeholder="+ Tag eklemek ister misin? Her tagdan sonra virgül bırak"
+        placeholder="+ Tag eklemek ister misin? Her tagdan sonra virgül bırak.Örn: 'renk,malak,dans' "
       />
     </div>
   </div>
@@ -151,8 +168,19 @@ import SectionInput from '$lib/SectionInput.svelte';
 {/if}
 
 <style>
+   h3 {
+    z-index: 5;
+    background-color: var(--border);
+    width: 100%;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+  }
   .container {
     padding: 32px;
+    padding-top: 75px;
   }
   .spinner {
     position: absolute;
@@ -160,7 +188,7 @@ import SectionInput from '$lib/SectionInput.svelte';
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  
+
   .arrow-icon {
     position: absolute;
     right: 10px;
@@ -173,7 +201,7 @@ import SectionInput from '$lib/SectionInput.svelte';
     border: none;
     outline: none;
     width: 100%;
-    font-size: 12px; 
+    font-size: 12px;
     padding-left: 25px;
   }
   input::-webkit-calendar-picker-indicator {
@@ -182,20 +210,23 @@ import SectionInput from '$lib/SectionInput.svelte';
   }
   .title-con {
     width: 100%;
-    padding: 8px 30px 0px 8px;
-    border: 1px solid;
+    padding: 8px 30px 0px 6px;
+    border: 1px var(--border) solid;
     border-radius: 10px;
     position: relative;
   }
   .title {
-    background: none;
-    width: 100%;
-    border: none;
-    resize: none;
-    overflow: hidden;
     outline: none;
-    color: inherit;
-    font-size: 12px;
+    border: none;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    word-wrap: break-word;
+    background-color: transparent;
+    color: var(--palette-text);
+    box-shadow: none;
+    resize: none;
   }
   .counter {
     position: absolute;
@@ -205,11 +236,12 @@ import SectionInput from '$lib/SectionInput.svelte';
     right: 2px;
   }
   .upload-con {
-    border: 1px solid;
+    border: 1px var(--border) solid;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 20px;
     padding: 32px;
   }
   .upload-card {
@@ -219,7 +251,7 @@ import SectionInput from '$lib/SectionInput.svelte';
     margin: 16px 16px;
     padding: 32px;
     width: 100%;
-    border: 1px solid;
+    border: 1px var(--border) solid;
     border-radius: 10px;
   }
   .preview {
@@ -256,7 +288,7 @@ import SectionInput from '$lib/SectionInput.svelte';
   }
   .tags-con {
     padding: 12px;
-    border: 1px solid;
+    border: 1px var(--border) solid;
     border-radius: 10px;
     position: relative;
     margin: 16px 0;

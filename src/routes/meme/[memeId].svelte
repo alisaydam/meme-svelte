@@ -23,13 +23,24 @@
     comments = e.detail;
   };
 </script>
+ 
+ <div>
+  <MemeCard {meme} route={"/meme/"} />
+  <SubmitComment on:submitComment={submitComment} user={$user} {url} {meme} />
+  {#each comments as comment}
+    <CommentCard
+      {comment}
+      user={$user}
+      subComments={comment.subComments.subComments}
+    />
+  {/each}
+ </div>
+ 
 
-<MemeCard {meme} route={"/meme/"} />
-<SubmitComment on:submitComment={submitComment} user={$user} {url} {meme} />
-{#each comments as comment}
-  <CommentCard
-    {comment}
-    user={$user}
-    subComments={comment.subComments.subComments}
-  />
-{/each}
+<style>
+  div{
+    padding-top: 75px;
+    max-width: 600px;
+    margin: auto;
+  }
+</style>

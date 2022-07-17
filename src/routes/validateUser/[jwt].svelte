@@ -8,6 +8,7 @@
       );
       console.log(validateUser);
       data = await validateUser.json();
+      console.log(data)
     } catch (error) {
       console.log(error);
     }
@@ -21,20 +22,26 @@
 
 <script>
   import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
   import { shown } from "../../stores";
   export let data;
 
-  data.success &&
-    setTimeout(() => {
-      $shown = true; 
-    }, 2000);
+  onMount(() => { 
+    data.success &&
+      setTimeout(() => {
+        $shown = true;
+        setTimeout(() => {
+          document.querySelector("input").value = data.user 
+        }, 200);
+      }, 1000);
+  });
 
   console.log(data);
 </script>
 
 <div class="container">
   {#if data.success}
-    <h1>Tebrikler! Artık üyesin. Hadi gitte gereksiz memelerini paylaş</h1>
+    <h1>Tebrikler {data.name}! Artık üyesin. Hadi paylaşmaya başla sanki</h1>
     <iframe
       src="https://giphy.com/embed/QBC5foQmcOkdq"
       width="480"

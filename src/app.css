@@ -1,6 +1,8 @@
 :root {
---black: #333;
---white: #fff;
+--black: #141414;
+--white: #fff; 
+--border-light: #808080;
+--border-dark: #333333;
 }
 * {
   margin: 0;

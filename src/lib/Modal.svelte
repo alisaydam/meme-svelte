@@ -50,6 +50,7 @@ on:keydown={e => {
     height: 100%;
     top: 0;
     left: 0;
+    z-index: 1;
   }
   .modal{
       position: relative; 

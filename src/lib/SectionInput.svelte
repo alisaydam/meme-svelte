@@ -1,8 +1,7 @@
 <script>
-  import { onMount } from "svelte";
+  import { fly  } from "svelte/transition"; 
 
-  let value = "";
-  let sectionCon;
+  export let categoryName = "";
 
   const regexSort = (arr, value, fn) => {
     const res = [];
@@ -14,71 +13,83 @@
     return [...res, ...arr];
   };
 
-  const suggestSections = (e) => {
-    const secMenu = document.getElementById("section-menu");
-    if (document.body.contains(secMenu)) {
-        secMenu.remove();
-    }
- 
-    const sections = ["komik", "üzücü", "bu ne la", "allah"];
-    
-     const sectionsArray = regexSort(sections, value, (key, value) =>new RegExp(`${value}`, `i`).test(key))
+  let sectionsArray = [];
+  const suggestSections = () => {
+    const sections = ["Komik", "Bilim", "Oha", "Bu Nedir", "Adam Çalışıyor"];
 
-     console.log(sectionsArray)
-   
-    const sectionMenu = document.createElement("div");
-    sectionMenu.id = "section-menu"
-    sectionMenu.classList.add("hover");
-    sectionMenu.style.cssText = `border: 1px solid; width: 50%; border-radius: 10px; position: relative; margin: 16px 0; cursor: pointer;`;
-
-    for (let i = 0; i < sectionsArray.length; i++) {
-        const sectionIcon = document.createElement("img");
-        sectionIcon.src = `https://miscmedia-9gag-fun.9cache.com/images/thumbnail-facebook/1557376304.186_U5U7u5_100x100.jpg`
-        const sectionName = document.createElement("p");
-        sectionName.innerHTML = sectionsArray[i]
-        sectionMenu.appendChild(sectionName)
-    }
-
-
-    sectionCon.after(sectionMenu);
+    sectionsArray = regexSort(sections, categoryName, (key, value) =>
+      new RegExp(`${value}`, `i`).test(key)
+    );
   };
+
+  const selectCategory = (e) => {
+    categoryName = e.target.id;
+    sectionsArray = [];
+  };
+  let bgOpacity;
+  $: color = bgOpacity < 0.6 ? "white" : "black";
 </script>
 
-<div class="section-con" bind:this={sectionCon}>
-  <img class="search-icon" src="/search.svg" alt="" />
-  <!-- <a href="">
-      <img class="arrow-icon" src="/arrow.svg" alt="" />
-    </a> -->
-  <input
-    bind:value
-    on:focus={suggestSections}
-    on:input={suggestSections}
-    list="countrydata1"
-    class="section-input"
-    id="country1"
-    name="country1"
-    size="50"
-    autocomplete="off"
-  />
+<div class="container">
+  <div class="section-con">
+    <img class="search-icon" src="/search.svg" alt="" />
+    <!-- <a href="">
+        <img class="arrow-icon" src="/arrow.svg" alt="" />
+      </a> -->
+    <input
+      on:input={suggestSections}
+      autocomplete="off"
+      bind:value={categoryName}
+      list="countrydata1"
+      class="section-input"
+      id="country1"
+      name="country1"
+      size="50"
+    />
+  </div>
+  <div class="categories">
+    <!-- content here -->
+    <div
+      class="category-menu"
+      style="display: {sectionsArray.length > 0 ? 'block' : 'none'}"
+    >
+      {#each sectionsArray as item, i}
+        <div
+          class="categ"
+          id={item}
+          on:click={selectCategory}
+          in:fly={{ y: 200, duration: i * 200 }}
+        >
+          <img width="25" height="25" src="/placeholder.png" alt="" />
+          <p>{item}</p>
+        </div>
+      {/each}
+    </div>
+  </div>
 </div>
 
 <style>
+ 
+  .container {
+    width: 70%;
+  }
   .section-con {
     padding: 12px;
-    border: 1px solid;
-    width: 50%;
+    border: 0.5px var(--border) solid;
     border-radius: 10px;
     position: relative;
-    margin: 16px 0;
+    margin: 16px 0 0 0;
+    display: flex;
+    align-items: center;
   }
   .section-input {
     background: none;
     color: inherit;
     border: none;
     outline: none;
-    width: 100%;
-    font-size: 12px;
-    padding-left: 25px;
+    font-size: 16px;
+    padding-left: 30px;
+    line-height: 2;
   }
   input::-webkit-calendar-picker-indicator {
     opacity: 100;
@@ -87,6 +98,30 @@
   .search-icon {
     position: absolute;
     width: 20px;
-    left: 5px;
+    left: 10px;
+  }
+  .categories {
+    width: 100%;
+    position: relative;
+  }
+  .category-menu {
+    position: absolute;
+    background-color: var(--bg);
+    width: 100%;
+    z-index: 1;
+    border: 1px var(--border) solid;
+    border-radius: 10px;
+  }
+  .categ {
+    display: flex;
+    padding: 10px;
+    cursor: pointer;
+  }
+  .categ:hover {
+    background-color: #363636;
+  }
+
+  p {
+    margin-left: 10px;
   }
 </style>

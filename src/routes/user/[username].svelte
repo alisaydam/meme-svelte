@@ -16,7 +16,7 @@
 
 <script>
   import { onMount } from "svelte";
-  import { fade } from 'svelte/transition';
+  import { fade } from "svelte/transition";
   import InfiniteScroll from "$lib/InfiniteScroll.svelte";
   import MemeCard from "$lib/MemeCard.svelte";
   export let username;
@@ -39,72 +39,95 @@
       console.log(error);
     }
   };
-  onMount(() => {
-    fetchUserMemes();
-  });
+ 
 
   $: data = [...data, ...newBatch];
 </script>
 
-<div class="user">
-  <img src={user.avatar} alt="user-avatar" />
-  <div class="user-info">
-    <h1>{user.name}</h1>
-    <h5>@{user.username}</h5>
+ 
+<div class="wrapper">
+  <div class="user">
+    <img  src={user.avatar} alt="user-avatar" />
+    <div class="user-info">
+      <h1>{user.name}</h1>
+      <h5>@{user.username}</h5>
+    </div>
   </div>
-</div>
-<div class="tab-bar" >
-  <ul class="menu">
-    <!-- svelte-ignore a11y-missing-attribute -->
-    <li  transition:fade><a  class:active={current === "postlar"} on:click={() => {
-      current="postlar"
-      newBatch = [];
-      data = [];
-      page = 0;
-      section = "posts";
-      fetchUserMemes();
-    }}>Postlar</a></li>
-    <!-- svelte-ignore a11y-missing-attribute -->
-    <li><a class:active={current==="yorum"} on:click={()=> {
-      current = "yorum"
-    }} >Yorum</a></li>
-    <!-- svelte-ignore a11y-missing-attribute -->
-    <li><a class:active={current==="begen"} on:click={() => {
-      current = "begen"
-      newBatch = [];
-      data = [];
-      page = 0;
-      section = "liked";
-      fetchUserMemes();
-    }}>Beğeniler</a></li>
-    <!-- svelte-ignore a11y-missing-attribute -->
-    <li><a class:active={current === "kaydet"} on:click={()=> {
-      current = "kaydet"
-    }}>Kaydedilenler</a></li>
+  <div class="tab-bar">
+    <ul class="menu">
+      <!-- svelte-ignore a11y-missing-attribute -->
+      <li>
+        <a
+          class:active={current === "postlar"}
+          on:click={() => {
+            current = "postlar";
+            newBatch = [];
+            data = [];
+            page = 0;
+            section = "posts";
+            fetchUserMemes();
+          }}>Postlar</a
+        >
+      </li>
+      <!-- svelte-ignore a11y-missing-attribute -->
+      <li>
+        <a
+          class:active={current === "yorum"}
+          on:click={() => {
+            current = "yorum";
+          }}>Yorum</a
+        >
+      </li>
+      <!-- svelte-ignore a11y-missing-attribute -->
+      <li>
+        <a
+          class:active={current === "begen"}
+          on:click={() => {
+            current = "begen";
+            newBatch = [];
+            data = [];
+            page = 0;
+            section = "liked";
+            fetchUserMemes();
+          }}>Beğeniler</a
+        >
+      </li>
+      <!-- svelte-ignore a11y-missing-attribute -->
+      <li>
+        <a
+          class:active={current === "kaydet"}
+          on:click={() => {
+            current = "kaydet";
+          }}>Kaydedilenler</a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <ul>
+    {#each data as meme}
+      <MemeCard {meme} route={"/user/"} />
+    {/each}
+    <InfiniteScroll
+      hasMore={newBatch.length}
+      threshold={100}
+      on:loadMore={() => {
+        page++;
+        fetchUserMemes(section);
+      }}
+    />
   </ul>
-</div> 
 
-<ul>
-  {#each data as meme}
-    <MemeCard {meme} route={"/user/"} />
-  {/each}
-  <InfiniteScroll
-    hasMore={newBatch.length}
-    threshold={100}
-    on:loadMore={() => {
-      page++;
-      fetchUserMemes(section);
-    }}
-  />
-</ul>
+  {#if newBatch.length === 0}
+    <p>Burada görecek bir şey yok.</p>
+  {/if}
+</div>
 
-{#if newBatch.length === 0}
- <p>
-   Burada görecek bir şey yok.
- </p>
-{/if}
 <style>
- p{
+  .wrapper {
+    padding-top: 50px;
+  }
+  p {
     text-align: center;
   }
   .user {
@@ -133,7 +156,7 @@
   a:hover {
     background-color: rgba(172, 168, 168, 0.5);
   }
-  .active {  
+  .active {
     border-bottom: 2px solid;
   }
   ul {
@@ -142,7 +165,7 @@
     /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
       0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); */
     max-width: 600px;
-    max-height: 100vh; 
+    max-height: 100vh;
   }
 
   ul::-webkit-scrollbar {

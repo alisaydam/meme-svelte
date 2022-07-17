@@ -1,16 +1,21 @@
 <script>
-  import { user, currentMeme, memes } from "../stores"; 
+  import { user, currentMeme, memes } from "../stores";
   import Modal from "./Modal.svelte";
   import { goto } from "$app/navigation";
   import LoginCard from "./LoginCard.svelte";
-  import ThemeSwapper from "./ThemeSwapper.svelte"; 
-  let modal; 
+  import ThemeSwapper from "./ThemeSwapper.svelte";
+  import { onDestroy } from "svelte";
+  let modal;
 
-  const reload =()=> { 
-    $currentMeme = ""
-    $memes = []
-    goto("/")
-  }
+  onDestroy(() => {
+    $memes = [];
+  });
+
+  const reload = () => {
+    $currentMeme = "";
+    $memes = [];
+    goto("/");
+  };
 </script>
 
 <svelte:head>
@@ -34,7 +39,7 @@
 <header>
   <div class="nav-wrap">
     <div>
-      <a  on:click={reload} class="logo"  >Geyix</a>
+      <a on:click={reload} class="logo">Geyix</a>
     </div>
     <nav>
       <ul class="nav-menu">
@@ -55,23 +60,23 @@
               <img class="avatar" src={$user.avatar} alt="fesfes" width="35" />
             </button>
             <ul class="dropdown">
-              <li><a class="drop-list" href={"/user/"+$user.username} >Profil</a></li>
-              <li><a class="drop-list">Menu</a></li>
-              <li><a class="drop-list">Menu</a></li>
+              <li>
+                <a class="drop-list" href={"/user/" + $user.username}>Profil</a>
+              </li>
               <li><a class="drop-list">Menu</a></li>
               <li>
-                <a class="drop-list" on:click={() => $user = ""}>Çıkış</a>
+                <a class="drop-list" on:click={() => ($user = "")}>Çıkış</a>
               </li>
             </ul>
           </li>
         {:else}
           <li class="avatar-li">
             <button on:click={() => modal.show()}
-              ><img class="user-icon" width="25" src="/user.png" alt="enter"  />
+              ><img class="user-icon" width="25" src="/user.png" alt="enter" />
             </button>
           </li>
         {/if}
-        <li><a  ><ThemeSwapper /></a></li>
+        <li><a><ThemeSwapper /></a></li>
       </ul>
       {#if !$user}
         <Modal bind:this={modal}>
@@ -90,12 +95,13 @@
   }
   header {
     /* Sticky will still add item to stacking but will stick when scroll down. And this prevents giving margin-top to each element that comes after navbar. */
-    position: sticky;
-    z-index: 1;
-    background-color: inherit;
+    position: absolute;
+    display: flex;
+    max-width: 650px;
+    background-color: var(--bg);
     height: 50px;
     width: 100%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px var(--border) solid;
   }
   .avatar-li {
     padding: 10px;
@@ -108,7 +114,7 @@
     display: flex;
     width: 100%;
     max-width: 900px;
-    margin: auto; 
+    margin: auto;
     justify-content: space-between;
     align-items: center;
   }
@@ -124,14 +130,14 @@
   /* DropDown Menu    */
   li {
     transition: 0.5s;
-    padding-top: 2px; 
+    padding-top: 2px;
     display: flex;
     align-items: center;
     cursor: pointer;
   }
   li:hover {
     background-color: rgba(172, 168, 168, 0.5);
-  } 
+  }
   li ul {
     padding: 10px 0;
     visibility: hidden;
@@ -140,14 +146,14 @@
     opacity: 0;
     display: none;
     position: absolute;
-    width: 100%; 
+    width: 100%;
     transition: all 0.5s ease;
     margin-top: 1rem;
     top: 30px;
     left: -10px;
-    border-radius: 10px; 
+    border-radius: 10px;
     line-height: 3;
-    border: 1px solid;
+    border: 1px var(--border) solid;
     font-weight: 400;
     background-color: var(--bg);
   }
@@ -172,12 +178,10 @@
     border: none;
     color: inherit;
     padding: 0 11px;
-
   }
-  a{
+  a {
     width: 100%;
     text-align: left;
     padding: 0 11px;
-
   }
 </style>
