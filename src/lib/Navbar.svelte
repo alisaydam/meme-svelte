@@ -1,19 +1,15 @@
 <script>
-  import { user, currentMeme, memes } from "../stores";
+  import { user, currentMeme, memes, page } from "../stores";
   import Modal from "./Modal.svelte";
   import { goto } from "$app/navigation";
   import LoginCard from "./LoginCard.svelte";
   import ThemeSwapper from "./ThemeSwapper.svelte";
-  import { onDestroy } from "svelte";
-  let modal;
+   let modal;
 
-  onDestroy(() => {
-    $memes = [];
-  });
+  
 
   const reload = () => {
-    $currentMeme = "";
-    $memes = [];
+    $currentMeme = "";  
     goto("/");
   };
 </script>

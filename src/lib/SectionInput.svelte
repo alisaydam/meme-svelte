@@ -22,13 +22,7 @@
     );
   };
 
-  const selectCategory = (e) => {
-    categoryName = e.target.id;
-    sectionsArray = [];
-  };
-  let bgOpacity;
-  $: color = bgOpacity < 0.6 ? "white" : "black";
-</script>
+  </script>
 
 <div class="container">
   <div class="section-con">
@@ -55,9 +49,11 @@
     >
       {#each sectionsArray as item, i}
         <div
-          class="categ"
-          id={item}
-          on:click={selectCategory}
+          class="categ" 
+          on:click={() =>{
+            categoryName = item;
+            sectionsArray = []
+          }}
           in:fly={{ y: 200, duration: i * 200 }}
         >
           <img width="25" height="25" src="/placeholder.png" alt="" />

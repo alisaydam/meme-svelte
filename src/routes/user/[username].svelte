@@ -1,6 +1,5 @@
 <script context="module">
   export async function load({ params }) {
-    // console.log(params.username);
     const getUser = await fetch(
       `https://geyix.herokuapp.com/user/getOne/${params.username}`
     );
@@ -34,7 +33,6 @@
         `https://geyix.herokuapp.com/meme/getUserMemes?username=${username}&section=${section}&page=${page}&limit=5`
       );
       newBatch = await getMemes.json();
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

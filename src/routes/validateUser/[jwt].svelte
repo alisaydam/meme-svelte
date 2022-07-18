@@ -1,75 +1,81 @@
 <script context="module">
-  export async function load({ params }) {
-    console.log(params.jwt);
-    let data;
-    try {
-      const validateUser = await fetch(
-        `https://geyix.herokuapp.com/user/createUser/${params.jwt}`
-      );
-      console.log(validateUser);
-      data = await validateUser.json();
-      console.log(data)
-    } catch (error) {
-      console.log(error);
-    }
-    return {
+  export async function load({ params }) { 
+      return {
       props: {
-        data: data,
+        jwt: params.jwt,
       },
     };
   }
 </script>
 
 <script>
-  import { goto } from "$app/navigation";
   import { onMount } from "svelte";
-  import { shown } from "../../stores";
-  export let data;
+  import { shown  } from "../../stores";
+  let data;
 
-  onMount(() => { 
-    data.success &&
-      setTimeout(() => {
-        $shown = true;
+  export let jwt;
+
+  const registerUser = async () => {
+    try {
+      const validateUser = await fetch(
+        `https://geyix.herokuapp.com/user/createUser/${jwt}`
+      );
+      data = await validateUser.json();
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  onMount(() => {
+    registerUser().then(() => {
+      data.success &&
         setTimeout(() => {
-          document.querySelector("input").value = data.user 
-        }, 200);
-      }, 1000);
+           $shown = true;
+          setTimeout(() => { 
+            document.querySelector("input").value = data.email;
+          }, 400);
+        }, 2000);
+    });
   });
-
-  console.log(data);
 </script>
 
-<div class="container">
-  {#if data.success}
-    <h1>Tebrikler {data.name}! Artık üyesin. Hadi paylaşmaya başla sanki</h1>
-    <iframe
-      src="https://giphy.com/embed/QBC5foQmcOkdq"
-      width="480"
-      height="384"
-      frameBorder="0"
-      class="giphy-embed"
-      allowFullScreen
-      title="pingu"
-    />
-  {:else}
-    <h1>Üyelik başarısız. Köyüne geri dön</h1>
-    <iframe
-      src="https://giphy.com/embed/gfJtgKZrBfXP2"
-      width="480"
-      height="288"
-      frameBorder="0"
-      class="giphy-embed"
-      allowFullScreen
-      title="pingu"
-    />
-  {/if}
-</div>
+{#if data}
+  <div class="container">
+    {#if data.success}
+      <h1>
+        Tebrikler {data.user}! Artık üyesin. Hadi paylaşmaya başla sanki
+      </h1>
+      <iframe
+        src="https://giphy.com/embed/QBC5foQmcOkdq"
+        width="480"
+        height="384"
+        frameBorder="0"
+        class="giphy-embed"
+        allowFullScreen
+        title="pingu"
+      />
+    {:else}
+      <h1>Üyelik başarısız. Köyüne geri dön</h1>
+      <iframe
+        src="https://giphy.com/embed/gfJtgKZrBfXP2"
+        width="480"
+        height="288"
+        frameBorder="0"
+        class="giphy-embed"
+        allowFullScreen
+        title="pingu"
+      />
+    {/if}
+  </div>
+{/if}
 
 <style>
   .container {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    padding-top: 50px;
     height: 500px;
     align-items: center;
   }

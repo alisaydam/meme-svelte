@@ -1,8 +1,9 @@
 <script>
   import { aoviSvelte } from "aovi-svelte";
-  import { mode, shown, user } from "../stores";
-  import { fade, fly } from "svelte/transition";
+  import { mode, user } from "../stores";
+  import { fly } from "svelte/transition";
 
+  let error = ""
   let errors = [];
   let message = "";
   const form = aoviSvelte({
@@ -12,7 +13,7 @@
     password: "",
   });
 
-  const doSignup = async () => { 
+  const doSignup = async () => {
     message = "";
     errors = [];
     form.aovi
@@ -78,17 +79,18 @@
       } else {
         errors.includes(data.error) ? null : (errors = [...errors, data.error]);
       }
-      console.log(errors);
     } catch (err) {
       console.log(err);
     }
   };
 
   const forgotPass = async () => {
+    message, error = ""
     form.aovi
       .check("email")
       .required("Email gereklidir.")
-      .match(/[^@]+@[^\.]+\..+/, "Yanlış email formatı!").end;
+      .match(/[^@]+@[^\.]+\..+/, "Yanlış email formatı").end;
+
     if ($form.valid) {
       const { email } = $form;
       try {
@@ -96,18 +98,17 @@
           "https://geyix.herokuapp.com/user/forgotPass/" + email
         );
         const data = await submit.json();
+
         if (data.success) {
           message = data.message;
           $mode = "signin";
         } else {
-          message = data.message;
+          error = data.message;
         }
       } catch (err) {
         console.log(err);
       }
-    } else {
-      console.log("form invalid");
-    }
+    }  
   };
   let tab = "signin";
   let hidePass = false;
@@ -146,7 +147,7 @@
             out:fly={{ y: 200, duration: 200 }}
           >
             <div class="forgot-header">
-              <p>Şifreniz mailinize gönderilecektir.</p>
+              <p>Sıfırlama maili gönderilecektir</p>
               <p
                 class="close-forgot"
                 on:click={() => (showFogotPassCon = false)}
@@ -157,8 +158,10 @@
             <div class="forgot-body">
               <div class="group">
                 <input
+                  bind:value={$form.email}
                   required=""
                   class="input"
+                  autocomplete="on"
                   type="email"
                   placeholder=" "
                 /><span class="highlight" /><span class="bar" />
@@ -170,6 +173,10 @@
                 <button outlined on:click={forgotPass} class="submit-button"
                   >Gönder</button
                 >
+                <p class="success"> {message && message}</p>
+                <p class="error">{error && error}</p>
+
+
               </div>
             </div>
           </div>
@@ -179,6 +186,7 @@
             required=""
             class="input"
             type="email"
+            autocomplete="on"
             placeholder=" "
             bind:value={$form.email}
             on:focus={form.clear}
@@ -218,7 +226,7 @@
         </div>
         <div class="forgot-link">
           <!-- svelte-ignore a11y-missing-attribute -->
-          <a on:click={() => (showFogotPassCon = true)}  >
+          <a on:click={() => (showFogotPassCon = true)}>
             I forgot my password</a
           >
         </div>
@@ -257,6 +265,7 @@
             class="input"
             placeholder=" "
             type="email"
+            autocomplete="on"
             bind:value={$form.email}
             on:focus={form.clear}
           /><span class="highlight" /><span class="bar" />
@@ -308,7 +317,7 @@
 <style>
   .forgot-pass {
     background: white;
-    height: 300px; 
+    height: 300px;
     top: 0;
     color: black;
     left: 0;
@@ -316,7 +325,6 @@
     z-index: 220;
     padding: 10px;
     width: clamp(350px, 60vw, 550px);
-
   }
   .forgot-header {
     display: flex;
@@ -330,8 +338,8 @@
   }
   .auth-box {
     display: flex;
-    flex-direction: column; 
-    background: white; 
+    flex-direction: column;
+    background: white;
     width: clamp(350px, 60vw, 550px);
   }
   .forms {
