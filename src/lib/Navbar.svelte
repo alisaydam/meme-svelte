@@ -3,13 +3,13 @@
   import Modal from "./Modal.svelte";
   import { goto } from "$app/navigation";
   import LoginCard from "./LoginCard.svelte";
-  import ThemeSwapper from "./ThemeSwapper.svelte";
+  import ThemeSwapper from "./ThemeSwapper.svelte"; 
    let modal;
 
   
 
   const reload = () => {
-    $currentMeme = "";  
+    $currentMeme = "";   
     goto("/");
   };
 </script>
@@ -59,10 +59,7 @@
               <li>
                 <a class="drop-list" href={"/user/" + $user.username}>Profil</a>
               </li>
-              <li><a class="drop-list">Menu</a></li>
-              <li>
-                <a class="drop-list" on:click={() => ($user = "")}>Çıkış</a>
-              </li>
+              <li><a class="drop-list">Menu</a></li> 
             </ul>
           </li>
         {:else}

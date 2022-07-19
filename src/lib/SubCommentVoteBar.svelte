@@ -48,15 +48,14 @@
     const replyToShow = document.createElement("p");
     replyToShow.id = "replyToShow";
 
-    replyToShow.innerText = "@" + subComment.commentor;
+    replyToShow.innerText = "@" + subComment.user.username;
     replyToShow.style.cssText =
       "position: absolute; top: 0; left: 0; font-size:12px; color: #A6A6E9;";
 
     subDiv.appendChild(replyToShow);
     subDiv.appendChild(submitArea);
     subDiv.appendChild(submitButton);
-
-    submitButton.style.backgroundColor = "red";
+ 
     submitButton.innerText = "Gönder";
     submitArea.style.cssText = `  
     font-size: 12px;
@@ -88,11 +87,11 @@
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           commentor: $user.username,
-          avatar: $user.avatar,
+          id: $user._id,
           subComment: subReply,
           commentId: comment._id,
           subReplytId: subComment._id,
-          replyTo: subComment.commentor,
+          replyTo: subComment.user.username,
         }),
       }
     );
@@ -141,8 +140,7 @@
   >
   <button
     on:click={openSubCommentReply}
-    id={subComment.commentor}
-    value={comment._id}
+    id={subComment.user.username} 
     name={subComment._id}
     class="vote-button"
   >

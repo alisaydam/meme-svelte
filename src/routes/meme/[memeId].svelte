@@ -15,13 +15,15 @@
   import MemeCard from "$lib/MemeCard.svelte";
   import CommentCard from "$lib/CommentCard.svelte";
   export let meme;
-  export let comments;
+  export let comments; 
   import SubmitComment from "$lib/SubmitComment.svelte";
-  import { user } from "../../stores";
+  import { memes, user } from "../../stores";
   let url = "https://geyix.herokuapp.com/comment/newcomment";
-  const submitComment = (e) => {
+  const submitComment = (e) => { 
     comments = e.detail;
   };
+
+  console.log(comments)
 </script>
  
  <div>
@@ -31,7 +33,7 @@
     <CommentCard
       {comment}
       user={$user}
-      subComments={comment.subComments.subComments}
+      subComments={comment.subComments}
     />
   {/each}
  </div>
@@ -41,6 +43,7 @@
   div{
     padding-top: 75px;
     max-width: 600px;
-    margin: auto;
+    margin: auto; 
   }
+
 </style>

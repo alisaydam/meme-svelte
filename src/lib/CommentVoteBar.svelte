@@ -67,8 +67,7 @@
 
     const item = document.getElementById(e.currentTarget.id + "bar");
 
-    submitButton.style.backgroundColor = "red";
-    submitButton.innerHTML = "Gönder";
+     submitButton.innerHTML = "Gönder";
     submitArea.style.cssText = ` 
     resize: none;
     width: 90%;
@@ -77,7 +76,7 @@
     background-color: inherit;
     max-height: 60px;
     color: inherit;
-    border: 1px solid;`;
+    border: 1px solid var(--border);`;
 
     item.after(subDiv);
     submitButton.onclick = submitSubComment;
@@ -126,7 +125,7 @@
     id={comment._id}
   >
     <img src="/ftcomment.svg" alt="s" srcset="" />
-    <span class="vote-button">{comment.subComments.subComments.length}</span
+    <span class="vote-button">{comment.subComments.length}</span
     ><button />
   </button>
 </div>
@@ -149,9 +148,7 @@
     background-color: rgba(255, 255, 255, 0.06);
   }
   .vote-wrapper {
-    display: flex;
-    max-width: 650px;
-    margin: auto;
+    display: flex; 
   }
   span {
     margin-left: 4px;
@@ -162,7 +159,5 @@
     margin: 2px;
     width: 20px; 
   }
-
-  @media (max-width: 450px) {
-  }
+ 
 </style>

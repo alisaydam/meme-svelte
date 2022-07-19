@@ -26,14 +26,12 @@
         <a href="/">Funny</a> . 14h
       </p>
     </div>
-    <a href={meme.title}>
-      <h1>
+       <h1>
         <a href={route + meme._id} sveltekit:prefetch sveltekit:noscroll
           >{meme.title}</a
         >
       </h1>
-    </a>
-  </header>
+   </header>
   <div class="post-container">
     <a href={route + meme._id} sveltekit:prefetch sveltekit:noscroll>
       <!-- Add this to a tag to opne it in a new tab target="_blank"   -->
@@ -80,7 +78,8 @@
     text-decoration: none;
     cursor: pointer;
     color: inherit;
-  }
+    overflow-wrap: anywhere;
+   }
   img {
     object-fit: cover;
     width: 100%;

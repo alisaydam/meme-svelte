@@ -7,10 +7,10 @@
 </script>
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="sub-comment-wrapper" id={subComment._id}>
-  <a href = {"/user/"+subComment.commentor}><img src={subComment.avatar} alt="" /></a>
+  <a href = {"/user/"+subComment.commentor}><img src={subComment.user.avatar} alt="" /></a>
   <div>
     <div class="comment">
-      <h5>{subComment.commentor}</h5>
+       <h5>{subComment.user.username }</h5>
       <p>
         <a href = {"/user/"+subComment.replyTo}>
           {subComment.replyTo ? "@" + subComment.replyTo+" " : ""}</a
@@ -32,8 +32,7 @@
     padding: 8px 0;
   }
   .comment {
-    margin-left: 50px;
-    width: 90%;
+    margin-left: 50px; 
     word-wrap: break-word;
   }
   h5 {

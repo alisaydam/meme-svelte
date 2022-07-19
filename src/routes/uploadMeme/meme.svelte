@@ -87,7 +87,7 @@
 
   const onFileSelected = async (e) => {
     image = e.target.files[0];
-    const data = await compressAccurately(image, {
+     const data = await compressAccurately(image, {
       size: 250,
       accuracy: 0.9,
       width: 600,
@@ -97,7 +97,7 @@
     let reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = (e) => {
-      avatar = e.target.result;
+       avatar = e.target.result;
     };
   };
 
@@ -122,7 +122,7 @@
         contenteditable="true"
       />
       {#if wrongInput}
-      <h3 transition:fade>Tüm Alanları doğru doldurunuz..</h3>
+      <h3 transition:fade>Tüm Alanları doğru giriniz.</h3>
       {/if}
       <span class="counter">
         {!title.length === 0 ? "s" : 150 - title.length}</span
@@ -189,7 +189,7 @@
     transform: translate(-50%, -50%);
   }
 
-  .arrow-icon {
+  /* .arrow-icon {
     position: absolute;
     right: 10px;
     top: 20px;
@@ -203,7 +203,7 @@
     width: 100%;
     font-size: 12px;
     padding-left: 25px;
-  }
+  } */
   input::-webkit-calendar-picker-indicator {
     opacity: 100;
     cursor: pointer;

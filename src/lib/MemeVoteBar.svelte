@@ -66,7 +66,7 @@ import {shown} from "../stores"
       ></svg
     ><span>{meme.dislikes.length}</span></button
   >
-  <a sveltekit:prefetch sveltekit:noscroll href={"/meme/" + meme._id}  rel="external">
+  <a href={"/meme/" + meme._id}  sveltekit:prefetch  >
     <button class="vote-button">
       <img src="/ftcomment.svg" alt="s" srcset="" />
       <span

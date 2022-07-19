@@ -4,13 +4,14 @@
   export let comment;
   export let user; 
   
-  let startIndex = comment.subComments.subComments.length
-  let endIndex = comment.subComments.subComments.length 
-  $: shownArr = comment.subComments.subComments.slice(startIndex, endIndex)
+  let startIndex = comment.subComments.length
+  let endIndex = comment.subComments.length 
+  $: shownArr = comment.subComments.slice(startIndex, endIndex)
   const showSubcomments = () => { 
       startIndex-=2
   };
   const submitSubComment = (e) => { 
+    console.log(e.detail)
     comment = e.detail
   };
   const submitSubReply = (e) => {
@@ -21,9 +22,9 @@
 
 <div class="comment-wrapper">
   <!-- svelte-ignore a11y-invalid-attribute -->
-  <a href = {"/user/"+comment.commentor.username}> <img src={comment.commentor.avatar} alt="" /></a>
+  <a href = {"/user/"+comment.user.username}> <img src={comment.user.avatar} alt="" /></a>
   <div class="comment">
-    <h5>{comment.commentor.username}</h5>
+    <h5>{comment.user.username}</h5>
     <p>{comment.comment}</p>
     <CommentVoteBar
       {user}
@@ -31,11 +32,11 @@
       {comment}
       on:submitSubComment={submitSubComment}
     />
-    {#each comment.subComments.subComments.reverse() as subComment}
-      <SubCommentCard {subComment} {comment} on:submitSubReply={submitSubReply} />
+    {#each comment.subComments.reverse() as subComment, i}
+      <SubCommentCard {subComment} {comment} on:submitSubReply={submitSubReply}  />
     {/each}
     <div id={comment._id + "before"} />
-    {#if comment.subComments.subComments.length >0}
+    {#if comment.subComments.length >0}
     <a href="" on:click={showSubcomments}>
       <svg width="9" viewBox="-2.5 -5 75 60" preserveAspectRatio="none">
         <path
@@ -46,7 +47,7 @@
           stroke-width="10"
         />
       </svg>
-      {comment.subComments.subComments.length} Yorumları Görüntüle
+      {comment.subComments.length} Yorumları Görüntüle
     </a>
     {/if}
   </div>
@@ -67,8 +68,7 @@
   }
   .comment {
     margin-left: 50px;
-    width: 90%;
-    word-wrap: break-word;
+     word-wrap: break-word;
   }
   h5 {
     font-size: 14px;
