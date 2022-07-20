@@ -24,9 +24,11 @@
   });
 </script>
 
-<ul>
+<ul class="wrapper">
   {#each $memes as meme}
-    <MemeCard {meme} route="/meme/" />
+    <div class="atricle">
+      <MemeCard {meme} route="/meme/" />
+    </div>
   {/each}
   <InfiniteScroll
     hasMore={$memes.length}
@@ -39,16 +41,19 @@
 </ul>
 
 <style>
-  ul {
+  .wrapper {
     padding: 50px 0 0 0;
-    overflow-x: hidden;
+     width: 100vw;
+    height: 100vh;
+    overflow-x: hidden; 
     /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
       0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); */
     max-height: 100vh;
-    max-width: 600px;
+    
     margin: auto;
   }
-  ul::-webkit-scrollbar {
-    display: none;
-  }
+  /* .wrapper::-webkit-scrollbar {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+  } */
 </style>

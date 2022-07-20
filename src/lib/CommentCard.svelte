@@ -11,7 +11,6 @@
       startIndex-=2
   };
   const submitSubComment = (e) => { 
-    console.log(e.detail)
     comment = e.detail
   };
   const submitSubReply = (e) => {
@@ -27,7 +26,7 @@
     <h5>{comment.user.username}</h5>
     <p>{comment.comment}</p>
     <CommentVoteBar
-      {user}
+   
       commentid={comment._id}
       {comment}
       on:submitSubComment={submitSubComment}

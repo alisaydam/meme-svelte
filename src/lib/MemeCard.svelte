@@ -39,7 +39,7 @@
     </a>
   </div>
 </article>
-<MemeVoteBar {meme} user={$user} />
+<MemeVoteBar {meme} />
 
 <style>
   h1 {

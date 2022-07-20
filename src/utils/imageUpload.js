@@ -27,7 +27,6 @@ export const uploadImage = async (file, path) => {
     const storage = getStorage(app);
     const storageRef = ref(storage, path + img.name + Date.now());
     const uploadTask = await uploadBytesResumable(storageRef, img, metadata);
-    console.log(uploadTask);
 
     const url = await getDownloadURL(uploadTask.task.snapshot.ref);
     return url;

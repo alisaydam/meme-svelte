@@ -1,26 +1,32 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { shown } from "../stores";
-  export let user;
-  export let url;
+  import { shown, user } from "../stores";
   export let meme;
+  export let url;
   let comment;
 
   let dispatch = createEventDispatcher();
 
   const handleSubmit = async (e) => {
-    if (!$shown) {
+    if (!comment.trim()) {
+      return;
+    }
+    if (!$user) {
       return ($shown = true);
     }
     const submit = await fetch(url, {
       method: "POST",
-      headers: { "Content-type": "application/json" },
+      headers: new Headers({
+        Authorization: "Bearer " + $user.token,
+        "Content-Type": "application/json",
+      }),
       body: JSON.stringify({
         comment,
-        userid: user._id,
+        userid: $user._id,
         memeid: meme._id,
       }),
     });
+    comment = "";
     const data = await submit.json();
     dispatch("submitComment", data);
     document.querySelector("textarea").value = "";
@@ -30,11 +36,11 @@
 <div class="submit-wrapper">
   <div class="upper-con">
     <!-- svelte-ignore a11y-invalid-attribute -->
-   {#if user}
-   <a href="">
-    <img src={user.avatar} alt="sssssssss" />
-  </a> 
-   {/if}
+    {#if $user}
+      <a href="">
+        <img src={$user.avatar} alt={$user.username} />
+      </a>
+    {/if}
     <textarea
       maxlength="500"
       minlength="1"

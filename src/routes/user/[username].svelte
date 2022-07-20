@@ -17,18 +17,16 @@
   import InfiniteScroll from "$lib/InfiniteScroll.svelte";
   import MemeCard from "$lib/MemeCard.svelte";
   import { uploadImage } from "../../utils/imageUpload";
-  import {user} from "../../stores"
+  import { user } from "../../stores";
   export let username;
   export let displayedUser;
   let current = "active";
 
-  console.log(displayedUser)
 
   let page = 0;
   let data = [];
   let newBatch = [];
   let section = "posts";
- 
 
   const fetchUserMemes = async () => {
     try {
@@ -49,123 +47,125 @@
   const onFileSelected = async (e) => {
     let image = e.target.files[0];
     const url = await uploadImage(image, "avatars/");
-     try {
+    try {
       const updateAvatar = await fetch(
         `https://geyix.herokuapp.com/user/update-avatar`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: new Headers({
+            Authorization: "Bearer " + $user.token,
+            "Content-Type": "application/json",
+          }),
           body: JSON.stringify({
             id: $user._id,
             url,
           }),
         }
       );
-      const data = await updateAvatar.json()
-      displayedUser = data
-      $user = data
-
+      const data = await updateAvatar.json();
+      displayedUser = data;
+      $user = data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-   };
+  };
 </script>
 
 <div class="wrapper">
-  <div class="user">
-   {#if $user}
-   <div class="hover-img">
-    <img width="100" src={displayedUser.avatar} alt="user-avatar" />
-    <button
-      on:click={() => {
-        alert("Sadece kare fotoğraflar")
-        fileinput.click();
-      }}
-      class="upload"
-    >
-      <input
-        style="display:none"
-        type="file"
-        accept=".jpg, .jpeg, .png"
-        on:change={(e) => onFileSelected(e)}
-        bind:this={fileinput}
-      /><img src="/camera.svg" alt="" /></button
-    >
-  </div>
-   {:else}
-   <div  >
-    <img width="100" src={displayedUser.avatar} alt="user-avatar" />
-  </div>
-   {/if}
-    <div class="user-info">
-      <h1>{displayedUser.name}</h1>
-      <h5>@{displayedUser.username}</h5>
+  <div class="user-menu">
+    <div class="user">
+      {#if $user}
+        <div class="hover-img">
+          <img width="100" src={displayedUser.avatar} alt="user-avatar" />
+          <button
+            on:click={() => {
+              alert("Sadece kare fotoğraflar");
+              fileinput.click();
+            }}
+            class="upload"
+          >
+            <input
+              style="display:none"
+              type="file"
+              accept=".jpg, .jpeg, .png"
+              on:change={(e) => onFileSelected(e)}
+              bind:this={fileinput}
+            /><img src="/camera.svg" alt="" /></button
+          >
+        </div>
+      {:else}
+        <div>
+          <img width="100" src={displayedUser.avatar} alt="user-avatar" />
+        </div>
+      {/if}
+      <div class="user-info">
+        <h1>{displayedUser.name}</h1>
+        <h5>@{displayedUser.username}</h5>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <ul class="menu">
+        <!-- svelte-ignore a11y-missing-attribute -->
+        <li>
+          <a
+            class:active={current === "postlar"}
+            on:click={() => {
+              current = "postlar";
+              newBatch = [];
+              data = [];
+              page = 0;
+              section = "posts";
+              fetchUserMemes();
+            }}>Postlar</a
+          >
+        </li>
+        <!-- svelte-ignore a11y-missing-attribute -->
+        <li>
+          <a
+            class:active={current === "yorum"}
+            on:click={() => {
+              current = "yorum";
+            }}>Yorum</a
+          >
+        </li>
+        <!-- svelte-ignore a11y-missing-attribute -->
+        <li>
+          <a
+            class:active={current === "begen"}
+            on:click={() => {
+              current = "begen";
+              newBatch = [];
+              data = [];
+              page = 0;
+              section = "liked";
+              fetchUserMemes();
+            }}>Beğeniler</a
+          >
+        </li>
+        <!-- svelte-ignore a11y-missing-attribute -->
+        <li>
+          <a
+            class:active={current === "kaydet"}
+            on:click={() => {
+              current = "kaydet";
+            }}>Kaydedilenler</a
+          >
+        </li>
+      </ul>
     </div>
   </div>
-  <div class="tab-bar">
-    <ul class="menu">
-      <!-- svelte-ignore a11y-missing-attribute -->
-      <li>
-        <a
-          class:active={current === "postlar"}
-          on:click={() => {
-            current = "postlar";
-            newBatch = [];
-            data = [];
-            page = 0;
-            section = "posts";
-            fetchUserMemes();
-          }}>Postlar</a
-        >
-      </li>
-      <!-- svelte-ignore a11y-missing-attribute -->
-      <li>
-        <a
-          class:active={current === "yorum"}
-          on:click={() => {
-            current = "yorum";
-          }}>Yorum</a
-        >
-      </li>
-      <!-- svelte-ignore a11y-missing-attribute -->
-      <li>
-        <a
-          class:active={current === "begen"}
-          on:click={() => {
-            current = "begen";
-            newBatch = [];
-            data = [];
-            page = 0;
-            section = "liked";
-            fetchUserMemes();
-          }}>Beğeniler</a
-        >
-      </li>
-      <!-- svelte-ignore a11y-missing-attribute -->
-      <li>
-        <a
-          class:active={current === "kaydet"}
-          on:click={() => {
-            current = "kaydet";
-          }}>Kaydedilenler</a
-        >
-      </li>
-    </ul>
-  </div>
 
-  <ul>
-    {#each data as meme}
-      <MemeCard {meme} route={"/user/"} />
-    {/each}
-    <InfiniteScroll
-      hasMore={newBatch.length}
-      threshold={100}
-      on:loadMore={() => {
-        page++;
-        fetchUserMemes(section);
-      }}
-    />
-  </ul>
+  {#each data as meme}
+    <MemeCard {meme} route={"/user/"} />
+  {/each}
+  <InfiniteScroll
+    hasMore={newBatch.length}
+    threshold={100}
+    on:loadMore={() => {
+      page++;
+      fetchUserMemes(section);
+    }}
+  />
 
   {#if newBatch.length === 0}
     <p>Burada görecek bir şey yok.</p>
@@ -173,6 +173,23 @@
 </div>
 
 <style>
+  .wrapper {
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); */
+    max-height: 100vh;
+    margin: auto;
+    padding-top: 80px;
+  }
+  .wrapper::-webkit-scrollbar {
+    /* display: none; */
+  }
+  .user-menu {
+    max-width: 600px;
+    margin: auto;
+  }
   img {
     border-radius: 50%;
     object-fit: contain;
@@ -205,16 +222,11 @@
   .hover-img:hover > .upload {
     opacity: 1;
   }
-
-  .wrapper {
-    padding-top: 80px;
-  }
   p {
     text-align: center;
   }
   .user {
     display: flex;
-    margin: auto;
     height: 100px;
   }
   .user-info {

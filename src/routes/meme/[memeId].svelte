@@ -22,8 +22,6 @@
   const submitComment = (e) => { 
     comments = e.detail;
   };
-
-  console.log(comments)
 </script>
  
  <div>
@@ -32,7 +30,7 @@
   {#each comments as comment}
     <CommentCard
       {comment}
-      user={$user}
+      user={user}
       subComments={comment.subComments}
     />
   {/each}
@@ -42,7 +40,7 @@
 <style>
   div{
     padding-top: 75px;
-    max-width: 600px;
+    max-width: 600px; 
     margin: auto; 
   }
 

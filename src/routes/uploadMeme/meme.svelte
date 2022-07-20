@@ -3,7 +3,7 @@
   import { compressAccurately } from "image-conversion";
   import { Circle3 } from "svelte-loading-spinners";
   import { preventTabClose } from "../../utils/prevent";
-  import { fade  } from "svelte/transition"; 
+  import { fade } from "svelte/transition";
   import {
     getStorage,
     ref,
@@ -35,12 +35,12 @@
     title = "";
   let spinner = false;
   const uploadToFireStorage = () => {
-    if(!sections.includes(categoryName)){
-      wrongInput = true
+    if (!sections.includes(categoryName)) {
+      wrongInput = true;
       setTimeout(() => {
-        wrongInput= false
+        wrongInput = false;
       }, 1500);
-      return
+      return;
     }
     const metadata = {
       contentType: "image/jpeg",
@@ -60,11 +60,13 @@
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
-          
           try {
             const submit = await fetch("https://geyix.herokuapp.com/meme/newmeme", {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: new Headers({
+                Authorization: "Bearer " + $user.token,
+                "Content-Type": "application/json",
+              }),
               body: JSON.stringify({
                 meme: dowloadURL,
                 id: $user._id,
@@ -74,7 +76,7 @@
             });
             spinner = false;
             avatar = "";
-            categoryName= "";
+            categoryName = "";
             title = "";
             const data = await submit.json();
           } catch (error) {
@@ -87,7 +89,7 @@
 
   const onFileSelected = async (e) => {
     image = e.target.files[0];
-     const data = await compressAccurately(image, {
+    const data = await compressAccurately(image, {
       size: 250,
       accuracy: 0.9,
       width: 600,
@@ -97,7 +99,7 @@
     let reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = (e) => {
-       avatar = e.target.result;
+      avatar = e.target.result;
     };
   };
 
@@ -122,7 +124,7 @@
         contenteditable="true"
       />
       {#if wrongInput}
-      <h3 transition:fade>Tüm Alanları doğru giriniz.</h3>
+        <h3 transition:fade>Tüm Alanları doğru giriniz.</h3>
       {/if}
       <span class="counter">
         {!title.length === 0 ? "s" : 150 - title.length}</span
@@ -168,7 +170,7 @@
 {/if}
 
 <style>
-   h3 {
+  h3 {
     z-index: 5;
     background-color: var(--border);
     width: 100%;

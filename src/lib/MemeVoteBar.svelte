@@ -1,28 +1,34 @@
-<script> 
-import {shown} from "../stores"
+<script>
+  import { shown, user } from "../stores";
   export let meme;
-  export let user;
-  const likeMeme = async () => {
-    if(!$shown){
-      return $shown = true
+   const likeMeme = async () => {
+    if (!$shown) {
+      return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/likeMeme/${user.username}/${meme._id}`,
+      `https://geyix.herokuapp.com/like/likeMeme/${$user.username}/${meme._id}`,
       {
-        headers: {
-          "authorization": "Bearer dwaofjwaojfowa",
-        },
+        headers: new Headers({
+          Authorization: "Bearer " + $user.token,
+          "Content-Type": "application/json",
+        }),
       }
     );
     const data = await submit.json();
     meme = data;
   };
   const dislikeMeme = async () => {
-    if(!$shown){
-      return $shown = true
+    if (!$shown) {
+      return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislikeMeme/${user.username}/${meme._id}`,
+      `https://geyix.herokuapp.com/like/dislikeMeme/${$user.username}/${meme._id}`,
+      {
+        headers: new Headers({
+          Authorization: "Bearer " + $user.token,
+          "Content-Type": "application/json",
+        }),
+      }
     );
     const data = await submit.json();
     meme = data;
@@ -31,7 +37,7 @@ import {shown} from "../stores"
 
 <div class="vote-wrapper">
   <button
-    class="vote-button-up {meme.likes.includes(user.username) ? 'voted' : ''}"
+    class="vote-button-up {meme.likes.includes($user.username) ? 'voted' : ''}"
     on:click={likeMeme}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +55,7 @@ import {shown} from "../stores"
     ><span>{meme.likes.length}</span></button
   >
   <button
-    class="vote-button {meme.dislikes.includes(user.username) ? 'voted' : ''}"
+    class="vote-button {meme.dislikes.includes($user.username) ? 'voted' : ''}"
     on:click={dislikeMeme}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
@@ -66,12 +72,10 @@ import {shown} from "../stores"
       ></svg
     ><span>{meme.dislikes.length}</span></button
   >
-  <a href={"/meme/" + meme._id}  sveltekit:prefetch  >
+  <a href={"/meme/" + meme._id} sveltekit:prefetch>
     <button class="vote-button">
       <img src="/ftcomment.svg" alt="s" srcset="" />
-      <span
-        >{meme.comments.length}</span
-      ></button
+      <span>{meme.comments.length}</span></button
     >
   </a>
 </div>
@@ -106,7 +110,7 @@ import {shown} from "../stores"
     margin-left: 4px;
     color: inherit;
   }
- 
+
   img {
     margin: 2px;
     width: 20px;

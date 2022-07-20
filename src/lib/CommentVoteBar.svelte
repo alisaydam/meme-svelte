@@ -1,7 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { shown } from "../stores";
-  export let user;
+  import { shown, user } from "../stores"; 
   export let commentid;
   export let comment;
 
@@ -12,7 +11,13 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/likeComment/${user.username}/${commentid}`
+      `https://geyix.herokuapp.com/like/likeComment/${$user.username}/${commentid}`,
+      {
+        headers: new Headers({
+          Authorization: "Bearer " + $user.token,
+          "Content-Type": "application/json",
+        }),
+      }
     );
     const data = await submit.json();
     comment = data;
@@ -22,7 +27,13 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislikeComment/${user.username}/${commentid}`
+      `https://geyix.herokuapp.com/like/dislikeComment/${$user.username}/${commentid}`,
+      {
+        headers: new Headers({
+          Authorization: "Bearer " + $user.token,
+          "Content-Type": "application/json",
+        }),
+      }
     );
     const data = await submit.json();
     comment = data;
@@ -30,12 +41,20 @@
 
   const submitSubComment = async () => {
     const subComment = document.getElementById("textArea").value;
+    if(!subComment.trim()){
+      return
+    }
+    if (!$shown) {
+      return ($shown = true);
+    }
     const submit = await fetch("https://geyix.herokuapp.com/comment/newSubComment", {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: new Headers({
+        Authorization: "Bearer " + $user.token,
+        "Content-Type": "application/json",
+      }),
       body: JSON.stringify({
-        username: user.username,
-        avatar: user.avatar,
+        username: $user.username, 
         subComment: subComment,
         commentId: comment._id,
       }),
@@ -57,7 +76,7 @@
     const subDiv = document.createElement("div");
     subDiv.id = "comment-div";
     subDiv.style.cssText = "display: flex;";
-    subDiv.classList.add("fade-in")
+    subDiv.classList.add("fade-in");
     const submitArea = document.createElement("textarea");
     submitArea.id = "textArea";
     const submitButton = document.createElement("button");
@@ -67,7 +86,7 @@
 
     const item = document.getElementById(e.currentTarget.id + "bar");
 
-     submitButton.innerHTML = "Gönder";
+    submitButton.innerHTML = "Gönder";
     submitArea.style.cssText = ` 
     resize: none;
     width: 90%;
@@ -86,8 +105,8 @@
 
 <div class="vote-wrapper" id={comment._id + "bar"}>
   <button on:click={likeComment} class="vote-button-up"
-    ><svg 
-    class= {comment.likes.includes(user.username) ? 'voted': ''}
+    ><svg
+      class={comment.likes.includes($user.username) ? "voted" : ""}
       xmlns="http://www.w3.org/2000/svg"
       width="14"
       height="12"
@@ -104,7 +123,7 @@
   >
   <button class="vote-button" on:click|preventDefault={dislikeComment}
     ><svg
-    class={comment.dislikes.includes(user.username)? "voted": ""}
+      class={comment.dislikes.includes($user.username) ? "voted" : ""}
       xmlns="http://www.w3.org/2000/svg"
       width="14"
       height="12"
@@ -125,13 +144,12 @@
     id={comment._id}
   >
     <img src="/ftcomment.svg" alt="s" srcset="" />
-    <span class="vote-button">{comment.subComments.length}</span
-    ><button />
+    <span class="vote-button">{comment.subComments.length}</span><button />
   </button>
 </div>
 
 <style>
-  .voted{ 
+  .voted {
     color: rgb(94, 108, 228);
   }
   button {
@@ -148,7 +166,7 @@
     background-color: rgba(255, 255, 255, 0.06);
   }
   .vote-wrapper {
-    display: flex; 
+    display: flex;
   }
   span {
     margin-left: 4px;
@@ -157,7 +175,6 @@
 
   img {
     margin: 2px;
-    width: 20px; 
+    width: 20px;
   }
- 
 </style>

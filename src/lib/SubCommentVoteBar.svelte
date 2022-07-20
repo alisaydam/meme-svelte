@@ -10,7 +10,13 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/likeSubComment/${$user.username}/${comment._id}/${subComment._id}`
+      `https://geyix.herokuapp.com/like/likeSubComment/${$user.username}/${comment._id}/${subComment._id}`,
+      {
+        headers: new Headers({
+          Authorization: "Bearer " + $user.token,
+          "Content-Type": "application/json",
+        }),
+      }
     );
     const data = await submit.json();
     subComment.dislikes = data.dislikes;
@@ -21,7 +27,13 @@
       return ($shown = true);
     }
     const submit = await fetch(
-      `https://geyix.herokuapp.com/like/dislikeSubComment/${$user.username}/${comment._id}/${subComment._id}`
+      `https://geyix.herokuapp.com/like/dislikeSubComment/${$user.username}/${comment._id}/${subComment._id}`,
+      {
+        headers: new Headers({
+          Authorization: "Bearer " + $user.token,
+          "Content-Type": "application/json",
+        }),
+      }
     );
     const data = await submit.json();
     subComment.dislikes = data.dislikes;
@@ -55,7 +67,7 @@
     subDiv.appendChild(replyToShow);
     subDiv.appendChild(submitArea);
     subDiv.appendChild(submitButton);
- 
+
     submitButton.innerText = "Gönder";
     submitArea.style.cssText = `  
     font-size: 12px;
@@ -67,34 +79,38 @@
     height: 50px;
     border: 1px solid;`;
 
-    
     item.appendChild(subDiv);
     submitButton.onclick = submitReply;
- 
-    const text = document.getElementById("replyToShow"); 
+
+    const text = document.getElementById("replyToShow");
     const width = text.clientWidth;
-    submitArea.style.textIndent = width+2+"px"
-    
+    submitArea.style.textIndent = width + 2 + "px";
   };
 
   const submitReply = async () => {
     const subReply = document.getElementById("textArea").value;
+    if (!subReply.trim()) {
+      return;
+    }
+    if (!$user) {
+      return ($shown = true);
+    }
+    const submit = await fetch("https://geyix.herokuapp.com/comment/newSubReply", {
+      method: "POST",
+      headers: new Headers({
+        Authorization: "Bearer " + $user.token,
+        "Content-Type": "application/json",
+      }),
 
-    const submit = await fetch(
-      "https://geyix.herokuapp.com/comment/newSubReply",
-      {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          commentor: $user.username,
-          id: $user._id,
-          subComment: subReply,
-          commentId: comment._id,
-          subReplytId: subComment._id,
-          replyTo: subComment.user.username,
-        }),
-      }
-    );
+      body: JSON.stringify({
+        commentor: $user.username,
+        id: $user._id,
+        subComment: subReply,
+        commentId: comment._id,
+        subReplytId: subComment._id,
+        replyTo: subComment.user.username,
+      }),
+    });
     const data = await submit.json();
     dispatch("submitSubReply", data);
     const subDivSel = document.getElementById("comment-div");
@@ -140,11 +156,11 @@
   >
   <button
     on:click={openSubCommentReply}
-    id={subComment.user.username} 
+    id={subComment.user.username}
     name={subComment._id}
     class="vote-button"
   >
-  <img src="/ftcomment.svg" alt="s" srcset="" />
+    <img src="/ftcomment.svg" alt="s" srcset="" />
     <span class="vote-button">Cevapla</span><button />
   </button>
 </div>
