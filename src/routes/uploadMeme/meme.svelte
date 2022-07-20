@@ -93,7 +93,7 @@
   const onFileSelected = async (e) => {
     image = e.target.files[0];
     const data = await compressAccurately(image, {
-      size: 100,
+      size: 50,
       accuracy: 0.9,
       width: 600,
       orientation: 1,
@@ -174,10 +174,14 @@
 
 <style>
   .container {
+    display: flex;
+    flex-direction: column;
     padding: 32px;
+    width: 100%;
     padding-top: 75px;
     max-width: 600px;
     margin: auto;
+    overflow-x: hidden
   }
   .spinner {
     position: absolute;
