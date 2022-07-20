@@ -2,7 +2,7 @@
   import { initializeApp } from "firebase/app";
   import { compressAccurately } from "image-conversion";
   import { Circle3 } from "svelte-loading-spinners";
-  import { preventTabClose } from "../../utils/prevent";
+  // import { preventTabClose } from "../../utils/prevent";
   import { fade } from "svelte/transition";
   import {
     getStorage,
@@ -61,19 +61,22 @@
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
           try {
-            const submit = await fetch("https://geyix.herokuapp.com/meme/newmeme", {
-              method: "POST",
-              headers: new Headers({
-                Authorization: "Bearer " + $user.token,
-                "Content-Type": "application/json",
-              }),
-              body: JSON.stringify({
-                meme: dowloadURL,
-                id: $user._id,
-                title: title,
-                categoryName: categoryName,
-              }),
-            });
+            const submit = await fetch(
+              "https://geyix.herokuapp.com/meme/newmeme",
+              {
+                method: "POST",
+                headers: new Headers({
+                  Authorization: "Bearer " + $user.token,
+                  "Content-Type": "application/json",
+                }),
+                body: JSON.stringify({
+                  meme: dowloadURL,
+                  id: $user._id,
+                  title: title,
+                  categoryName: categoryName,
+                }),
+              }
+            );
             spinner = false;
             avatar = "";
             categoryName = "";
@@ -90,7 +93,7 @@
   const onFileSelected = async (e) => {
     image = e.target.files[0];
     const data = await compressAccurately(image, {
-      size: 250,
+      size: 100,
       accuracy: 0.9,
       width: 600,
       orientation: 1,
@@ -103,10 +106,10 @@
     };
   };
 
-  let shouldWork = true;
+  // let shouldWork = true;
 </script>
 
-<div use:preventTabClose={shouldWork} />
+<!-- <div use:preventTabClose={shouldWork} /> -->
 <div class="container">
   <h2 class="page-title">Post yükle</h2>
   <SectionInput bind:categoryName />
@@ -170,16 +173,6 @@
 {/if}
 
 <style>
-  h3 {
-    z-index: 5;
-    background-color: var(--border);
-    width: 100%;
-    left: 0;
-    position: absolute;
-    text-align: center;
-    padding: 10px;
-    border-radius: 10px;
-  }
   .container {
     padding: 32px;
     padding-top: 75px;
@@ -192,22 +185,17 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
-
-  /* .arrow-icon {
-    position: absolute;
-    right: 10px;
-    top: 20px;
-    width: 15px;
-  }
-  .section-input {
-    background: none;
-    color: inherit;
-    border: none;
-    outline: none;
+  h3 {
+    z-index: 5;
+    background-color: var(--border);
     width: 100%;
-    font-size: 12px;
-    padding-left: 25px;
-  } */
+    left: 0;
+    position: absolute;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
   input::-webkit-calendar-picker-indicator {
     opacity: 100;
     cursor: pointer;
