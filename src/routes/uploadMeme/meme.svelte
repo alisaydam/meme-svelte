@@ -105,7 +105,7 @@
       avatar = e.target.result;
     };
   };
-
+  let fileInpurRef;
   // let shouldWork = true;
 </script>
 
@@ -138,9 +138,16 @@
       {#if avatar}
         <img src={avatar} alt="" class="preview" />
       {:else}
-        <img class="placeholder" src="/placeholder.png" alt="" />
+        <img
+          class="placeholder"
+          src="/placeholder.png"
+          alt=""
+          on:click={fileInpurRef.click()}
+        />
       {/if}
-      <span class="card-text">Dosya seç ve yükle</span>
+      <span class="card-text" on:click={fileInpurRef.click()}
+        >Dosya seç ve yükle</span
+      >
       {#if avatar && title && categoryName}
         <!-- svelte-ignore a11y-missing-attribute -->
         <a class="file-input" on:click={uploadToFireStorage}>
@@ -149,6 +156,7 @@
         </a>
       {:else}
         <input
+          bind:this={fileInpurRef}
           class="file-input"
           type="file"
           directory="false"
@@ -181,7 +189,7 @@
     padding-top: 75px;
     max-width: 600px;
     margin: auto;
-    overflow-x: hidden
+    overflow-x: hidden;
   }
   .spinner {
     position: absolute;

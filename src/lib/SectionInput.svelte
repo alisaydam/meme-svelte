@@ -1,5 +1,5 @@
 <script>
-  import { fly  } from "svelte/transition"; 
+  import { fly } from "svelte/transition";
 
   export let categoryName = "";
 
@@ -21,8 +21,7 @@
       new RegExp(`${value}`, `i`).test(key)
     );
   };
-
-  </script>
+</script>
 
 <div class="container">
   <div class="section-con">
@@ -31,6 +30,7 @@
         <img class="arrow-icon" src="/arrow.svg" alt="" />
       </a> -->
     <input
+    placeholder="Kategori seç"
       on:input={suggestSections}
       autocomplete="off"
       bind:value={categoryName}
@@ -49,10 +49,10 @@
     >
       {#each sectionsArray as item, i}
         <div
-          class="categ" 
-          on:click={() =>{
+          class="categ"
+          on:click={() => {
             categoryName = item;
-            sectionsArray = []
+            sectionsArray = [];
           }}
           in:fly={{ y: 200, duration: i * 200 }}
         >
@@ -65,7 +65,6 @@
 </div>
 
 <style>
- 
   .container {
     width: 70%;
   }
