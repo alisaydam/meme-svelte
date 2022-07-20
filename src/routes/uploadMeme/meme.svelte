@@ -145,9 +145,7 @@
           on:click={fileInpurRef.click()}
         />
       {/if}
-      <span class="card-text" on:click={fileInpurRef.click()}
-        >Dosya seç ve yükle</span
-      >
+      <span class="card-text" on:click={fileInpurRef.click()}>Dosya seç </span>
       {#if avatar && title && categoryName}
         <!-- svelte-ignore a11y-missing-attribute -->
         <a class="file-input" on:click={uploadToFireStorage}>
@@ -184,7 +182,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    padding: 32px;
+    padding: 75px 32px 32px 32px;
     width: 100%;
     padding-top: 75px;
     max-width: 600px;
@@ -261,11 +259,7 @@
   .preview {
     width: 100%;
   }
-  @media (max-width: 500px) {
-    .preview {
-      width: 120%;
-    }
-  }
+
   .placeholder {
     width: 70px;
   }
@@ -277,18 +271,17 @@
   }
   .file-input {
     content: "Select some files";
-    width: 225px;
+    width: 150px;
     background: #0077ff;
     color: white;
-    padding: 8px 25px;
-    font-size: 12px;
+    padding: 10px 6px;
+    font-size: 10px;
     border-radius: 20px;
-    letter-spacing: 1px;
     cursor: pointer;
     font-weight: bold;
     text-align: center;
     border: 1px solid transparent;
-    text-indent: -50px;
+    text-indent: -40px;
   }
   .tags-con {
     padding: 12px;
@@ -305,5 +298,17 @@
     outline: none;
     width: 100%;
     font-size: 12px;
+  }
+
+  /* @media only screen and (max-width:500px){ } */
+  @media (max-width: 500px) {
+    .container {
+      padding: 75px 0 0 0;
+    }
+  }
+  @media (max-width:350px) {
+    .upload-card {
+      padding: 10px 2px;
+    }
   }
 </style>
