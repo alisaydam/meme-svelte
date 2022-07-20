@@ -156,7 +156,7 @@
   </div>
 
   {#each data as meme}
-    <MemeCard {meme} route={"/user/"} />
+    <MemeCard {meme} route={"/meme/"} />
   {/each}
   <InfiniteScroll
     hasMore={newBatch.length}
@@ -183,9 +183,15 @@
     margin: auto;
     padding-top: 80px;
   }
+  /* Scrollbar */
   .wrapper::-webkit-scrollbar {
-    /* display: none; */
+    width: 5px;
   }
+  .wrapper::-webkit-scrollbar-thumb {
+    background-color: #2c3033;
+    border-radius: 2px;
+    height: 100px;
+   }
   .user-menu {
     max-width: 600px;
     margin: auto;

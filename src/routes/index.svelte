@@ -16,7 +16,7 @@
     if ($currentMeme) {
       const clickedMeme = document.getElementById($currentMeme);
       clickedMeme && clickedMeme.scrollIntoView();
-     }else { 
+    } else {
       $memes = [];
       $page = 0;
       fetchData();
@@ -43,17 +43,28 @@
 <style>
   .wrapper {
     padding: 50px 0 0 0;
-     width: 100vw;
+    width: 100vw;
     height: 100vh;
-    overflow-x: hidden; 
+    overflow-x: hidden;
     /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
       0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); */
     max-height: 100vh;
-    
+
     margin: auto;
   }
   /* .wrapper::-webkit-scrollbar {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	background-color: #F5F5F5;
   } */
+
+  /* Scroll bar  */
+
+  ul::-webkit-scrollbar {
+    width: 5px;
+  }
+  ul::-webkit-scrollbar-thumb {
+    background-color: #2c3033;
+    border-radius: 2px;
+    height: 100px;
+   }
 </style>
