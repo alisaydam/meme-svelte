@@ -1,53 +1,60 @@
-<script> 
+<script>
+  import { fly } from "svelte/transition";
   import CommentVoteBar from "./CommentVoteBar.svelte";
   import SubCommentCard from "./SubCommentCard.svelte";
   export let comment;
-  export let user; 
-  
-  let startIndex = comment.subComments.length
-  let endIndex = comment.subComments.length 
-  $: shownArr = comment.subComments.slice(startIndex, endIndex)
-  const showSubcomments = () => { 
-      startIndex-=2
+  export let user;
+
+  let subcommentArray = comment.subComments.reverse();
+   $: shownSubcomments = [];
+  const toggleSubComments = () => {
+    if(!shownSubcomments.length == 0) return shownSubcomments = []
+    shownSubcomments = subcommentArray
   };
-  const submitSubComment = (e) => { 
-    comment = e.detail
+  const submitSubComment = (e) => {
+    comment = e.detail;
   };
   const submitSubReply = (e) => {
-    comment = e.detail
-  }
-
+    comment = e.detail;
+  };
 </script>
 
-<div class="comment-wrapper">
+<div class="comment-wrapper" >
   <!-- svelte-ignore a11y-invalid-attribute -->
-  <a href = {"/user/"+comment.user.username}> <img src={comment.user.avatar} alt="" /></a>
+  <a href={"/user/" + comment.user.username}>
+    <img src={comment.user.avatar} alt="" /></a
+  >
   <div class="comment">
     <h5>{comment.user.username}</h5>
     <p>{comment.comment}</p>
     <CommentVoteBar
-   
       commentid={comment._id}
       {comment}
       on:submitSubComment={submitSubComment}
     />
-    {#each comment.subComments.reverse() as subComment, i}
-      <SubCommentCard {subComment} {comment} on:submitSubReply={submitSubReply}  />
+    {#each shownSubcomments as subComment, i}
+      <div in:fly={{ y: 200, duration: i*250}} out:fly={{ y: -200, duration: i*250}}>
+        <SubCommentCard
+          {subComment}
+          {comment}
+          on:submitSubReply={submitSubReply}
+        />
+      </div>
     {/each}
     <div id={comment._id + "before"} />
-    {#if comment.subComments.length >0}
-    <a href="" on:click={showSubcomments}>
-      <svg width="9" viewBox="-2.5 -5 75 60" preserveAspectRatio="none">
-        <path
-          d="M0,0 l35,50 l35,-50"
-          fill="currentColor"
-          stroke="black"
-          stroke-linecap="round"
-          stroke-width="10"
-        />
-      </svg>
-      {comment.subComments.length} Yorumları Görüntüle
-    </a>
+    {#if comment.subComments.length > 0}
+      <a href="" on:click={toggleSubComments}>
+        <svg width="9" viewBox="-2.5 -5 75 60" preserveAspectRatio="none">
+          <path
+            d="M0,0 l35,50 l35,-50"
+            fill="currentColor"
+            stroke="black"
+            stroke-linecap="round"
+            stroke-width="10"
+          />
+        </svg>
+        {comment.subComments.length} Yorumları Görüntüle
+      </a>
     {/if}
   </div>
 </div>
@@ -67,7 +74,7 @@
   }
   .comment {
     margin-left: 50px;
-     word-wrap: break-word;
+    word-wrap: break-word;
   }
   h5 {
     font-size: 14px;

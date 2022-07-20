@@ -183,6 +183,8 @@
   .container {
     padding: 32px;
     padding-top: 75px;
+    max-width: 600px;
+    margin: auto;
   }
   .spinner {
     position: absolute;
