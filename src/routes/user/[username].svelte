@@ -74,7 +74,7 @@
 <div class="wrapper">
   <div class="user-menu">
     <div class="user">
-      {#if $user}
+      {#if $user && displayedUser.username === $user.username}
         <div class="hover-img">
           <img width="100" src={displayedUser.avatar} alt="user-avatar" />
           <button
@@ -104,8 +104,8 @@
       </div>
     </div>
     <div class="tab-bar">
-      <ul class="menu">
-        <!-- svelte-ignore a11y-missing-attribute -->
+        <ul class="menu">
+          <!-- svelte-ignore a11y-missing-attribute -->
         <li>
           <a
             class:active={current === "postlar"}
@@ -248,8 +248,7 @@
   }
   a {
     font-weight: 700;
-    display: block;
-    box-sizing: border-box;
+    display: block; 
     line-height: 20px;
     height: 40px;
     padding: 10px 16px;
@@ -261,15 +260,25 @@
     border-bottom: 2px solid;
   }
   ul {
-    padding: 0;
+    /* padding: 0;
     overflow-x: hidden;
-    /* box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
-      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); */
+     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+      0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12); 
     max-width: 600px;
-    max-height: 100vh;
+    max-height: 100vh; */
   }
 
   ul::-webkit-scrollbar {
     display: none;
+  }
+  @media (max-width: 500px) {
+    a {
+    font-weight: 700;
+    display: block; 
+    line-height: 20px;
+    font-size: 14px;
+    height: 40px;
+    padding: 10px 10px;
+  }
   }
 </style>

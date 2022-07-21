@@ -1,6 +1,8 @@
 <script context="module">
   export async function load({ params }) {
-    const res = await fetch(`https://geyix.herokuapp.com/meme/getOneById/${params.memeId}`);
+    const res = await fetch(
+      `https://geyix.herokuapp.com/meme/getOneById/${params.memeId}`
+    );
     const data = await res.json();
     return {
       props: {
@@ -15,34 +17,32 @@
   import MemeCard from "$lib/MemeCard.svelte";
   import CommentCard from "$lib/CommentCard.svelte";
   export let meme;
-  export let comments; 
+  export let comments;
   import SubmitComment from "$lib/SubmitComment.svelte";
   import { memes, user } from "../../stores";
   let url = "https://geyix.herokuapp.com/comment/newcomment";
-  const submitComment = (e) => { 
+  const submitComment = (e) => {
     comments = e.detail;
   };
 </script>
- 
- <div>
+
+<div class="biggie">
   <MemeCard {meme} route={"/meme/"} />
   <SubmitComment on:submitComment={submitComment} user={$user} {url} {meme} />
-  {#each comments as comment}
-    <CommentCard
-      {comment}
-      user={user}
-      subComments={comment.subComments}
-    />
-  {/each}
- </div>
- 
+  <div class="smooth">
+    {#each comments as comment}
+      <CommentCard {comment} {user} subComments={comment.subComments} />
+    {/each}
+  </div>
+</div>
 
 <style>
-  div{
+  .biggie {
     padding-top: 75px;
-    max-width: 600px; 
-    margin: auto; 
+    max-width: 600px;
+    margin: auto;
   }
-
-
+  .smooth {
+    scroll-behavior: smooth;
+  }
 </style>

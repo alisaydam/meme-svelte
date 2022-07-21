@@ -5,21 +5,22 @@
   export let comment;
   export let user;
 
-  let subcommentArray = comment.subComments.reverse();
-   $: shownSubcomments = [];
-  const toggleSubComments = () => {
-    if(!shownSubcomments.length == 0) return shownSubcomments = []
-    shownSubcomments = subcommentArray
-  };
+  // let subcommentArray = [...comment.subComments.reverse()];
+  // $: shownSubcomments = comment.subComments.reverse();
+  // const toggleSubComments = () => {
+  //   if (!shownSubcomments.length == 0) return (shownSubcomments = []);
+  //   shownSubcomments = subcommentArray;
+  // };
   const submitSubComment = (e) => {
     comment = e.detail;
   };
   const submitSubReply = (e) => {
     comment = e.detail;
   };
+  let showSubComments = false;
 </script>
 
-<div class="comment-wrapper" >
+<div class="comment-wrapper">
   <!-- svelte-ignore a11y-invalid-attribute -->
   <a href={"/user/" + comment.user.username}>
     <img src={comment.user.avatar} alt="" /></a
@@ -32,28 +33,27 @@
       {comment}
       on:submitSubComment={submitSubComment}
     />
-    {#each shownSubcomments as subComment, i}
-      <div in:fly={{ y: 200, duration: i*250}} out:fly={{ y: -200, duration: i*250}}>
-        <SubCommentCard
-          {subComment}
-          {comment}
-          on:submitSubReply={submitSubReply}
-        />
-      </div>
-    {/each}
-    <div id={comment._id + "before"} />
-    {#if comment.subComments.length > 0}
-      <a href="" on:click={toggleSubComments}>
-        <svg width="9" viewBox="-2.5 -5 75 60" preserveAspectRatio="none">
-          <path
-            d="M0,0 l35,50 l35,-50"
-            fill="currentColor"
-            stroke="black"
-            stroke-linecap="round"
-            stroke-width="10"
+    {#if showSubComments}
+      <div
+        in:fly={{ y: 200, duration: 500 }}
+        out:fly={{ y: 200, duration: 500 }}
+      >
+        {#each comment.subComments.reverse() as subComment, i}
+          <SubCommentCard
+            {subComment}
+            {comment}
+            on:submitSubReply={submitSubReply}
           />
-        </svg>
-        {comment.subComments.length} Yorumları Görüntüle
+        {/each}
+      </div>
+    {/if}
+
+    <div id={comment._id + "before"} />
+    {#if !showSubComments > 0}
+      
+      <a href="" on:click={() => (showSubComments = !showSubComments)}>
+       🞃 {comment.subComments.length}
+        Yorumları Görüntüle
       </a>
     {/if}
   </div>
