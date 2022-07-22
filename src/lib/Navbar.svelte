@@ -97,7 +97,7 @@
     width: 100%;
     top: 0;
     left: 0;
-    background-color: var(--bg);
+    background: var(--bg);
     height: 50px;
     border-bottom: 1px var(--border) solid;
   }

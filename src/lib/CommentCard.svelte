@@ -35,8 +35,7 @@
     />
     {#if showSubComments}
       <div
-        in:fly={{ y: 200, duration: 500 }}
-        out:fly={{ y: 200, duration: 500 }}
+        in:fly={{ y:  100, duration: 500 }} 
       >
         {#each comment.subComments.reverse() as subComment, i}
           <SubCommentCard
