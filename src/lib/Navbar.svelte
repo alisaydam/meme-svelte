@@ -3,13 +3,11 @@
   import Modal from "./Modal.svelte";
   import { goto } from "$app/navigation";
   import LoginCard from "./LoginCard.svelte";
-  import ThemeSwapper from "./ThemeSwapper.svelte"; 
-   let modal;
-
-  
+  import ThemeSwapper from "./ThemeSwapper.svelte";
+  let modal;
 
   const reload = () => {
-    $currentMeme = "";   
+    $currentMeme = "";
     goto("/");
   };
 </script>
@@ -17,71 +15,75 @@
 <svelte:head>
   <script>
     if (document) {
-      let mode = localStorage.theme || "light";
-      if (
-        mode === "dark" ||
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
+      let mode = localStorage.theme;
+      if (!mode && window.matchMedia("(prefers-color-scheme: dark)").matches) {
         document.documentElement.classList.add("dark");
-        localStorage.theme = "dark";
       } else {
-        document.documentElement.classList.remove("dark");
-        localStorage.theme = "light";
+        if (mode === "dark") {
+          document.documentElement.classList.add("dark");
+          localStorage.theme = "dark";
+        } else {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.add("light");
+          localStorage.theme = "light";
+        }
       }
     }
   </script>
 </svelte:head>
 <!-- svelte-ignore a11y-missing-attribute -->
 <header>
-    <div class="nav-wrap">
-      <div>
-        <a on:click={reload} class="logo">Geyix</a>
-      </div>
-      <nav>
-        <ul class="nav-menu">
-          <li>
-            <a on:click={() => goto("/uploadMeme/meme")}
-              ><img
-                class="user-icon"
-                src="/upload.png"
-                alt=""
-                srcset=""
-                width="30"
-              /></a
-            >
-          </li>
-          {#if $user}
-            <li>
-              <button>
-                <img class="avatar" src={$user.avatar} alt="fesfes" width="35" />
-              </button>
-              <ul class="dropdown">
-                <li>
-                  <a class="drop-list" href={"/user/" + $user.username}>Profil</a>
-                </li>
-                <li><a class="drop-list">Menu</a></li> 
-                <li><a class="drop-list" on:click={()=> $user = ""}>Logout</a></li> 
-              </ul>
-            </li>
-          {:else}
-            <li class="avatar-li">
-              <button on:click={() => modal.show()}
-                ><img class="user-icon" width="25" src="/user.png" alt="enter" />
-              </button>
-            </li>
-          {/if}
-          <li><a><ThemeSwapper /></a></li>
-        </ul>
-        {#if !$user}
-          <Modal bind:this={modal}>
-            <LoginCard />
-          </Modal>
-        {/if}
-      </nav>
+  <div class="nav-wrap">
+    <div>
+      <a on:click={reload} class="logo">Geyix</a>
     </div>
+    <nav>
+      <ul class="nav-menu">
+        <li>
+          <a on:click={() => goto("/uploadMeme/meme")}
+            ><img
+              class="user-icon"
+              src="/upload.png"
+              alt=""
+              srcset=""
+              width="30"
+            /></a
+          >
+        </li>
+        {#if $user}
+          <li>
+            <button>
+              <img class="avatar" src={$user.avatar} alt="fesfes" width="35" />
+            </button>
+            <ul class="dropdown">
+              <li>
+                <a class="drop-list" href={"/user/" + $user.username}>Profil</a>
+              </li>
+              <li><a class="drop-list">Menu</a></li>
+              <li>
+                <a class="drop-list" on:click={() => ($user = "")}>Logout</a>
+              </li>
+            </ul>
+          </li>
+        {:else}
+          <li class="avatar-li">
+            <button on:click={() => modal.show()}
+              ><img class="user-icon" width="25" src="/user.png" alt="enter" />
+            </button>
+          </li>
+        {/if}
+        <li><a><ThemeSwapper /></a></li>
+      </ul>
+      {#if !$user}
+        <Modal bind:this={modal}>
+          <LoginCard />
+        </Modal>
+      {/if}
+    </nav>
+  </div>
 </header>
 
-<style> 
+<style>
   .avatar {
     margin-bottom: 7px;
     overflow: hidden;
@@ -90,13 +92,13 @@
   header {
     z-index: 2;
     /* Sticky will still add item to stacking but will stick when scroll down. And this prevents giving margin-top to each element that comes after navbar. */
-    position: absolute; 
+    position: absolute;
     display: flex;
-    width: 100%; 
+    width: 100%;
     top: 0;
     left: 0;
     background-color: var(--bg);
-    height: 50px; 
+    height: 50px;
     border-bottom: 1px var(--border) solid;
   }
   .avatar-li {
@@ -111,9 +113,8 @@
     width: 100%;
     max-width: 650px;
     margin: auto;
-     justify-content: space-between;
+    justify-content: space-between;
     align-items: center;
- 
   }
   .logo {
     font-size: 25px;

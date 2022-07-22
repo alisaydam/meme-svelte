@@ -271,7 +271,7 @@
   ul::-webkit-scrollbar {
     display: none;
   }
-  @media (max-width: 500px) {
+  @media (max-width: 400px) {
     a {
     font-weight: 700;
     display: block; 
