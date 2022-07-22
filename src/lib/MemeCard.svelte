@@ -77,7 +77,7 @@
   a {
     text-decoration: none;
     cursor: pointer;
-    color: inherit;
+    color: var(--text);
     overflow-wrap: anywhere;
    }
   img {

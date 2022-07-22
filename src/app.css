@@ -1,6 +1,8 @@
 :root {
 --black: #141414;
 --white: #fff; 
+--text-light: #fff;
+--text-dark: rgb(97, 97, 97);
 --border-light: #808080;
 --border-dark: #333333;
 }
