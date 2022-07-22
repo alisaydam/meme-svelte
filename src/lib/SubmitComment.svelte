@@ -58,7 +58,7 @@
   .submit-wrapper {
     max-width: 650px;
     margin: auto;
-    padding: 10px;
+    padding: 10px 0;
   }
   .upper-con {
     display: flex;
@@ -77,6 +77,8 @@
     justify-content: end;
   }
   img {
-    width: 30px;
+    width: 50px;
+    margin-right: 10px;
+    border-radius: 50%;
   }
 </style>

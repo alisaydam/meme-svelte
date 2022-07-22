@@ -18,6 +18,8 @@
     comment = e.detail;
   };
   let showSubComments = false;
+
+  const showSubsButton = comment.subComments.length;
 </script>
 
 <div class="comment-wrapper">
@@ -34,9 +36,7 @@
       on:submitSubComment={submitSubComment}
     />
     {#if showSubComments}
-      <div
-        in:fly={{ y:  100, duration: 500 }} 
-      >
+      <div in:fly={{ y: 100, duration: 500 }}>
         {#each comment.subComments.reverse() as subComment, i}
           <SubCommentCard
             {subComment}
@@ -48,11 +48,10 @@
     {/if}
 
     <div id={comment._id + "before"} />
-    {#if !showSubComments > 0}
-      
+    {#if showSubsButton && showSubComments === false}
       <a href="" on:click={() => (showSubComments = !showSubComments)}>
-       🞃 {comment.subComments.length}
-        Yorumları Görüntüle
+        ⮟ {comment.subComments.length}
+        {showSubsButton === 1 ? "Yorumu" : "Yorumları"} Görüntüle
       </a>
     {/if}
   </div>

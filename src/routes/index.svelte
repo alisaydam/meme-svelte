@@ -51,7 +51,7 @@
     />
   </ul>
   {#if scrollPosition > 1000}
-    <p on:click={backToTop} title="Yukarı git">⬆</p>
+    <p on:click={backToTop} title="Yukarı git">↑</p>
   {/if}
 </div>
 
