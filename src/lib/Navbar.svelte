@@ -41,13 +41,7 @@
       <ul class="nav-menu">
         <li>
           <a on:click={() => goto("/uploadMeme/meme")}
-            ><img
-              class="user-icon"
-              src="/upload.png"
-              alt=""
-              srcset=""
-              width="30"
-            /></a
+            ><p style="font-size: 25px;" title="Resim Yükle">✚</p></a
           >
         </li>
         {#if $user}
@@ -85,7 +79,6 @@
 
 <style>
   .avatar {
-    margin-bottom: 7px;
     overflow: hidden;
     border-radius: 50%;
   }
