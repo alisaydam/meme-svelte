@@ -63,27 +63,31 @@
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
           try {
-            const submit = await fetch(
-              "https://geyix.herokuapp.com/meme/newmeme",
-              {
-                method: "POST",
-                headers: new Headers({
-                  Authorization: "Bearer " + $user.token,
-                  "Content-Type": "application/json",
-                }),
-                body: JSON.stringify({
-                  meme: dowloadURL,
-                  id: $user._id,
-                  title: title,
-                  categoryName: categoryName,
-                }),
-              }
-            );
+            const submit = await fetch("https://geyix.herokuapp.com/meme/newmeme", {
+              method: "POST",
+              headers: new Headers({
+                Authorization: "Bearer " + $user.token,
+                "Content-Type": "application/json",
+              }),
+              body: JSON.stringify({
+                meme: dowloadURL,
+                id: $user._id,
+                title: title,
+                categoryName: categoryName,
+              }),
+            });
             spinner = false;
             avatar = "";
             categoryName = "";
             title = "";
             const data = await submit.json();
+            if (data.success) {
+              message = "Gönderme başarılı";
+              wrongInput = true;
+              setTimeout(() => {
+                wrongInput = false;
+              }, 1500); 
+            }
           } catch (error) {
             console.log(error);
           }
@@ -109,7 +113,7 @@
       const model = await nsfwjs.load();
       const predictions = await model.classify(img);
       if (predictions[0].classname === "porn") {
-        message = "Uygunsuz içerik yüklenemez!.";
+        message = "Uygunsuz annenizin fotolarını yüklemeyiniz!.";
         wrongInput = true;
         setTimeout(() => {
           wrongInput = false;
@@ -131,7 +135,7 @@
     reader.readAsDataURL(image);
     reader.onload = (e) => {
       avatar = e.target.result;
-    }; 
+    };
   };
   let fileInpurRef;
 </script>
@@ -157,7 +161,7 @@
         id=""
         cols="30"
         bind:value={title}
-        placeholder="Başlk"
+        placeholder="Başlk *"
         contenteditable="true"
       />
       {#if wrongInput}

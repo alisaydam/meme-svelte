@@ -177,7 +177,7 @@
     color: inherit;
     padding: 0 11px;
   }
-  a {
+  ul a {
     width: 100%;
     text-align: left;
     padding: 0 11px;

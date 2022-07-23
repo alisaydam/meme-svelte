@@ -30,8 +30,9 @@
         <img class="arrow-icon" src="/arrow.svg" alt="" />
       </a> -->
     <input
-    placeholder="Kategori seç"
+      placeholder="Kategori seç  *"
       on:input={suggestSections}
+      on:focus={suggestSections}
       autocomplete="off"
       bind:value={categoryName}
       list="countrydata1"
