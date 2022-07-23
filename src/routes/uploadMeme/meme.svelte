@@ -27,6 +27,7 @@
   const storage = getStorage(app);
 
   let wrongInput = false;
+  let message = "";
   const sections = ["Komik", "Bilim", "Oha", "Bu Nedir", "Adam Çalışıyor"];
 
   let avatar,
@@ -36,6 +37,7 @@
   let spinner = false;
   const uploadToFireStorage = () => {
     if (!sections.includes(categoryName)) {
+      message = "Tüm Alanları doğru giriniz.";
       wrongInput = true;
       setTimeout(() => {
         wrongInput = false;
@@ -60,44 +62,60 @@
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
-          try {
-            const submit = await fetch(
-              "https://geyix.herokuapp.com/meme/newmeme",
-              {
-                method: "POST",
-                headers: new Headers({
-                  Authorization: "Bearer " + $user.token,
-                  "Content-Type": "application/json",
-                }),
-                body: JSON.stringify({
-                  meme: dowloadURL,
-                  id: $user._id,
-                  title: title,
-                  categoryName: categoryName,
-                }),
-              }
-            );
-            spinner = false;
-            avatar = "";
-            categoryName = "";
-            title = "";
-            const data = await submit.json();
-          } catch (error) {
-            console.log(error);
-          }
+          // try {
+          //   const submit = await fetch(
+          //     "https://geyix.herokuapp.com/meme/newmeme",
+          //     {
+          //       method: "POST",
+          //       headers: new Headers({
+          //         Authorization: "Bearer " + $user.token,
+          //         "Content-Type": "application/json",
+          //       }),
+          //       body: JSON.stringify({
+          //         meme: dowloadURL,
+          //         id: $user._id,
+          //         title: title,
+          //         categoryName: categoryName,
+          //       }),
+          //     }
+          //   );
+          //   spinner = false;
+          //   avatar = "";
+          //   categoryName = "";
+          //   title = "";
+          //   const data = await submit.json();
+          // } catch (error) {
+          //   console.log(error);
+          // }
         });
       }
     );
   };
 
   const onFileSelected = async (e) => {
+    const img = new Image();
     image = e.target.files[0];
+    const url = window.URL.createObjectURL(image);
     const data = await compressAccurately(image, {
       size: 50,
       accuracy: 0.9,
       width: 600,
       orientation: 1,
     });
+    img.src = url;
+
+    // Only can classify image with this setup. Image should be createt with new Image and has ti be given its url src like above
+    const model = await nsfwjs.load();
+    const predictions = await model.classify(img);
+    if (predictions[0].classname === "porn") {
+      message = "Uygunsuz içerik yüklenemez!.";
+      wrongInput = true;
+      setTimeout(() => {
+        wrongInput = false;
+      }, 1500);
+      return;
+    }
+
     image = new File([data], image.name, { lastModified: Date.now() });
     let reader = new FileReader();
     reader.readAsDataURL(image);
@@ -106,8 +124,14 @@
     };
   };
   let fileInpurRef;
-  // let shouldWork = true;
 </script>
+
+<svelte:head>
+  <script
+    src="https://unpkg.com/@tensorflow/tfjs@2.6.0"
+    type="text/javascript"></script>
+  <script src="https://unpkg.com/nsfwjs@2.3.0" type="text/javascript"></script>
+</svelte:head>
 
 <!-- <div use:preventTabClose={shouldWork} /> -->
 <div class="container">
@@ -127,7 +151,7 @@
         contenteditable="true"
       />
       {#if wrongInput}
-        <h3 transition:fade>Tüm Alanları doğru giriniz.</h3>
+        <h3 transition:fade>{message}</h3>
       {/if}
       <span class="counter">
         {!title.length === 0 ? "s" : 150 - title.length}</span
@@ -306,7 +330,7 @@
       padding: 75px 0 0 0;
     }
   }
-  @media (max-width:350px) {
+  @media (max-width: 350px) {
     .upload-card {
       padding: 10px 2px;
     }
