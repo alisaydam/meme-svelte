@@ -62,31 +62,31 @@
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then(async (dowloadURL) => {
-          // try {
-          //   const submit = await fetch(
-          //     "https://geyix.herokuapp.com/meme/newmeme",
-          //     {
-          //       method: "POST",
-          //       headers: new Headers({
-          //         Authorization: "Bearer " + $user.token,
-          //         "Content-Type": "application/json",
-          //       }),
-          //       body: JSON.stringify({
-          //         meme: dowloadURL,
-          //         id: $user._id,
-          //         title: title,
-          //         categoryName: categoryName,
-          //       }),
-          //     }
-          //   );
-          //   spinner = false;
-          //   avatar = "";
-          //   categoryName = "";
-          //   title = "";
-          //   const data = await submit.json();
-          // } catch (error) {
-          //   console.log(error);
-          // }
+          try {
+            const submit = await fetch(
+              "https://geyix.herokuapp.com/meme/newmeme",
+              {
+                method: "POST",
+                headers: new Headers({
+                  Authorization: "Bearer " + $user.token,
+                  "Content-Type": "application/json",
+                }),
+                body: JSON.stringify({
+                  meme: dowloadURL,
+                  id: $user._id,
+                  title: title,
+                  categoryName: categoryName,
+                }),
+              }
+            );
+            spinner = false;
+            avatar = "";
+            categoryName = "";
+            title = "";
+            const data = await submit.json();
+          } catch (error) {
+            console.log(error);
+          }
         });
       }
     );
@@ -105,10 +105,20 @@
     img.src = url;
 
     // Only can classify image with this setup. Image should be createt with new Image and has ti be given its url src like above
-    const model = await nsfwjs.load();
-    const predictions = await model.classify(img);
-    if (predictions[0].classname === "porn") {
-      message = "Uygunsuz içerik yüklenemez!.";
+    try {
+      const model = await nsfwjs.load();
+      const predictions = await model.classify(img);
+      if (predictions[0].classname === "porn") {
+        message = "Uygunsuz içerik yüklenemez!.";
+        wrongInput = true;
+        setTimeout(() => {
+          wrongInput = false;
+        }, 1500);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      message = "Bir hata oluştu. Sayfayı yenileyiniz.";
       wrongInput = true;
       setTimeout(() => {
         wrongInput = false;
@@ -121,7 +131,7 @@
     reader.readAsDataURL(image);
     reader.onload = (e) => {
       avatar = e.target.result;
-    };
+    }; 
   };
   let fileInpurRef;
 </script>
