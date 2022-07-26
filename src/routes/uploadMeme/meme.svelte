@@ -49,6 +49,7 @@
     };
     spinner = true;
     const storageRef = ref(storage, "images/" + image.name + Date.now());
+    console.log("sssssssssss");
     const uploadTask = uploadBytesResumable(storageRef, image, metadata);
     uploadTask.on(
       "state_changed",
@@ -81,12 +82,19 @@
             categoryName = "";
             title = "";
             const data = await submit.json();
+            console.log(data);
             if (data.success) {
               message = "Gönderme başarılı";
               wrongInput = true;
               setTimeout(() => {
                 wrongInput = false;
-              }, 1500); 
+              }, 1500);
+            } else {
+              message = data.error;
+              wrongInput = true;
+              setTimeout(() => {
+                wrongInput = false;
+              }, 1500);
             }
           } catch (error) {
             console.log(error);
@@ -108,28 +116,6 @@
     });
     img.src = url;
 
-    // Only can classify image with this setup. Image should be createt with new Image and has ti be given its url src like above
-    try {
-      const model = await nsfwjs.load();
-      const predictions = await model.classify(img);
-      if (predictions[0].classname === "porn") {
-        message = "Uygunsuz annenizin fotolarını yüklemeyiniz!.";
-        wrongInput = true;
-        setTimeout(() => {
-          wrongInput = false;
-        }, 1500);
-        return;
-      }
-    } catch (error) {
-      console.log(error);
-      message = "Bir hata oluştu. Sayfayı yenileyiniz.";
-      wrongInput = true;
-      setTimeout(() => {
-        wrongInput = false;
-      }, 1500);
-      return;
-    }
-
     image = new File([data], image.name, { lastModified: Date.now() });
     let reader = new FileReader();
     reader.readAsDataURL(image);
@@ -140,13 +126,7 @@
   let fileInpurRef;
 </script>
 
-<svelte:head>
-  <script
-    src="https://unpkg.com/@tensorflow/tfjs@2.6.0"
-    type="text/javascript"></script>
-  <script src="https://unpkg.com/nsfwjs@2.3.0" type="text/javascript"></script>
-</svelte:head>
-
+ 
 <!-- <div use:preventTabClose={shouldWork} /> -->
 <div class="container">
   <h2 class="page-title">Post yükle</h2>
